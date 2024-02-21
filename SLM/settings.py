@@ -29,14 +29,22 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+'''
 
+Adding home app and django rest framework
+
+
+'''
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'home.apps.HomeConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +112,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+'''
+
+Changed Time Zone from UTC to india
+
+
+'''
+
+
 
 TIME_ZONE = 'UTC'
 
