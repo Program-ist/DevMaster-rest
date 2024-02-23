@@ -28,5 +28,5 @@ Setting url so that it goes to home app
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
-    path('home/', include('home.urls')),
+    # path('home/', include('home.urls')),
 ]
