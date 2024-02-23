@@ -39,11 +39,11 @@
 
 
 
-        var form = document.getElementById('form-wrapper')
+        {% comment %} var form = document.getElementById('form-wrapper')
 		form.addEventListener('submit', function(e){
-			e.preventDefault()
+			e.preventDefault() {% endcomment %}
 			console.log('Form submitted')
-			var url = 'http://127.0.0.1:8000/home/task-create/'
+			var url = 'http://127.0.0.1:8000/task-create/'
 			
 
 
@@ -59,30 +59,34 @@
 			
 
 
-			var s = document.getElementById('chng')innerHTML;
-
+			var s = document.getElementById('chng').innerHTML;
+            function st(){
+				console.log("stfunctions")
 			fetch(url, {
 				method:'POST',
 				headers:{
 					'Content-type':'application/json',
 					'X-CSRFToken':csrftoken,
 				},
-				body:JSON.stringify({'name': name})
+				body:JSON.stringify({'name': 'testvaluesssss'})
 			
                 
             }
 			).then(function(response){
-				// buildList()
-				// document.getElementById('form').reset()
+				
 			})
-		
+            }
+
+            setInterval(st,1000);
+
+
             document.getElementById('name').value = "";
             document.getElementById('user_name').value = "";
             document.getElementById('email').value = "";
             document.getElementById('password').value = "";
             document.getElementById('status_of_account').value = "";
             
-		})
+		{% comment %} }) {% endcomment %}
     </script>
 </body>
 
