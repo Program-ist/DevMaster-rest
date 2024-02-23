@@ -59,8 +59,11 @@ def RegisterView(request):
 		email = request.POST['email']
 		password = request.POST['password']
 		status_of_account = request.POST['status_of_account']
+		allusers = UserDetail.objects.values_list('user_name')
 
-		#checksssss
+		if user_name not in allusers:
+			messages.error(request,"User Name already in use")
+			return render(request,'home/registration.html')
 
 		member = UserDetail(name = name, user_name = user_name, email = email, password = password, status_of_account = status_of_account)
 		member.save()
@@ -68,14 +71,22 @@ def RegisterView(request):
 		# myuser.set_password(password)
 		myuser.save()
 		messages.success(request, 'suc ses')
+
+		#login registered user
+		user = authenticate(username= user_name, password= password)
+		if user is not None:
+			login(request, user)
+
+			
 		return redirect('home')
 	
+	return render(request, 'home/registration.html')
 
 '''		Code to Logout	'''
-# {% url 'logout' %}
-def LogoutView(request):
-	logout(request)
-	return redirect('home')
+# # {% url 'logout' %}
+# def LogoutView(request):
+# 	logout(request)
+# 	return redirect('login')
 
 
 '''		Page for Individual Project	'''
@@ -110,7 +121,6 @@ def apiOverview(request):
 
 '''		api		'''
 @api_view(['POST'])
-@login_required
 def taskCreate(request):
 	# serializer = UserDetailSerializer(data=request.data)
 

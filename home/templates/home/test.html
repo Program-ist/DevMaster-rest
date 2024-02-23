@@ -18,6 +18,10 @@
         </form>    
     </div>
 	<p id="chng">first</p>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">logout</button>
+    </form>
     <script>
         function getCookie(name) {
 		    var cookieValue = null;
