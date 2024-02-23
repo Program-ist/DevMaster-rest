@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <textarea name="ta" id="question" cols="30" rows="10"> 
+
+	</textarea><br> 
+	Enter the Question<input type="text" id="exp"> 
+	<input type="button" id="submit" value="Get Results"> 
+
+    <p id="answerTab"></p>
+
+    
+
+
+
+
+
+
+
+
+
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+
+
+
+    var form = document.getElementById('submit')
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form submitted')
+        var url = 'http://127.0.0.1:8000/llm_ans/'
+        
+
+
+
+        // var title = document.getElementById('title').value
+        var question = document.getElementById('question').value
+        
+        
+
+
+        
+        
+            
+        fetch(url, {
+            method:'POST',
+            headers:{
+                'Content-type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'ques': question})
+        
+            
+        }
+        ).then(function(response){
+            document.getElementById('answerTab').innerHTML() = response.data;
+            console.log(response);
+            
+        })
+        
+
+        
+
+        
+        
+    }) 
+</script>
+
+
+</body>
+</html>

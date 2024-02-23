@@ -12,6 +12,8 @@ urlpatterns = [
     path('register/', views.RegisterView, name = "register"),
     path('testbase/',views.testbase, name = 'testbase'),
     path('logout/', LogoutView.as_view(next_page= settings.LOGOUT_REDIRECT_URL), name='logout'),
+    path('llm', views.llm, name = "llm"),
+    path('llm_ans',views.llm_ans, name="llm_ans"),
     # path('logout',views.logout, name = 'logout'),
     # path('registrationview/',views.RegistrationView, name = 'registrationview'),
 	# path('project/<str:pk>', views.project, name="project"),

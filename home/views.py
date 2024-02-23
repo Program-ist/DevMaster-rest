@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+import json
 from django.http import JsonResponse
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import UserDetailSerializer
-
+from .serializers import *
+from .geminillmapi import gemini_result
 # Create your views here.
 
 # @login_required
@@ -16,10 +16,18 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .models import *
+from django.db.models import Avg, Max, Min, Sum
+
+
+
 
 '''   Home Page  '''
 def home(request):
-    return render(request, 'home/test.html')
+	if request.user.is_authenticated:
+		user= request.user
+		usern = user.username
+
+	return render(request, 'home/test.html')
 
 
 
@@ -48,36 +56,39 @@ def LoginView(request):
 		
 	
 
+
+
+
 '''		Registration Page	'''
 def RegisterView(request):
 	if request.user.is_authenticated:
 		return redirect('home')
 	if request.method == 'POST':
 
-		name = request.POST['name']
-		user_name = request.POST['user_name']
-		email = request.POST['email']
-		password = request.POST['password']
-		status_of_account = request.POST['status_of_account']
-		allusers = UserDetail.objects.values_list('user_name')
+		fname = request.POST['full_name']
+		fuser_name = request.POST['user_name']
+		femail = request.POST['email']
+		fpassword = request.POST['password']
+		fstatus_of_account = "DEVELOPER"
+		# allusers = UserDetail.objects.values_list('user_name')
 
-		if user_name not in allusers:
+		if not UserDetail.objects.filter(user_name = fname).exists():
 			messages.error(request,"User Name already in use")
 			return render(request,'home/registration.html')
 
-		member = UserDetail(name = name, user_name = user_name, email = email, password = password, status_of_account = status_of_account)
+		member = UserDetail(name = fname, user_name = fuser_name, email = femail, password = fpassword, status_of_account = fstatus_of_account)
 		member.save()
-		myuser = User.objects.create_user(username=user_name, password=password)
+		myuser = User.objects.create_user(username=fuser_name, password=fpassword)
 		# myuser.set_password(password)
 		myuser.save()
 		messages.success(request, 'suc ses')
 
 		#login registered user
-		user = authenticate(username= user_name, password= password)
+		user = authenticate(username= fuser_name, password= fpassword)
 		if user is not None:
 			login(request, user)
 
-			
+
 		return redirect('home')
 	
 	return render(request, 'home/registration.html')
@@ -107,12 +118,12 @@ def ap(request):
 @api_view(['GET'])
 def apiOverview(request):
 	api_urls = {
-		'Chat':'/chat-check/',
-		'Announcement':'/announcement-check/',
-		'Sprint':'/sprint-check/',
-		'Bug':'/bug-check/',
-		'Dashboard':'dash-check',
-		'LLM':'llm-ans',
+		'Chat':'/chat_check/',
+		'Announcement':'/announcement_check/',
+		'Sprint':'/sprint_check/',
+		'Bug':'/bug_check/',
+		'Dashboard':'dash_check',
+		'LLM':'llm_ans',
 		}
 		
 
@@ -129,3 +140,128 @@ def taskCreate(request):
 
 	print(request.data)
 	return Response("done")
+
+
+
+
+'''		API to see update in dashboard'''
+'''		
+
+Income:
+announcement_unix
+sprint_unix
+chat_unix
+
+Return:
+announcement_bit
+sprint_bit
+chat_bit
+
+
+
+'''
+
+@api_view(['POST'])
+def dash_check(request):
+	income_data = eval(request.data)
+	arg1 = Announcement.objects.aggregate(Max('time_of_message'))
+	# arg2 = SprintData.objects.aggregate(Max('time_of_message'))
+	arg3 = ChatData.objects.aggregate(Max('time_of_message'))
+
+	
+	send_data = {
+		'announcement_bit':0,
+		# 'sprint_bit': 0,
+		'chat_bit': 0
+	}
+	
+
+	if arg1>income_data['announcement_unix']:
+		send_data['announcement_bit'] = 1
+	# if arg2>income_data['sprint_unix']:
+	# 	send_data['sprint_bit'] = 1
+	if arg3>income_data['chat_unix']:
+		send_data['chat_bit'] = 1
+
+	return Response(json.dumps(send_data))
+
+
+'''
+
+Income
+chat_unix
+
+Return
+chat_bit
+new_chat_unix
+data
+
+'''
+@api_view(['POST'])
+def chat_check(request):
+	income_data = eval(request.data)
+	arg1 = ChatData.objects.aggregate(Max('time_of_message'))
+	send_data = {
+		'chat_bit':0,
+		'new_chat_unix':"",
+		'chat_data':{}
+	}
+
+	old_unix = income_data['chat_unix']
+	if arg1>income_data['chat_unix']:
+		send_data['chat_bit'] = 1
+		send_data['new_chat_unix'] = arg1
+		que = ChatData.objects.filter(time_of_message__gt = old_unix, time_of_message__lt = arg1 )
+		serializer = ChatDataSerializer(que,many = True)
+		send_data['chat_data'] = serializer
+
+	return Response(json.dumps(send_data))
+
+
+
+'''
+Income:
+announcement_unix
+
+Return:
+announcement_bit
+new_announcement_unix
+announcement_data
+
+'''
+
+
+@api_view(['POST'])
+def announcement_check(request):
+	income_data = eval(request.data)
+	arg1 = Announcement.objects.aggregate(Max('time_of_message'))
+	send_data = {
+		'announcement_bit':0,
+		'new_announcement_unix':"",
+		'announcement_data':{}
+	}
+
+	old_unix = income_data['announcement_unix']
+	if arg1>income_data['announcement_unix']:
+		send_data['announcement_bit'] = 1
+		send_data['new_announcement_unix'] = arg1
+		que = Announcement.objects.filter(time_of_message__gt = old_unix, time_of_message__lt = arg1 )
+		serializer = AnnouncementSerializer(que,many = True)
+		send_data['announcement_data'] = serializer
+
+	return Response(json.dumps(send_data))
+
+
+
+def llm(request):
+	return render(request,'home/llm.html')
+
+
+@api_view(['POST'])
+def llm_ans(request):
+
+	income_data = request.data 
+	ans = gemini_result(income_data)
+	return Response(ans)
+	
+
