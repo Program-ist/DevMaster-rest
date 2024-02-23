@@ -62,7 +62,7 @@ ROOT_URLCONF = 'SLM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,14 +115,14 @@ LANGUAGE_CODE = 'en-us'
 
 '''
 
-Changed Time Zone from UTC to Asia/Kolkata
+Changed Time Zone from UTC to india
 
 
 '''
 
 
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -138,13 +138,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-LOGIN_URL = 'login'
-
-from django.contrib.messages import constants as messages
-
-MESSAGE_TAGS = {
-    messages.INFO: "",
-    50: "critical",
-}
