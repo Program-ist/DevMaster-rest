@@ -17,11 +17,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .models import *
 
-
+'''   Home Page  '''
 def home(request):
     return render(request, 'home/test.html')
 
 
+
+
+def testbase(request):
+	return render(request,'home/testbase.html')
+
+
+
+'''  Login Page   '''
 def LoginView(request):
 	if request.user.is_authenticated:
 		return redirect('home')
@@ -40,7 +48,7 @@ def LoginView(request):
 		
 	
 
-
+'''		Registration Page	'''
 def RegisterView(request):
 	if request.user.is_authenticated:
 		return redirect('home')
@@ -63,14 +71,14 @@ def RegisterView(request):
 		return redirect('home')
 	
 
-
+'''		Code to Logout	'''
 # {% url 'logout' %}
 def LogoutView(request):
 	logout(request)
-	return redirect('login')
+	return redirect('home')
 
 
-
+'''		Page for Individual Project	'''
 def project(request, pk):
     return render(request, 'home/index.html')
 
@@ -84,21 +92,23 @@ def ap(request):
 
 
 
-
+'''		Page for Api Overview		'''
 @api_view(['GET'])
 def apiOverview(request):
 	api_urls = {
-		'List':'/task-list/',
-		'Detail View':'/task-detail/<str:pk>/',
-		'Create':'/task-create/',
-		'Update':'/task-update/<str:pk>/',
-		'Delete':'/task-delete/<str:pk>/',
+		'Chat':'/chat-check/',
+		'Announcement':'/announcement-check/',
+		'Sprint':'/sprint-check/',
+		'Bug':'/bug-check/',
+		'Dashboard':'dash-check',
+		'LLM':'llm-ans',
 		}
+		
 
 	return Response(api_urls)
 
 
-
+'''		api		'''
 @api_view(['POST'])
 @login_required
 def taskCreate(request):

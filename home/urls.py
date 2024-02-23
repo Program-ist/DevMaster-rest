@@ -8,6 +8,7 @@ urlpatterns = [
 	path('api/', views.apiOverview, name="api-overview"),
 	path('login/',views.LoginView, name = "login"),
     path('register/', views.RegisterView, name = "register"),
+    path('testbase/',views.testbase, name = 'testbase'),
 	# path('project/<str:pk>', views.project, name="project"),
     # path('dashboard/',views.dashboard, name = "dashboard"),
     # path('sprint-data/',views.sprintData, name = "sprint-data"),
