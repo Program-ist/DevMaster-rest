@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | DevMaster
+{% endblock title %}
+
+{% block body %}
+
+<p>Dashboard</p>
+<a href={% url 'home:logoutUser' %}>logout</a>
+
+<div class="container">
+    <div class="left">
+        <ul>
+            {% for i in pros %}
+            <li>{{i.project_name}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="right">
+        <p>Announcements</p>
+        <ul>
+            {% for i in ann %}
+            <li>{{i.announcement_msg}}</li>
+            {% endfor %}
+        </ul>
+        <p>Sprint</p>
+        <ul>
+            {% for i in sprint %}
+            <li>{{i.sprint_title}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% comment %}
+<ul>
+    {% for i in id %}
+    <li>{{i.name}}</li>
+    {% endfor %}
+</ul>
+
+
+
+<h1></h1>
+{% endcomment %}
+{% endblock body %}
+{% block script %}
+{% endblock script %}

@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% extends "base.html" %}
+{% block title %} 
+Login | DevMaster
+{% endblock title %}
+
+{% block body %}
 <body>
-    <form action="/" method="post">
+    <form action="/loginview/" method="post">
         {% csrf_token %}
         <label for="user_name">User Name: </label>
         <input type="text" name="user_name" id="user_name">
@@ -16,5 +15,6 @@
         <br>
         <input type="submit" value="Submit">
     </form>
-</body>
-</html>
+
+    
+{% endblock body %}

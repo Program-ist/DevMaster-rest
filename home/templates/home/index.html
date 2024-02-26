@@ -1,95 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevMaster</title>
-</head>
-<body>
-    <h1>Hello World!!!!!!!!!!</h1>
-    <div id="form-wrapper">
-        <form id="form">
-            <input id="name" class="form-control" type="text" name="name" placeholder="Add Name"><br>
-            <input id="user_name" class="form-control" type="text" name="user_name" placeholder="Add User Name"><br>
-            <input id="email" class="form-control" type="text" name="email" placeholder="Add Email"><br>
-            <input id="password" class="form-control" type="text" name="password" placeholder="Add Password"><br>
-            <input id="status_of_account" class="form-control" type="text" name="status_of_account" placeholder="Add Status Of Account"><br>
-            <input id="submit" class="btn" type="submit" >
-        </form>    
-    </div>
-	<p id="chng">first</p>
-	<a href = {% url 'logout' %}>Click to Logout</a>
-    <script>
-        function getCookie(name) {
-		    var cookieValue = null;
-		    if (document.cookie && document.cookie !== '') {
-		        var cookies = document.cookie.split(';');
-		        for (var i = 0; i < cookies.length; i++) {
-		            var cookie = cookies[i].trim();
-		            // Does this cookie string begin with the name we want?
-		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-		                break;
-		            }
-		        }
-		    }
-		    return cookieValue;
-		}
-		var csrftoken = getCookie('csrftoken');
+{% extends "base.html" %}
+{% block title %} 
+Home | DevMaster
+{% endblock title %}
 
+{% block body %}
 
+<h1>Hello walls</h1>
 
+<ul>
 
-        var form = document.getElementById('form-wrapper')
-		form.addEventListener('submit', function(e){
-			e.preventDefault()
-			console.log('Form submitted')
-			var url = 'http://127.0.0.1:8000/home/task-create/'
-			
+	{% comment %} <a href = {% url 'home' %}> <img src="" alt=""> </a> {% endcomment %}
 
-
-
-			// var title = document.getElementById('title').value
-            var name = document.getElementById('name').value
-            var user_name = document.getElementById('user_name').value
-            var email = document.getElementById('email').value
-            var password = document.getElementById('password').value
-            var status_of_account = document.getElementById('status_of_account').value
-            var chng = document.getElementById('chng')
-			
-			
-
-
-			var s = document.getElementById('chng')innerHTML;
-
-			fetch(url, {
-				method:'POST',
-				headers:{
-					'Content-type':'application/json',
-					'X-CSRFToken':csrftoken,
-				},
-				body:JSON.stringify({'name': name})
-			
-                
-            }
-			).then(function(response){
-				// buildList()
-				// document.getElementById('form').reset()
-			})
-		
-            document.getElementById('name').value = "";
-            document.getElementById('user_name').value = "";
-            document.getElementById('email').value = "";
-            document.getElementById('password').value = "";
-            document.getElementById('status_of_account').value = "";
-            
-		})
-    </script>
-</body>
-
-</html>
-
-
-
-
-
+	<a href = {% url 'home:loginview' %}><li>Login</li></a>
+	<a href = {% url 'home:signup' %}><li>Signup</li></a>
+</ul>
+{% endblock body %}

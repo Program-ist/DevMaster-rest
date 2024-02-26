@@ -10,7 +10,8 @@
 
     <textarea name="ta" id="question" cols="30" rows="10"> 
 
-	</textarea><br> 
+	</textarea>
+    <br> 
 	Enter the Question<input type="text" id="exp"> 
 	<input type="button" id="submit" value="Get Results"> 
 
@@ -57,7 +58,7 @@
 
 
         // var title = document.getElementById('title').value
-        var question = document.getElementById('question').value
+        var question = document.getElementById('exp').value
         
         
 
@@ -66,7 +67,7 @@
         
             
         fetch(url, {
-            method:'POST',
+            method:'GET',
             headers:{
                 'Content-type':'application/json',
                 'X-CSRFToken':csrftoken,

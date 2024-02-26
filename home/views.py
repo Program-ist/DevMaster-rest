@@ -27,7 +27,7 @@ def home(request):
 		user= request.user
 		usern = user.username
 
-	return render(request, 'home/test.html')
+	return render(request, 'home/index.html')
 
 
 
@@ -40,7 +40,7 @@ def testbase(request):
 '''  Login Page   '''
 def LoginView(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('/dashboard/')
 	if request.method == 'POST':
 		user_name = request.POST['user_name']
 		password = request.POST['password']
@@ -48,9 +48,10 @@ def LoginView(request):
 		if user is not None:
 			login(request, user)
 			# convert home to dashboard
-			return redirect(request,'home')
+			return redirect('/dashboard/')
 		else:
 			messages.error(request,"Wrong Credentials")
+			return render(request, 'home/login.html')
 	
 	return render(request, 'home/login.html')
 		
@@ -60,9 +61,9 @@ def LoginView(request):
 
 
 '''		Registration Page	'''
-def RegisterView(request):
+def SignupView(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('/dashboard/')
 	if request.method == 'POST':
 
 		fname = request.POST['full_name']
@@ -72,9 +73,9 @@ def RegisterView(request):
 		fstatus_of_account = "DEVELOPER"
 		# allusers = UserDetail.objects.values_list('user_name')
 
-		if not UserDetail.objects.filter(user_name = fname).exists():
+		if UserDetail.objects.filter(user_name = fuser_name).exists():
 			messages.error(request,"User Name already in use")
-			return render(request,'home/registration.html')
+			return render(request,'home/signup.html')
 
 		member = UserDetail(name = fname, user_name = fuser_name, email = femail, password = fpassword, status_of_account = fstatus_of_account)
 		member.save()
@@ -89,15 +90,38 @@ def RegisterView(request):
 			login(request, user)
 
 
-		return redirect('home')
+		return redirect('/dashboard/')
 	
-	return render(request, 'home/registration.html')
+	return render(request, 'home/signup.html')
+
+
+def dashboard(request):
+	user = request.user #the user
+	email = user.email #their email
+	username = user.username #their username
+	obj = UserDetail.objects.all()
+	obj1 = ProjectDetail.objects.all()
+	obj2 = Announcement.objects.all()
+	obj3 = SprintData.objects.all()
+
+	val = {'pros':obj1,
+		'ann':obj2,
+		'sprint':obj3
+		}
+	return render(request, 'home/dashboard.html',val)
+
+
 
 '''		Code to Logout	'''
 # # {% url 'logout' %}
 # def LogoutView(request):
 # 	logout(request)
 # 	return redirect('login')
+
+def logoutUser(request):
+    logout(request)
+    return redirect('/login/')
+
 
 
 '''		Page for Individual Project	'''
@@ -257,11 +281,13 @@ def llm(request):
 	return render(request,'home/llm.html')
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def llm_ans(request):
 
-	income_data = request.data 
-	ans = gemini_result(income_data)
+	#income_data = request.data 
+	#ans = gemini_result(income_data)
+	ans = {'a':'b',
+		'b':'c'}
 	return Response(ans)
 	
 
