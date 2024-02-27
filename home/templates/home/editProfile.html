@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title%}
+Edit Profile | DevMaster
+{% endblock title %}
+{% block body %}
+<div>
+    <form action="/editProfile/" method="post">
+        {% csrf_token %}
+        <label for="full_name">Full Name: </label>
+        <input type="text" name="full_name" id="full_name" value = {{user.username}}>
+        <br>
+        <label for="user_name">User Name: </label>
+        <input type="text" name="user_name" id="user_name">
+        <br>
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email">
+        <br>
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock body %}

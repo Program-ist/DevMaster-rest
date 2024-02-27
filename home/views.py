@@ -104,13 +104,18 @@ def dashboard(request):
 	obj2 = Announcement.objects.all()
 	obj3 = SprintData.objects.all()
 
-	val = {'pros':obj1,
+	val = {'username':username,
+		'pros':obj1,
 		'ann':obj2,
 		'sprint':obj3
 		}
 	return render(request, 'home/dashboard.html',val)
 
-
+def editProfile(request):
+	if request.method == 'POST':
+		pass 
+	user = request.user
+	return render(request, 'home/editProfile.html',user)
 
 '''		Code to Logout	'''
 # # {% url 'logout' %}

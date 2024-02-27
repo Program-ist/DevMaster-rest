@@ -4,9 +4,14 @@
 Dashboard | DevMaster
 {% endblock title %}
 
+
+
+
+
 {% block body %}
 
 <p>Dashboard</p>
+<a href={% url 'home:editProfile' %}> <span>Hello {{username}}</span></a>
 <a href={% url 'home:logoutUser' %}>logout</a>
 
 <div class="container">
@@ -47,5 +52,11 @@ Dashboard | DevMaster
 <h1></h1>
 {% endcomment %}
 {% endblock body %}
+
+
+
+
+
+
 {% block script %}
 {% endblock script %}

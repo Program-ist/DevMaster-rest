@@ -8,8 +8,9 @@ urlpatterns = [
     path('', views.home, name="home"),
 	path('loginview/',views.LoginView, name = "loginview"),
     path('signup/', views.SignupView, name = "signup"),
-    path('dashboard/', views.dashboard, name = "dashboard"),
     path('logoutUser/', views.logoutUser, name = "logoutUser"),
+    path('dashboard/', views.dashboard, name = "dashboard"),
+    path('editProfile',views.editProfile, name = "editProfile"),
 
     path('ap', views.ap, name = "ap"),
 	path('api/', views.apiOverview, name="api-overview"),
