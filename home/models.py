@@ -17,7 +17,7 @@ class UserDetail(models.Model):
 
 
 class ProjectDetail(models.Model):
-    project_u_n = models.CharField(max_length = 200)
+    # project_u_n = models.CharField(max_length = 200)
     project_name = models.CharField(max_length = 200)
     project_description = models.TextField()
     created_by = models.ForeignKey(UserDetail,null=True, on_delete = models.SET_NULL)

@@ -6,11 +6,13 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('task-create/', views.taskCreate, name="task-create"),  
 	path('loginview/',views.LoginView, name = "loginview"),
     path('signup/', views.SignupView, name = "signup"),
     path('logoutUser/', views.logoutUser, name = "logoutUser"),
     path('dashboard/', views.dashboard, name = "dashboard"),
-    path('editProfile',views.editProfile, name = "editProfile"),
+    path('editProfile/',views.editProfile, name = "editProfile"),
+    path('createProject/',views.createProject, name = "createPorject"),
 
     path('ap', views.ap, name = "ap"),
 	path('api/', views.apiOverview, name="api-overview"),
@@ -33,7 +35,7 @@ urlpatterns = [
     # path('bug-data-api/',views.bugDataApi ,name = "bug-data-api"),
     # path('chat-message-api/',views.chatMessageApi, name = "chat-message-api"),
     # path('announcement-api/',views.announcements, name = "announcement-api"),
-    path('task-create/', views.taskCreate, name="task-create"),    
+      
 
 
 

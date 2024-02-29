@@ -56,7 +56,15 @@ def LoginView(request):
 	return render(request, 'home/login.html')
 		
 	
+'''		Code to Logout	'''
+# # {% url 'logout' %}
+# def LogoutView(request):
+# 	logout(request)
+# 	return redirect('login')
 
+def logoutUser(request):
+    logout(request)
+    return redirect('/loginview/')
 
 
 
@@ -94,7 +102,8 @@ def SignupView(request):
 	
 	return render(request, 'home/signup.html')
 
-
+'''		Dashboard		'''
+@login_required
 def dashboard(request):
 	user = request.user #the user
 	email = user.email #their email
@@ -111,21 +120,43 @@ def dashboard(request):
 		}
 	return render(request, 'home/dashboard.html',val)
 
+
+'''		EditProfile		'''
+@login_required
 def editProfile(request):
 	if request.method == 'POST':
-		pass 
+		fname = request.POST['full_name']
+		fuser_name = request.POST['user_name']
+		femail = request.POST['email']
+		fpassword = request.POST['password']
+		fstatus_of_account = request.POST['status_of_account']
+		#check if username in use and then update
+		user = request.user
+		udun = user.user_name
+		if UserDetail.objects.filter(user_name = fuser_name).exists():
+			messages.error(request,"User Name already in use")
+			return render(request,'home/editProfile.html',user)
+		tempUD = UserDetail.objects.filter(user_name = udun).first()
+		tempUD.name = fname
+		tempUD.user_name = fuser_name
+		tempUD.email = femail
+		tempUD.password = fpassword
+		tempUD.status_of_account = fstatus_of_account
+		tempUD.save()
+		tempU = User.objects.filter(username = udun).first
+		tempU.username = fuser_name
+		tempU.set_password(fpassword)
+		tempU.save()
+		return redirect(request,'home/dashboard.html')
 	user = request.user
 	return render(request, 'home/editProfile.html',user)
 
-'''		Code to Logout	'''
-# # {% url 'logout' %}
-# def LogoutView(request):
-# 	logout(request)
-# 	return redirect('login')
 
-def logoutUser(request):
-    logout(request)
-    return redirect('/login/')
+
+'''		Create Project		'''
+def createProject():
+	pass
+
 
 
 
@@ -166,9 +197,13 @@ def taskCreate(request):
 
 	# if serializer.is_valid():
 	# 	serializer.save()
-
-	print(request.data)
-	return Response("done")
+	d = request.data
+	print(type(d))
+	dit = {
+		"w":"x",
+		"y":"z"
+	}
+	return Response(dit)
 
 
 
