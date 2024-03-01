@@ -1,4 +1,4 @@
-{% {% extends "base.html" %} %}
+{% extends "base.html" %} 
 
 {% block title %}
 Create Project | DevMaster
@@ -7,21 +7,33 @@ Create Project | DevMaster
 
 {% block body %}
 
-<form action="/loginview/" method="post">
+<form action="/createProject/" method="post">
         {% csrf_token %}
 
 
-{% comment %} fproject_name
+{% comment %}
+fproject_name
 fproject_description
 fcreated_by
 fproject_created_time
 fproject_gtihub_link
-fproject_phase {% endcomment %}
-        <label for="fproject_name">User Name: </label>
+fproject_phase 
+{% endcomment %}
+        <label for="fproject_name">Project Name: </label>
         <input type="text" name="fproject_name" id="fproject_name">
         <br>
-        <label for="password">Password: </label>
-        <input type="password" name="password" id="password">
+        <label for="fproject_description">Project Description: </label>
+        <input type="text" name="fproject_description" id="fproject_description">
+        <br>
+        {% comment %} <label for="fcreated_by">Created By: </label>
+        <input type="text" name="fcreated_by" id="fcreated_by"> 
+        <br>{% endcomment %}
+        
+        <label for="fproject_gtihub_link">Project Gtihub Link: </label>
+        <input type="text" name="fproject_gtihub_link" id="fproject_gtihub_link">
+        <br>
+        <label for="fproject_phase">Project Phase: </label>
+        <input type="text" name="fproject_phase" id="fproject_phase">
         <br>
         <input type="submit" value="Submit">
     </form>

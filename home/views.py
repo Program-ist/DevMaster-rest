@@ -18,6 +18,7 @@ from django.contrib.auth import authenticate,login,logout
 from .models import *
 from django.db.models import Avg, Max, Min, Sum
 
+from datetime import datetime
 
 
 
@@ -154,8 +155,30 @@ def editProfile(request):
 
 
 '''		Create Project		'''
-def createProject():
-	pass
+@login_required
+def createProject(request):
+	user = request.user
+	username = user.username
+	if not UserDetail.objects.filter(user_name = username,status_of_account = "MANAGER").exists():
+		messages.error(request,"You are not authorized to create a Project")
+		return redirect(request,"home/createProject.html")
+	if request.method == 'POST':
+		fproject_name = request.POST['fproject_name']
+		fproject_description = request.POST['fproject_description']
+		fcreated_by = UserDetail.objects.get(user_name = username)
+		fproject_created_time = int(datetime.now().timestamp())
+		fproject_gtihub_link = request.POST['fproject_gtihub_link']
+		fproject_phase = request.POST['fproject_phase'] 
+		if ProjectDetail.objects.filter(created_by = fcreated_by, project_name = fproject_name).exists():
+			messages.error(request,"Project with name exists")
+			return redirect(request, "home/createProject.html")
+		temp = ProjectDetail(project_name = fproject_name,  project_description = fproject_description,  created_by = fcreated_by,  project_created_time = fproject_created_time,  project_gtihub_link = fproject_gtihub_link,  project_phase = fproject_phase )
+		temp.save()
+		messages.success(request, "Project Successfully Created")
+		return redirect(request, 'home/project:<int>/projectMembers.html')
+	return render(request, "home/createProject.html")
+		
+
 
 
 
@@ -192,13 +215,14 @@ def apiOverview(request):
 
 '''		api		'''
 @api_view(['POST'])
+
 def taskCreate(request):
 	# serializer = UserDetailSerializer(data=request.data)
 
 	# if serializer.is_valid():
 	# 	serializer.save()
 	d = request.data
-	print(type(d))
+	print(d)
 	dit = {
 		"w":"x",
 		"y":"z"
@@ -321,13 +345,24 @@ def llm(request):
 	return render(request,'home/llm.html')
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def llm_ans(request):
 
 	#income_data = request.data 
 	#ans = gemini_result(income_data)
 	ans = {'a':'b',
 		'b':'c'}
-	return Response(ans)
+	user = reques.user
+	usernam = user.username
+	user = UserDetail.objects.get(user_name = usernam)
+	
+	da = request.data
+	self.project = ProjectDetail.objects.get(id = da['pro_id'])
+	self.functionalities = ProjectFunctionalities.object.filter(project = self.project)
+	self.questionString = ""
+	# append
+	question = da['ques']
+	answer = gemini_result(question)
+	return Response(answer)
 	
 
