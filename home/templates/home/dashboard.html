@@ -11,14 +11,27 @@ Dashboard | DevMaster
 {% block body %}
 
 <p>Dashboard</p>
-<a href={% url 'home:editProfile' %}> <span>Hello {{username}}</span></a>
+<span>Hello {{username}}</span>
+<a href={% url 'home:editProfile' %}>
+Edit Profile
+</a>
 <a href={% url 'home:logoutUser' %}>logout</a>
+
+{% if man == 1 %}
+<a href={% 'home:createProject' %}>
+Create project
+
+</a>
+
+{% endif %}
+
 
 <div class="container">
     <div class="left">
         <ul>
-            {% for i in pros %}
-            <li>{{i.project_name}}</li>
+            {% for i in mem_projects %}
+            {% comment %} href to project announcements {% endcomment %}
+           <a href= {% url 'home:dashboard'%}></a> <li>{{i.project}} {{i.project_id}}</li>
             {% endfor %}
         </ul>
     </div>
@@ -26,16 +39,11 @@ Dashboard | DevMaster
     <div class="right">
         <p>Announcements</p>
         <ul>
-            {% for i in ann %}
+            {% for i in anno %}
             <li>{{i.announcement_msg}}</li>
             {% endfor %}
         </ul>
-        <p>Sprint</p>
-        <ul>
-            {% for i in sprint %}
-            <li>{{i.sprint_title}}</li>
-            {% endfor %}
-        </ul>
+        
     </div>
 
 </div>

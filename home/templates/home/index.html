@@ -10,8 +10,11 @@ Home | DevMaster
 <ul>
 
 	{% comment %} <a href = {% url 'home' %}> <img src="" alt=""> </a> {% endcomment %}
-
+	{% if usern == "notLoggedIn" %}
 	<a href = {% url 'home:loginview' %}><li>Login</li></a>
 	<a href = {% url 'home:signup' %}><li>Signup</li></a>
+	{% else %}
+	<a href = {% url 'home:dashboard'%}><li>Hello {{ usern }}</li></a>
+	{% endif %}
 </ul>
 {% endblock body %}

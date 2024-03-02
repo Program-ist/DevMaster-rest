@@ -24,11 +24,12 @@ from datetime import datetime
 
 '''   Home Page  '''
 def home(request):
+	usern = "notLoggedIn"
 	if request.user.is_authenticated:
 		user= request.user
 		usern = user.username
-
-	return render(request, 'home/index.html')
+	diction = {'usern':usern}
+	return render(request, 'home/index.html',diction)
 
 
 
@@ -47,8 +48,7 @@ def LoginView(request):
 		password = request.POST['password']
 		user = authenticate(username= user_name, password= password)
 		if user is not None:
-			login(request, user)
-			# convert home to dashboard
+			login(request, user)			
 			return redirect('/dashboard/')
 		else:
 			messages.error(request,"Wrong Credentials")
@@ -74,7 +74,6 @@ def SignupView(request):
 	if request.user.is_authenticated:
 		return redirect('/dashboard/')
 	if request.method == 'POST':
-
 		fname = request.POST['full_name']
 		fuser_name = request.POST['user_name']
 		femail = request.POST['email']
@@ -91,7 +90,7 @@ def SignupView(request):
 		myuser = User.objects.create_user(username=fuser_name, password=fpassword)
 		# myuser.set_password(password)
 		myuser.save()
-		messages.success(request, 'suc ses')
+		messages.success(request, 'Yay!! Successfully Registered')
 
 		#login registered user
 		user = authenticate(username= fuser_name, password= fpassword)
@@ -106,18 +105,26 @@ def SignupView(request):
 '''		Dashboard		'''
 @login_required
 def dashboard(request):
-	user = request.user #the user
-	email = user.email #their email
-	username = user.username #their username
-	obj = UserDetail.objects.all()
-	obj1 = ProjectDetail.objects.all()
-	obj2 = Announcement.objects.all()
-	obj3 = SprintData.objects.all()
+	currentUser = request.user #the user
+	username = currentUser.username #their username
+	Cuser = UserDetail.objects.get(user_name=username)
+	stat = Cuser.status_of_account
+	man = 0
+
+	if stat == "ADMIN":
+		# redirect to admin dashboard
+		pass
+
+	if stat == "MANAGER":
+		man = 1
+
+	mem_projects = ProjectMembers.objects.filter(user=Cuser)
+	anno = Announcement.objects.filter(ann_from=Cuser)
 
 	val = {'username':username,
-		'pros':obj1,
-		'ann':obj2,
-		'sprint':obj3
+		'mem_projects':mem_projects,
+		'anno':anno,
+		'man':man
 		}
 	return render(request, 'home/dashboard.html',val)
 
@@ -175,7 +182,7 @@ def createProject(request):
 		temp = ProjectDetail(project_name = fproject_name,  project_description = fproject_description,  created_by = fcreated_by,  project_created_time = fproject_created_time,  project_gtihub_link = fproject_gtihub_link,  project_phase = fproject_phase )
 		temp.save()
 		messages.success(request, "Project Successfully Created")
-		return redirect(request, 'home/project:<int>/projectMembers.html')
+		return redirect(request, 'home/project/<int:pk>/projectMembers.html')
 	return render(request, "home/createProject.html")
 		
 
