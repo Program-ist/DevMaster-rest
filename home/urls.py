@@ -12,7 +12,7 @@ urlpatterns = [
     path('logoutUser/', views.logoutUser, name = "logoutUser"),
     path('dashboard/', views.dashboard, name = "dashboard"),
     path('editProfile/',views.editProfile, name = "editProfile"),
-    path('createProject/',views.createProject, name = "createPorject"),
+    path('createProject/',views.createProject, name = "createProject"),
     path('llm_ans/',views.llm_ans, name="llm_ans"),
 
     path('ap', views.ap, name = "ap"),

@@ -155,7 +155,7 @@ def editProfile(request):
 		tempU.username = fuser_name
 		tempU.set_password(fpassword)
 		tempU.save()
-		return redirect(request,'home/dashboard.html')
+		return redirect('/dashboard/')
 	user = request.user
 	return render(request, 'home/editProfile.html',user)
 
@@ -168,7 +168,7 @@ def createProject(request):
 	username = user.username
 	if not UserDetail.objects.filter(user_name = username,status_of_account = "MANAGER").exists():
 		messages.error(request,"You are not authorized to create a Project")
-		return redirect(request,"home/createProject.html")
+		return render(request,"home/createProject.html")
 	if request.method == 'POST':
 		fproject_name = request.POST['fproject_name']
 		fproject_description = request.POST['fproject_description']
@@ -182,7 +182,7 @@ def createProject(request):
 		temp = ProjectDetail(project_name = fproject_name,  project_description = fproject_description,  created_by = fcreated_by,  project_created_time = fproject_created_time,  project_gtihub_link = fproject_gtihub_link,  project_phase = fproject_phase )
 		temp.save()
 		messages.success(request, "Project Successfully Created")
-		return redirect(request, 'home/project/<int:pk>/projectMembers.html')
+		return render(request, 'home/project/<int:pk>/projectMembers.html')
 	return render(request, "home/createProject.html")
 		
 

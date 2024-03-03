@@ -18,10 +18,11 @@ Edit Profile
 <a href={% url 'home:logoutUser' %}>logout</a>
 
 {% if man == 1 %}
-<a href={% 'home:createProject' %}>
+{% comment %} createProject {% endcomment %}
+<a href={% url 'home:createProject' %}>
 Create project
 
-</a>
+    </a>
 
 {% endif %}
 
@@ -39,9 +40,11 @@ Create project
     <div class="right">
         <p>Announcements</p>
         <ul>
-            {% for i in anno %}
-            <li>{{i.announcement_msg}}</li>
-            {% endfor %}
+            {% if anno %}
+                {% for i in anno %}
+                <li>{{i.announcement_msg}}</li>
+                {% endfor %}
+            {% endif %}
         </ul>
         
     </div>
