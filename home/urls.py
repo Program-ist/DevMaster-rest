@@ -13,6 +13,14 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name = "dashboard"),
     path('editProfile/',views.editProfile, name = "editProfile"),
     path('createProject/',views.createProject, name = "createProject"),
+    path('projects/<int:pk>/',views.projects, name = "projects"),
+    path('projects/<int:pk>/chat/',views.chat, name = "chat"),
+    path('projects/<int:pk>/llm/',views.llm, name = "llm"),
+    path('projects/<int:pk>/sprint/',views.sprint, name = "sprint"),
+    path('projects/<int:pk>/bug/',views.bug, name = "bug"),
+    path('projects/<int:pk>/review/',views.review, name = "review"),
+
+
     path('llm_ans/',views.llm_ans, name="llm_ans"),
 
     path('ap', views.ap, name = "ap"),

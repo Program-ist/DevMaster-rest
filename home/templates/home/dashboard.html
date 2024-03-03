@@ -32,7 +32,7 @@ Create project
         <ul>
             {% for i in mem_projects %}
             {% comment %} href to project announcements {% endcomment %}
-           <a href= {% url 'home:dashboard'%}></a> <li>{{i.project}} {{i.project_id}}</li>
+           <a href= "{% url 'home:projects' i.project_id %}" > <li>{{i.project}} {{i.project_id}}</li></a>
             {% endfor %}
         </ul>
     </div>

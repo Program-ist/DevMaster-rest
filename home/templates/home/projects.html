@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+Project | DevMaster
+{% endblock title %}
+
+
+
+
+{% block body %}
+
+
+<ul>
+    <li>Dashboard</li>
+    <li>Phase</li>
+</ul>
+
+
+
+<ul>
+    <li><a href = "{% url 'home:chat' iden %}">Chat {{iden}} </a></li>
+    {% comment %} <li><a href = "{% url  %}">Announcements</a></li>
+    <li><a href = "{% url  %}">LLM</a></li>
+    <li><a href = "{% url  %}">Sprint</a></li>
+    <li><a href = "{% url  %}">Bug</a></li>
+    <li><a href = "{% url  %}">Review</a></li> {% endcomment %}
+</ul>
+
+{% endblock body%}

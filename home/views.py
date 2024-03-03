@@ -126,7 +126,8 @@ def dashboard(request):
 		'anno':anno,
 		'man':man
 		}
-	return render(request, 'home/dashboard.html',val)
+	tsurl = "home/dashboard.html"
+	return render(request, tsurl,val)
 
 
 '''		EditProfile		'''
@@ -182,17 +183,47 @@ def createProject(request):
 		temp = ProjectDetail(project_name = fproject_name,  project_description = fproject_description,  created_by = fcreated_by,  project_created_time = fproject_created_time,  project_gtihub_link = fproject_gtihub_link,  project_phase = fproject_phase )
 		temp.save()
 		messages.success(request, "Project Successfully Created")
-		return render(request, 'home/project/<int:pk>/projectMembers.html')
+		
+		temp = ProjectDetail.objects.get(project_name=fproject_name)
+		
+		returl = f'home/project/{temp.id}/projectMembers.html'
+		return render(request, returl)
 	return render(request, "home/createProject.html")
 		
 
-
-
-
-
 '''		Page for Individual Project	'''
-def project(request, pk):
-    return render(request, 'home/index.html')
+def projects(request,pk):
+	iden = {
+		'iden':pk
+	}
+
+	return render(request,"home/projects.html",iden)
+
+
+def chat(request,pk):
+	
+	numb = {
+		'nu':pk
+	}
+	return render(request, "home/chat.html" ,numb)
+
+
+def llm(request,pk):
+	pass
+
+def sprint(request,pk):
+	pass
+
+def bug(request,pk):
+	pass
+
+def review(request,pk):
+	pass
+
+
+
+
+
 
 
 @login_required
