@@ -19,7 +19,7 @@ urlpatterns = [
     path('projects/<int:pk>/sprint/',views.sprint, name = "sprint"),
     path('projects/<int:pk>/bug/',views.bug, name = "bug"),
     path('projects/<int:pk>/review/',views.review, name = "review"),
-
+    path('llm_api/',views.llm_api, name="llm_api"),
 
     path('llm_ans/',views.llm_ans, name="llm_ans"),
 

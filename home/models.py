@@ -91,6 +91,7 @@ class BugData(models.Model):
     bug_to = models.ForeignKey(UserDetail, on_delete = models.CASCADE, related_name = "bug_to_user")
     bug_reviewer = models.ForeignKey(UserDetail,null=True, on_delete = models.SET_NULL, related_name = "bug_reviewer_user")
     bug_reported_by = models.ForeignKey(ReportBug,null=True, on_delete = models.SET_NULL)
+    project = models.ForeignKey(ProjectDetail, on_delete = models.CASCADE)
     bug_title = models.CharField(max_length = 200)
     bug_detail = models.TextField()
     bu_created_time = models.CharField(max_length = 20, default="")

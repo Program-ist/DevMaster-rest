@@ -18,12 +18,21 @@ Project | DevMaster
 
 
 <ul>
-    <li><a href = "{% url 'home:chat' iden %}">Chat {{iden}} </a></li>
-    {% comment %} <li><a href = "{% url  %}">Announcements</a></li>
-    <li><a href = "{% url  %}">LLM</a></li>
-    <li><a href = "{% url  %}">Sprint</a></li>
-    <li><a href = "{% url  %}">Bug</a></li>
-    <li><a href = "{% url  %}">Review</a></li> {% endcomment %}
+    <li>Announcements</li>
+    <li><a href = "{% url 'home:chat' iden %}">Chat</a></li>
+    <li><a href = "{% url 'home:llm' iden %}">LLM</a></li>
+    <li><a href = "{% url 'home:sprint' iden %}">Sprint</a></li>
+    <li><a href = "{% url 'home:bug' iden %}">Bug</a></li>
+    <li><a href = "{% url 'home:review' iden %}">Review</a></li>
 </ul>
+
+<ul>
+{% for i in anno %}
+<li>i.ann_from i.announcement_msg</li>
+
+{% endfor %}
+
+</ul>
+
 
 {% endblock body%}

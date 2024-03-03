@@ -186,39 +186,186 @@ def createProject(request):
 		
 		temp = ProjectDetail.objects.get(project_name=fproject_name)
 		
-		returl = f'home/project/{temp.id}/projectMembers.html'
-		return render(request, returl)
+		# returl = f'home/project/{temp.id}/projectMembers.html'
+		'''********** May break ************'''
+		return redirect('/projects/<int:pk>/members/',temp.id)
 	return render(request, "home/createProject.html")
 		
 
+
+def members(request,pk):
+	pass
+
 '''		Page for Individual Project	'''
+
+
+
+
+
+@login_required
 def projects(request,pk):
-	iden = {
-		'iden':pk
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+
+	anno = Announcement.objects.filter(project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+
+	di = {
+		'iden':pk,
+		'anno': anno,
+		'isMana': isMana
 	}
 
-	return render(request,"home/projects.html",iden)
+	return render(request,"home/projects.html",di)
 
 
 def chat(request,pk):
-	
-	numb = {
-		'nu':pk
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+
+	cha = ChatData.objects.filter(project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+
+	di = {
+		'iden':pk,
+		'cha':cha,
+		'isMana': isMana
+
 	}
-	return render(request, "home/chat.html" ,numb)
+	return render(request, "home/chat.html" ,di)
 
 
 def llm(request,pk):
-	pass
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+
+	ldata = LlmData.objects.filter(user=fuser,project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+	di = {
+		'iden':pk,
+		'ldata':ldata,
+		'isMana': isMana
+
+	}
+
+	return render(request, "home/llm.html",di)
 
 def sprint(request,pk):
-	pass
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	
+	spdatadev = SprintData.objects.filter(sprint_to=fuser,project=proj)
+	spdataman = SprintData.objects.filter(sprint_from=fuser,project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+	di = {
+		'iden':pk,
+		'spdatadev':spdatadev,
+		'spdataman': spdataman,
+		'isMana': isMana
+
+	}
+	return render(request, "home/sprint.html", di)
+
+
 
 def bug(request,pk):
-	pass
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	
+	bgdatadev = BugData.objects.filter(bug_to=fuser,project=proj)
+	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+	di = {
+		'iden':pk,
+		'bgdatadev':bgdatadev,
+		'bgdataman': bgdataman,
+		'isMana': isMana
+
+	}
+	return render(request,"home/bug.html",di)
 
 def review(request,pk):
-	pass
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	
+	spreview = SprintReviewer.objects.filter(bug_to=fuser,project=proj)
+	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
+
+	spda = SprintData.objects.filter(sprint_reviewer=fuser,project=proj)
+	sprevir = SprintReviewer.objecs.filter(sprint= spda)
+
+
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+
+	di ={
+		'isMana':isMana,
+		'spda':spda,
+		'sprevir':sprevir
+
+
+	}
+	return render(request, "home/review.html",di)
+	
 
 
 
@@ -266,6 +413,24 @@ def taskCreate(request):
 		"y":"z"
 	}
 	return Response(dit)
+
+
+@api_view(['POST'])
+def llm_api(request):
+	d = request.data
+
+	funcs = ""
+	for i in d['project_func']:
+		funcs = funcs + i +","
+	questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs + " in "+d['project_phase'] + " phase. "+ d['quest']
+	ans = gemini_result(questi)
+	an = {
+		'ans':ans
+	}
+	return Response(an)
+
+
+
 
 
 
