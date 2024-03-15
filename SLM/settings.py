@@ -146,4 +146,4 @@ LOGIN_URL = '/loginview/'
 # LOGIN_REDIRECT_URL = 'login'
 LOGOUT_REDIRECT_URL = '/loginview/'
 
-
+STATICFILES_DIR = [BASE_DIR / "static"]

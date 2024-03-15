@@ -20,7 +20,7 @@ from django.db.models import Avg, Max, Min, Sum
 
 from datetime import datetime
 
-
+from django.conf.urls.static import static
 
 '''   Home Page  '''
 def home(request):
@@ -369,6 +369,20 @@ def review(request,pk):
 
 
 
+'''		LLM API		'''
+@api_view(['POST'])
+def llm_api(request):
+	d = request.data
+
+	funcs = ""
+	for i in d['project_func']:
+		funcs = funcs + i +","
+	questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs + " in "+d['project_phase'] + " phase. "+ d['quest']
+	ans = gemini_result(questi)
+	an = {
+		'ans':ans
+	}
+	return Response(an)
 
 
 
@@ -414,20 +428,6 @@ def taskCreate(request):
 	}
 	return Response(dit)
 
-
-@api_view(['POST'])
-def llm_api(request):
-	d = request.data
-
-	funcs = ""
-	for i in d['project_func']:
-		funcs = funcs + i +","
-	questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs + " in "+d['project_phase'] + " phase. "+ d['quest']
-	ans = gemini_result(questi)
-	an = {
-		'ans':ans
-	}
-	return Response(an)
 
 
 
