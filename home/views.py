@@ -109,25 +109,24 @@ def dashboard(request):
 	username = currentUser.username #their username
 	Cuser = UserDetail.objects.get(user_name=username)
 	stat = Cuser.status_of_account
-	man = 0
-
+	
 	if stat == "ADMIN":
-		# redirect to admin dashboard
+		#return render(request, tsurl)
 		pass
 
-	if stat == "MANAGER":
-		man = 1
+	elif stat == "MANAGER":
+		tsurl = "home/man_dashboard.html"
 
+	else:
+		#tsurl = "home/dev_dashboard.html"
+		pass	
 	mem_projects = ProjectMembers.objects.filter(user=Cuser)
 	anno = Announcement.objects.filter(ann_from=Cuser)
-
 	val = {'username':username,
 		'mem_projects':mem_projects,
-		'anno':anno,
-		'man':man
+		'anno':anno
 		}
-	tsurl = "home/dashboard.html"
-	return render(request, tsurl,val)
+	return render(request, tsurl, val)
 
 
 '''		EditProfile		'''
@@ -225,10 +224,11 @@ def projects(request,pk):
 	di = {
 		'iden':pk,
 		'anno': anno,
-		'isMana': isMana
+		'isMana': isMana,
+		'username':usern
 	}
 
-	return render(request,"home/projects.html",di)
+	return render(request,"home/man_projects.html",di)
 
 
 def chat(request,pk):
@@ -237,22 +237,24 @@ def chat(request,pk):
 	fuser = UserDetail.objects.get(user_name=usern)
 
 	proj = ProjectDetail.objects.get(id = pk)
-
+	
 	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
 		messages.error(request, "Forbidden project")
 		return redirect('/dashboard/')
 
 	cha = ChatData.objects.filter(project=proj)
-	isMana = 0
+	arg1 = ChatData.objects.filter(project=proj).aggregate(Max('time_of_message'))
+	arg1 = arg1['time_of_message__max']
+	arg1 = int(arg1)
 	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
+	
 
 	di = {
 		'iden':pk,
 		'cha':cha,
-		'isMana': isMana
-
+		'username':usern,
+		'highest_time':arg1
+		
 	}
 	return render(request, "home/chat.html" ,di)
 
@@ -372,6 +374,7 @@ def review(request,pk):
 
 
 '''		LLM API		'''
+
 @api_view(['POST'])
 def llm_api(request):
 	d = request.data
@@ -383,6 +386,26 @@ def llm_api(request):
 	ans = gemini_result(questi)
 	an = {
 		'ans':ans
+	}
+	return Response(an)
+
+
+
+
+
+'''		Post Chat 	'''
+@login_required
+@api_view(['POST'])
+def post_chat(request):
+	d = request.data
+	userd = request.user
+	username = userd.username
+	user = UserDetail.objects.get(user_name=username)
+	pro = ProjectDetail.objects.get(id=d['proid'])
+	temp = ChatData(msg_from=user,project=pro,msg = d['chat_m'],time_of_message=int(datetime.now().timestamp()))
+	temp.save()
+	an = {
+		'ans':"donnnnnn"
 	}
 	return Response(an)
 
@@ -492,22 +515,29 @@ data
 '''
 @api_view(['POST'])
 def chat_check(request):
-	income_data = eval(request.data)
-	arg1 = ChatData.objects.aggregate(Max('time_of_message'))
+	d = request.data
+	proo = d['proid']
+	proo = ProjectDetail.objects.get(id = proo)
+	arg1 = ChatData.objects.filter(project=proo).aggregate(Max('time_of_message'))
 	send_data = {
 		'chat_bit':0,
 		'new_chat_unix':"",
 		'chat_data':{}
 	}
 
-	old_unix = income_data['chat_unix']
-	if arg1>income_data['chat_unix']:
+	old_unix = d['highest']
+	old_unix = int(old_unix)
+	
+	arg = arg1['time_of_message__max']
+	arg = int(arg)
+	if arg>old_unix:
 		send_data['chat_bit'] = 1
-		send_data['new_chat_unix'] = arg1
+		send_data['new_chat_unix'] = arg
 		que = ChatData.objects.filter(time_of_message__gt = old_unix, time_of_message__lt = arg1 )
 		serializer = ChatDataSerializer(que,many = True)
 		send_data['chat_data'] = serializer
-
+	else:
+		pass
 	return Response(json.dumps(send_data))
 
 

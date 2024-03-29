@@ -1,17 +1,188 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}
-Project | DevMaster
+Chat | DevMaster
 {% endblock title %}
 
-
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/dash.css'%}" />
+{% endblock head %}
 
 
 {% block body %}
 
 
-<h1> {{nu}} </h1>
+<div class="whole_con poppins-regular">
+    <div class="nav_container">
+        <div>
+            <ul class="log">
+                <li>logo</li>
+            </ul>
+
+        </div>
+        <div>
+            <ul class="nav_items">
+                <li>Hello {{username}}</li>
+                <li> <a href={% url 'home:editProfile' %}>Edit Profile</a></li>
+                <li><a href={% url 'home:logoutUser' %}>Logout</a></li>
+            </ul>
+        </div>
+    </div>
 
 
+    <p class="page_heading"><span class="headi"> Projects</span></p>
+
+    <div class="content_container">
+        <div class="left">
+            <ul>
+                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li class="current"><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+            </ul>
+
+
+        </div>
+        <div class="right" id="scrolle">
+
+            <ul id="myList">
+                {% if cha %}
+                {% for i in cha %}
+                <li>{{i.msg_from}}{{i.msg}}</li>
+                {% endfor %}
+                {% endif %}
+
+            </ul>
+            <span id="typebar">
+
+                <input type="text" placeholder="Enter Message" style="width:65vw;height: 30px;border-radius: 5px;"
+                    id="chat_m"><input onclick="myfunc()" type="submit" value="Send"
+                    style="height: 30px;border-radius: 5px;" id="submit">
+
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    scrolle.scrollTop = 99999999;
+</script>
+<script>
+    console.log('hi');
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+
+    var form = document.getElementById('submit')
+
+    function myfunc() {
+        console.log('Form submitted')
+        var url = 'http://127.0.0.1:8000/post_chat/';
+
+        var chat_m = document.getElementById('chat_m').value;
+        var proid = "{{iden}}";
+
+        console.log(chat_m);
+
+
+
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'chat_m': chat_m, 'proid': proid })
+
+
+        }
+        ).then(function (response) {
+            // document.getElementById('answerTab').innerHTML() = "done";
+            console.log(response);
+
+        })
+
+
+
+
+
+
+    }
+
+
+</script>
+
+<script>
+    /*var node=document.createElement("LI");
+var textnode=document.createTextNode(firstname);
+node.appendChild(textnode);
+document.getElementById("demo").appendChild(node);*/
+
+
+    setInterval(chat_check_function, 5000);
+    var obj = {}
+    function chat_check_function() {
+        var url = 'http://127.0.0.1:8000/chat_check/';
+        var highest = "{{highest_time}}";
+        var proid = "{{iden}}";
+        var i = 1
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'highest': highest, 'proid': proid })
+
+
+        }
+        ).then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data);
+                console.log(data);
+                if (data.chat_bit == 1) {
+                    highest = int(data.new_chat_unix);
+                    
+                    const node = document.createElement("li");
+
+                    
+                    const textnode = document.createTextNode(data.chat_data);
+
+                    
+                    node.appendChild(textnode);
+
+                    
+                    document.getElementById("myList").appendChild(node);
+                }
+            })
+            
+
+    }
+
+
+
+
+
+
+</script>
 
 {% endblock body%}

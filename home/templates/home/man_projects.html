@@ -30,7 +30,7 @@ Project | DevMaster
     </div>
 
 
-    <p class="page_heading"><span class="headi"> Projects</span</p>
+    <p class="page_heading"><span class="headi"> Projects</span></p>
 
     <div class="content_container">
         <div class="left">
@@ -43,22 +43,17 @@ Project | DevMaster
                 <li><a href="{% url 'home:review' iden %}">Review</a></li>
             </ul>
 
-            <ul>
-                {% for i in anno %}
-                <li>i.ann_from i.announcement_msg</li>
-
-                {% endfor %}
-
-            </ul>
+            
         </div>
         <div class="right">
-            <p>Announcements</p>
+            <p style = "font-size:2rem;">Announcements</p>
         <ul>
             {% if anno %}
             {% for i in anno %}
             <li>{{i.announcement_msg}}</li>
             {% endfor %}
             {% endif %}
+            
         </ul>
         </div>
     </div>

@@ -48,31 +48,30 @@ Dashboard | DevMaster
 
 <div class="content_container">
     <div class="left">
+        
 
         <ul>
-
             <li >
-                {% if man == 1 %}
+                
                 {% comment %} createProject {% endcomment %}
                 <a href={% url 'home:createProject' %} ><span class="pro_but">
                     Create project</span></a>
-                {% endif %}
+                
             </li>
-<br>
-
             {% for i in mem_projects %}
             {% comment %} href to project {% endcomment %}
-            <li><a href="{% url 'home:projects' i.project_id %}">
+            <li style="text-decoration:underline;"><a href="{% url 'home:projects' i.project_id %}">
                 {{i.project}} 
                  {% comment %} {{i.project_id}} {% endcomment %}
             </a></li>
             {% endfor %}
 
         </ul>
+        
     </div>
 
     <div class="right">
-        <p>Announcements</p>
+        <p style="font-size:2rem;">Announcements</p>
         <ul>
             {% if anno %}
             {% for i in anno %}
