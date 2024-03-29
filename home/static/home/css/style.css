@@ -130,7 +130,7 @@ body{
   }
   
   .brand-title {
-    margin: 1rem 7rem;
+    margin: auto 5rem;
   }
   
   .navbar-links ul {
@@ -227,6 +227,8 @@ body{
     /* width:60%; */
     text-align: center;
     margin: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .imgs{
@@ -237,9 +239,29 @@ body{
 
 
 
+.headi {
+  /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+     */
+  background: rgb(17, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(17, 0, 36, 1) 0%,
+    rgba(9, 38, 121, 1) 26%,
+    rgba(0, 255, 171, 1) 100%
+  );
+  align-self: center;
+  background-clip: border-box;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  text-align: center;
 
+  font-size: 3rem;
+  font-weight: bold;
+}
 
-
+.para{
+  font-size: 2rem;
+}
 
 
 

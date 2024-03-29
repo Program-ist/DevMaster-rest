@@ -158,7 +158,9 @@ def editProfile(request):
 		tempU.save()
 		return redirect('/dashboard/')
 	user = request.user
-	return render(request, 'home/editProfile.html',user)
+	user = UserDetail.objects.get(user_name=user.username)
+	di = {'user': user}
+	return render(request, 'home/editProfile.html',di)
 
 
 

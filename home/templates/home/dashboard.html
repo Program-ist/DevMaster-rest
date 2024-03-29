@@ -1,39 +1,73 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}
 Dashboard | DevMaster
 {% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/dash.css'%}" />
+{% endblock head %}
 
 
 
 
 {% block body %}
 
-<p>Dashboard</p>
-<span>Hello {{username}}</span>
-<a href={% url 'home:editProfile' %}>
-Edit Profile
-</a>
-<a href={% url 'home:logoutUser' %}>logout</a>
+<div class="whole_con poppins-regular">
+<div class="nav_container">
+    <div>
+        <ul class="log">
+            <li>logo</li>
+        </ul>
 
-{% if man == 1 %}
-{% comment %} createProject {% endcomment %}
-<a href={% url 'home:createProject' %}>
-Create project
+    </div>
+    <div>
+        <ul class="nav_items">
+            <li>Hello {{username}}</li>
+            <li> <a href={% url 'home:editProfile' %}>Edit Profile</a></li>
+            <li><a href={% url 'home:logoutUser' %}>Logout</a></li>
+        </ul>
+    </div>
+</div>
 
-    </a>
 
-{% endif %}
+<p class="page_heading"><span class="headi"> Dashboard</span></p>
 
 
-<div class="container">
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="content_container">
     <div class="left">
+
         <ul>
+
+            <li >
+                {% if man == 1 %}
+                {% comment %} createProject {% endcomment %}
+                <a href={% url 'home:createProject' %} ><span class="pro_but">
+                    Create project</span></a>
+                {% endif %}
+            </li>
+<br>
+
             {% for i in mem_projects %}
-            {% comment %} href to project announcements {% endcomment %}
-           <a href= "{% url 'home:projects' i.project_id %}" > <li>{{i.project}} {{i.project_id}}</li></a>
+            {% comment %} href to project {% endcomment %}
+            <li><a href="{% url 'home:projects' i.project_id %}">
+                {{i.project}} 
+                 {% comment %} {{i.project_id}} {% endcomment %}
+            </a></li>
             {% endfor %}
+
         </ul>
     </div>
 
@@ -41,12 +75,12 @@ Create project
         <p>Announcements</p>
         <ul>
             {% if anno %}
-                {% for i in anno %}
-                <li>{{i.announcement_msg}}</li>
-                {% endfor %}
+            {% for i in anno %}
+            <li>{{i.announcement_msg}}</li>
+            {% endfor %}
             {% endif %}
         </ul>
-        
+
     </div>
 
 </div>
@@ -62,6 +96,7 @@ Create project
 
 <h1></h1>
 {% endcomment %}
+</div>
 {% endblock body %}
 
 

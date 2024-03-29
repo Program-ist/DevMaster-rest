@@ -14,9 +14,10 @@
     <div class="hero">
       <nav class="navbar">
         <div class="brand-title">
-          <a href="index.html"
-            ><img src="assets/logo.png" width="70px" alt="logo"
-          /></a>
+          <ul><li style = "list-style: none;"><a href="index.html">
+            <img src="{% static 'home/img/whitedevlogo.png'%}" width="150px" alt="logo" style = "margin-top:10px;"
+          /></a></li></ul>
+          
         </div>
         <a href="#" class="toggle-button">
           <span class="bar"> </span>
@@ -46,16 +47,21 @@
         <div class="im">
           <img src="{% static 'home/img/tsimg.jpg'%}" alt="" class="imgs" />
         </div>
-        <div class="text" style="background-color: green">
-          <p>Use LLM</p>
-          <p>LLM can improve your productivity</p>
+        <div class="text">
+          <p class="head_para"> <span class ="headi">Use LLM</span></p>
+          <p class = "para">Solve your queries with the power of generative AI and simplify your workflow.
+            <br>
+            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
+          </p>
         </div>
       </div>
 
       <div class="content">
-        <div class="text" style="background-color: green">
-          <p>Use Chat</p>
-          <p>Chat improve your productivity</p>
+        <div class="text">
+          <p class="head_para"> <span class ="headi">Use Chat</span></p>
+          <p class = "para">Easily Communicate with all your team members using the chat feature.<br>
+            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
+          </p>
         </div>
         <div class="im">
           <img src="{% static 'home/img/tsimg.jpg'%}" alt="" class="imgs" />
@@ -66,9 +72,11 @@
         <div class="im">
           <img src="{% static 'home/img/tsimg.jpg'%}" alt="" class="imgs" />
         </div>
-        <div class="text" style="background-color: green">
-          <p>Assign Sprints</p>
-          <p>Assign tasks</p>
+        <div class="text">
+          <p class="head_para"> <span class ="headi">Assign Sprint</span></p>
+          <p class="para">Assign tasks such as sprints, bug tickets and/or review tasks to the developers.<br>
+            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
+          </p>
         </div>
       </div>
     </div>
