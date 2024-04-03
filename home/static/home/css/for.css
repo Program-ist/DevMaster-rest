@@ -61,6 +61,7 @@ input {
   background-color: rgb(75, 78, 255);
   color: white;
   font-size: large;
+  border-radius: 5px;
 }
 #subm:hover {
   background-color: rgb(162, 164, 255);
@@ -72,6 +73,7 @@ input {
     border: 3px solid rgb(255, 255, 255);
     padding: 0.8rem;
     background-color: rgb(206, 248, 246);
+    border-radius: 15px;
 }
 .bot_link:hover{
     background-color: rgb(137, 173, 172);

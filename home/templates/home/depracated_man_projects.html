@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Project | DevMaster
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/dash.css'%}" />
+{% endblock head %}
+
+
+{% block body %}
+
+
+<div class="whole_con poppins-regular">
+    <div class="nav_container">
+        <div>
+            <ul class="log">
+                <li>logo</li>
+            </ul>
+
+        </div>
+        <div>
+            <ul class="nav_items">
+                <li>Hello {{username}}</li>
+                <li> <a href={% url 'home:editProfile' %}>Edit Profile</a></li>
+                <li><a href={% url 'home:logoutUser' %}>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <p class="page_heading"><span class="headi"> Projects</span></p>
+
+    <div class="content_container">
+        <div class="left">
+            <ul>
+                <li class = "current">Announcements</li>
+                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+            </ul>
+
+            
+        </div>
+        <div class="right">
+            <p style = "font-size:2rem;">Announcements</p>
+        <ul>
+            {% if anno %}
+            {% for i in anno %}
+            <li>{{i.announcement_msg}}</li>
+            {% endfor %}
+            {% endif %}
+            
+        </ul>
+        </div>
+    </div>
+</div>
+{% endblock body%}

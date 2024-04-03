@@ -5,6 +5,32 @@ Login | DevMaster
 {% endblock title %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(17, 0, 36, 1) 0%,
+          rgba(9, 38, 121, 1) 26%,
+          rgba(0, 255, 171, 1) 100%
+        );
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
+      
+        font-size: 3rem;
+        font-weight: bold;
+      }
+      .page_heading{
+        text-align: center;
+    }
+
+</style>
 {% endblock head %}
 {% block body %}
 
@@ -17,6 +43,7 @@ Orchestrating Software Success, from Start to Finish</p>
 
     <form action="/loginview/" method="post" >
         {% csrf_token %}
+        <p class="page_heading"><span class="headi"> Log In</span></p>
         <label for="user_name">User Name: </label><br>
         <input type="text" name="user_name" id="user_name" >
         <br><br>
@@ -26,7 +53,7 @@ Orchestrating Software Success, from Start to Finish</p>
         <input type="submit" value="Login"id="subm">
     </form>
     <br>
-    <p><a href="{% url 'home:signup' %}" class ="bot_link" >Create New Account</a></p>
+    <p><a href="{% url 'home:signup' %}" class ="bot_link" >Create a New Account</a></p>
 </div>
 </div>
 {% endblock body %}

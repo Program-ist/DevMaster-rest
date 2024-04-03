@@ -87,6 +87,7 @@ LLM | DevMaster
     .mkdbutt{
         font-size: 1.2rem;
         background-color: rgb(166, 166, 250);
+        
         border-radius: 10px;
     }
 </style>
@@ -106,23 +107,14 @@ LLM | DevMaster
 
         <div class="menuList">
             <ul>
-                {% for i in mem_projects %}
-            {% comment %} href to project {% endcomment %}
-            <li><a href="{% url 'home:projects' i.project_id %}">
-                {{i.project}} 
-                 {% comment %} {{i.project_id}} {% endcomment %}
-            </a></li>
-            <li><a>SimplyData</a></li>
-            <li><a>BigMech</a></li>
-            {% endfor %}
-                {% comment %} <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
                 <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
                 <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
-                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
-                <li  class="current"><a href="{% url 'home:bug' iden %}">Bug</a></li>
-                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+                <li ><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li class="current"><a href="{% url 'home:review' iden %}">Review</a></li>
                 <li><a href="{% url 'home:details' iden %}">Details</a></li>
-                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li> {% endcomment %}
+                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
 
             </ul>
 
@@ -130,34 +122,21 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
-        <div class="dashNav">
-            <ul>
-                <li style="text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:1rem;"><img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/></span></li>
-                
-            </ul>
+        <div class="projectName">
+            <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:1rem;">
-            <div class="projectName">
-                <p class="page_heading"><span class="headi"> Announcements</span></p>
-            </div>
+        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
 
-            <div class="list">
-                <h2>Auctioneer</h2> 
-                <ul>
-                  <li><span>There will be new addition to the discussed project</span></li>
-                  <li><span>The deadline will be postponed for all developers</span></li>
-                  
-                </ul>
-              </div>
-              <div class="list">
-                <h2>SimplyData</h2> 
-                <ul>
-                  <li><span>There will be addition to the dataset.</span></li>
-                  <li><span>The deadline will be preponed for all developers</span></li>
-                  
-                </ul>
-              </div>
+        <div class="list">
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment %}
+            <ul>
+              <li style="display:flex;justify-content: space-between;"><span>Make the Navbar discussed project</span> <span class="mkdbutt" >Pass</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Make the Hero section</span>  <span class="mkdbutt" >Pass</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Pass</span> </li>
+              
+              
+            </ul>
+          </div>
         </div>
 
     </div>

@@ -1,95 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+LLM | DevMaster
+{% endblock title %}
 
-    <textarea name="ta" id="question" cols="30" rows="10"> 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/llm.css'%}" />
 
-	</textarea>
-    <br> 
-	Enter the Question<input type="text" id="exp"> 
-	<input type="button" id="submit" value="Get Results"> 
+<style>
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(90deg,
+                rgba(17, 0, 36, 1) 0%,
+                rgba(9, 38, 121, 1) 26%,
+                rgba(0, 255, 171, 1) 100%);
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
 
-    <p id="answerTab"></p>
-
-    
-
-
-
-
-
-
-
-
-
-<script>
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-top: 0px;
     }
-    var csrftoken = getCookie('csrftoken');
+
+    .page_heading {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
 
 
+{% block body %}
 
+<div class="wholeConatiner">
+    <div class="leftBox" >
+        <div class="logo" style="text-align: center;background-color: #394647;background-color: #0567e7;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;">
+            <a href="{% url 'home:dashboard' %}">
+                <img src="{% static 'home/img/whitedevlogo.png'%}" width="200px" alt="logo"
+                    style="margin-top:2.5rem;margin-bottom:1.5rem;" /></a>
+        </div>
+        <!-- <hr id="insiderHR"> -->
 
-    var form = document.getElementById('submit')
-    form.addEventListener('submit', function(e){
-        e.preventDefault()
-        console.log('Form submitted')
-        var url = 'http://127.0.0.1:8000/llm_ans/'
-        
+        <div class="menuList">
+            <ul>
+                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li class="current"><a href="{% url 'home:llm' iden %}">LLM</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+                <li><a href="{% url 'home:review' iden %}">Details</a></li>
+                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
 
+            </ul>
 
+        </div>
+    </div>
 
-        // var title = document.getElementById('title').value
-        var question = document.getElementById('exp').value
-        
-        
-
-
-        
-        
+    <div class="rightBox" >
+        <div class="projectName">
+            <p class="page_heading"><span class="headi"> {{na}}</span></p>
+        </div>
+        <div class="wholeBox">
+        <div class="llmBox" id="riBox">
             
-        fetch(url, {
-            method:'GET',
-            headers:{
-                'Content-type':'application/json',
-                'X-CSRFToken':csrftoken,
-            },
-            body:JSON.stringify({'ques': question})
+            <div class="msgFromUser" style="padding:0rem;margin-top: 0px;">
+                <p style="margin-bottom: 0px;">You:</p>
+                <p class=" bubble right" style="padding-left: 2.4rem;margin-top:0px;">
+                    What more functionalities could be added
+                </p>
+            </div>
         
-            
-        }
-        ).then(function(response){
-            document.getElementById('answerTab').innerHTML() = response.data;
-            console.log(response);
-            
-        })
-        
-
+            <div class="msgFromServer" style="padding: 0rem;">
+                <p style="margin-bottom: 0px;">LLM:</p>
+                <p class="bubblee left" style="padding-left: 2.4rem;margin-top:0px">
+                **Additional Functionalities for Auctioneer Software**<br><br>**Ownership Management:**<br><br>* **Fractional Ownership:** Allow users to purchase fractional shares of items, enabling group ownership with different levels of participation.<br>* **Co-Ownership Management:** Facilitate the sharing of ownership, responsibilities, and benefits among multiple users.<br>* **Ownership Transfer and Succession Planning:** Provide tools for seamless ownership transfer between users and inheritance planning.<br><br>**Item Management:**<br><br>* **Detailed Item Catalog:** Create a comprehensive catalog with detailed descriptions, images, and specifications of items for sale.<br>* **Item History Tracking:** Track the history of items, including previous auctions, ownership changes, and condition reports.<br>* **Item Appraisal and Certification:** Integrate with third-party appraisal and certification services to verify the authenticity and value of items.<br><br>**Auction Customization:**<br><br>* **Reserve Pricing:** Allow sellers to set minimum prices for items, ensuring they are not sold below a certain threshold.<br>* **Proxy Bidding:** Enable users to place bids on behalf of others, ensuring competitive pricing and anonymity.<br>* **Extended Warranty and Protection Plans:** Offer optional extended warranties and protection plans for purchased items.<br><br>**Community Features:**<br><br>* **User Profiles and Reputation:** Build a community by allowing users to create profiles and establish their reputation as buyers or sellers.<br>* **Item Discussions and Q&A:** Facilitate communication between users, allowing them to ask questions, share information, and build relationships.<br>* **Referral and Loyalty Programs:** Reward users for referring new members and participating in the platform.<br><br>**Analytics and Reporting:**<br><br>* **Sales Dashboard:** Provide sellers with real-time insights into auction performance, including sales data, conversion rates, and revenue generated.<br>* **Bidder Activity Analysis:** Track and analyze bidder behavior to identify patterns and optimize auction strategies.<br>* **Financial Reporting:** Generate detailed financial reports for accounting and tax purposes.<br><br>**Additional Enhancements:**<br><br>* **Mobile App:** Enhance accessibility by developing a mobile application for on-the-go auctioning and bidding.<br>* **Automated Bidding:** Integrate with automated bidding services to allow users to set pre-defined bidding limits.<br>* **Artificial Intelligence Integration:** Utilize AI to analyze bidding data, predict auction outcomes, and provide personalized recommendations.
+            </p>
+        </div>
+        <!-- <hr> -->
         
 
-        
-        
-    }) 
+        </div>
+        <div class="inputField">
+            <img src="{% static 'home/img/settin.svg'%}" width="30px" alt="logo"
+                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/>
+            <input type="text" name="inpLLM" id="inpLLM">
+            <!-- <input type="button" value="submit" id="subBut"> -->
+            <!-- <button class="btn" id="subBut">Submit</button> -->
+            <img src="{% static 'home/img/send.svg'%}" width="35px" alt="logo"
+                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/>
+        </div>
+
+    </div>
+</div>
+</div>
+<script>
+
+    riBox.scrollTop = 99999999;
+
+    function myfunc(){
+        console.log("helloooooo");
+    }
 </script>
 
-
-</body>
-</html>
+{% endblock body%}

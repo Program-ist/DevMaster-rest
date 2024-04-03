@@ -271,14 +271,13 @@ def llm(request,pk):
 		return redirect('/dashboard/')
 
 	ldata = LlmData.objects.filter(user=fuser,project=proj)
-	isMana = 0
-	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
+	na = proj.project_name
 	di = {
 		'iden':pk,
 		'ldata':ldata,
-		'isMana': isMana
+		
+		'na':na
+		
 
 	}
 
@@ -338,6 +337,8 @@ def bug(request,pk):
 	}
 	return render(request,"home/bug.html",di)
 
+
+	
 def review(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -349,28 +350,46 @@ def review(request,pk):
 		messages.error(request, "Forbidden project")
 		return redirect('/dashboard/')
 	
-	spreview = SprintReviewer.objects.filter(bug_to=fuser,project=proj)
+	bgdatadev = BugData.objects.filter(bug_to=fuser,project=proj)
 	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
-
-	spda = SprintData.objects.filter(sprint_reviewer=fuser,project=proj)
-	sprevir = SprintReviewer.objecs.filter(sprint= spda)
-
-
 	isMana = 0
 	sta = fuser.status_of_account
 	if sta == "MANAGER":
 		isMana = 1
-
-	di ={
-		'isMana':isMana,
-		'spda':spda,
-		'sprevir':sprevir
-
+	di = {
+		'iden':pk,
+		'bgdatadev':bgdatadev,
+		'bgdataman': bgdataman,
+		'isMana': isMana
 
 	}
-	return render(request, "home/review.html",di)
-	
+	return render(request,"home/review.html",di)
 
+def details(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name=usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	
+	bgdatadev = BugData.objects.filter(bug_to=fuser,project=proj)
+	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
+	isMana = 0
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		isMana = 1
+	di = {
+		'iden':pk,
+		'bgdatadev':bgdatadev,
+		'bgdataman': bgdataman,
+		'isMana': isMana
+
+	}
+	return render(request,"home/details.html",di)
 
 
 '''		LLM API		'''
@@ -576,8 +595,7 @@ def announcement_check(request):
 
 
 
-def llm(request):
-	return render(request,'home/llm.html')
+
 
 
 @api_view(['POST'])

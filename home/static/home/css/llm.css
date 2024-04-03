@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  padding: 0;
+  margin: 0;
+  /* background-color: #eef2fc; */
+  font-size: 1.5rem;
+  /* color: #2272FF; */
+}
+
+
+.wholeConatiner{
+    display: flex;
+    min-height: 100vh;
+    
+}
+
+.leftBox{
+    height: 100vh;
+    width:20vw;
+    /* background-color: rgb(138, 155, 180); */
+    background-color: #a0b2b4;
+    background-color: #0567e7;
+    position: -webkit-sticky;
+    position: fixed;
+    top: 0;
+    left:0;
+}
+
+
+
+.rightBox{
+    max-height:99vh;
+    width:80vw;
+    margin-left: 20vw;
+   
+    /* background-color: #ddf0fd; */
+    /* background-color: rgb(208, 232, 238); */
+}
+
+
+.menuList{
+    margin-top: 1rem;
+}
+
+.menuList ul li a{
+   
+    text-decoration: none;
+    color: white;
+    /* margin:0px; */
+    display: block;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
+    /* background-color: red; */
+    padding-left:3.5rem;
+}
+
+li{
+    list-style-type: none;
+    
+    text-decoration: none;
+    
+    margin-bottom: 0.5rem;
+    
+        
+}
+
+.menuList ul li:hover{
+    background-color: #4b8de2;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+.current{
+    text-decoration: underline;
+    -webkit-text-decoration-color: white; 
+  text-decoration-color: white;
+  text-decoration-thickness: 3px;
+  background-color: #4b8de2;
+}
+
+.projectName{
+    color:white;
+    text-align: center;
+    padding-top:1.3rem;
+    padding-bottom: 1rem;
+
+    margin-top: 0rem;
+}
+.page_heading{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    
+}
+.wholeBoxz{
+    padding-top:1rem;
+}
+
+.llmBox{
+    
+    overflow-y: auto;
+    max-height: 76vh;
+    /* height:83vh; */
+    width: 75vw;
+    padding-top:1rem;
+    background-color: white;
+    /* background-color: #ddf0fd;
+    background-color: #E9F1FA; */
+
+    margin:auto;
+    
+    border-radius: 15px;
+    font-size: 1.2rem;
+    
+}
+
+.inputField{
+    width: 75vw;
+    height: 2rem;
+    display: flex;
+    margin: auto;
+    margin-top: 5px;
+}
+#inpLLM{
+    width:70vw;
+    height: 2.1rem;
+    border-radius: 10px;
+}
+
+#subBut{
+    width:4vw;
+    height: 2rem;
+    margin:0;
+}
+
+/* .msgFromUser{
+    
+    margin:0px auto;
+    border-radius: 15px;
+} */
+
+/* .msgFromServer{
+   
+    margin:0px auto;
+    border-radius: 15px;
+    
+} */
+#insiderHR{
+    background-color: rgb(70, 79, 83);
+    height: 5px;
+    border: solid 2px grey;
+}
+#settSVG{
+    margin-top: 5px;
+}
+.nameCover{
+    margin-top:0;
+    background-color: white;
+    background-color: #6e88fc;
+}
+
+.bubble {
+    --r: 25px; /* the radius */
+    --t: 30px; /* the size of the tail */
+    
+    /* max-width: 300px; */
+    padding: calc(2*var(--r)/3);
+    -webkit-mask: 
+      radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
+        var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+      conic-gradient(at var(--r) var(--r),#000 75%,#0000 0) 
+        calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
+      radial-gradient(50% 50%,#000 98%,#0000 101%) 
+        0 0/var(--r) var(--r) space padding-box;
+    background: linear-gradient(135deg,#1cc206,#1384C5) border-box;
+    color: #fff;
+  }
+
+
+
+
+  
+
+
+
+  .bubblee {
+    --r: 25px; /* the radius */
+    --t: 30px; /* the size of the tail */
+    
+    /* max-width: 300px; */
+    
+    padding: calc(2*var(--r)/3);
+    -webkit-mask: 
+      radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
+        var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+      conic-gradient(at var(--r) var(--r),#000 75%,#0000 0) 
+        calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
+      radial-gradient(50% 50%,#000 98%,#0000 101%) 
+        0 0/var(--r) var(--r) space padding-box;
+    background: linear-gradient(135deg,#1384C5,#fe3300) border-box;
+    color: #fff;
+  }
+  .left {
+    --_d: 0%;
+    border-left: var(--t) solid #0000;
+    margin-right: var(--t);
+    place-self: start;
+  }
+  .right {
+    --_d: 100%;
+    border-right: var(--t) solid #0000;
+    margin-left: var(--t);
+    place-self: end;
+
+  }

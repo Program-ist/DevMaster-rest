@@ -5,6 +5,32 @@ Signup | DevMaster
 {% endblock title %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(17, 0, 36, 1) 0%,
+          rgba(9, 38, 121, 1) 26%,
+          rgba(0, 255, 171, 1) 100%
+        );
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
+      
+        font-size: 3rem;
+        font-weight: bold;
+      }
+      .page_heading{
+        text-align: center;
+    }
+
+</style>
 {% endblock head %}
 {% block body %}
 
@@ -16,6 +42,7 @@ Orchestrating Software Success, from Start to Finish</p>
 <div class="page_form">
     <form action="/signup/" method="post">
         {% csrf_token %}
+        <p class="page_heading"><span class="headi"> Register</span></p>
         <label for="full_name">Full Name: </label><br>
         <input type="text" name="full_name" id="full_name">
         <br><br>
