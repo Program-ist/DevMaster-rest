@@ -129,6 +129,16 @@ def dashboard(request):
 	return render(request, tsurl, val)
 
 
+def ad(request):
+	return render(request, 'home/ad.html')
+
+def adProject(request):
+	return render(request,'home/adProject.html')
+
+
+
+
+
 '''		EditProfile		'''
 @login_required
 def editProfile(request):
