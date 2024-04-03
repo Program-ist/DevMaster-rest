@@ -1,12 +1,14 @@
 {% extends "base.html" %} 
-
+{% load static %}
 {% block title %}
 Create Project | DevMaster
 {% endblock title %}
-
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/edit.css'%}" />
+{% endblock head %}
 
 {% block body %}
-
+<div class="poppins-regular cont">
 <form action="/createProject/" method="post">
         {% csrf_token %}
 
@@ -19,23 +21,31 @@ fproject_created_time
 fproject_gtihub_link
 fproject_phase 
 {% endcomment %}
+<div class="eleCont">
         <label for="fproject_name">Project Name: </label>
         <input type="text" name="fproject_name" id="fproject_name">
+</div>
         <br>
+        <div class="eleCont">
         <label for="fproject_description">Project Description: </label>
         <input type="text" name="fproject_description" id="fproject_description">
+</div>
         <br>
+        <div class="eleCont">
         {% comment %} <label for="fcreated_by">Created By: </label>
         <input type="text" name="fcreated_by" id="fcreated_by"> 
         <br>{% endcomment %}
         
         <label for="fproject_gtihub_link">Project Gtihub Link: </label>
         <input type="text" name="fproject_gtihub_link" id="fproject_gtihub_link">
+</div>
         <br>
+        <div class="eleCont">
         <label for="fproject_phase">Project Phase: </label>
         <input type="text" name="fproject_phase" id="fproject_phase">
+</div>
         <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" id="subm">
     </form>
-
+</div>
 {% endblock body %}
