@@ -266,8 +266,24 @@ body{
 
 
 
+.footer{
+  background-color: rgb(159, 194, 188);
+  height: 40vh;
+  margin-top:-0.5rem;
+}
 
+.socials{
+  text-align: center;
+  padding-top:8vh;
+  background-color: rgb(159, 194, 188);
+  
 
+  width:40vw;
+  margin:auto;
+}
 
+.socials img{
+  margin-right:2rem;
+}
 
 

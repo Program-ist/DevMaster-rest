@@ -179,11 +179,13 @@ ul{
 
 
 
+
+
   .bubble {
     --r: 25px; /* the radius */
     --t: 30px; /* the size of the tail */
     
-    max-width: 300px;
+    /* max-width: 300px; */
     padding: calc(2*var(--r)/3);
     -webkit-mask: 
       radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
@@ -192,7 +194,32 @@ ul{
         calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
       radial-gradient(50% 50%,#000 98%,#0000 101%) 
         0 0/var(--r) var(--r) space padding-box;
-    background: linear-gradient(135deg,#FE6D00,#1384C5) border-box;
+    background: linear-gradient(135deg,#1cc206,#1384C5) border-box;
+    color: #fff;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  .bubblee {
+    --r: 25px; /* the radius */
+    --t: 30px; /* the size of the tail */
+    
+    /* max-width: 300px; */
+    
+    padding: calc(2*var(--r)/3);
+    -webkit-mask: 
+      radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
+        var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+      conic-gradient(at var(--r) var(--r),#000 75%,#0000 0) 
+        calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
+      radial-gradient(50% 50%,#000 98%,#0000 101%) 
+        0 0/var(--r) var(--r) space padding-box;
+    background: linear-gradient(135deg,#1384C5,#fe3300) border-box;
     color: #fff;
   }
   .left {
@@ -206,4 +233,5 @@ ul{
     border-right: var(--t) solid #0000;
     margin-left: var(--t);
     place-self: end;
+  
   }

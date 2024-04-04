@@ -417,6 +417,41 @@ def llm_api(request):
 		'ans':ans
 	}
 	return Response(an)
+	'''
+	test_str = "I **like** **bananas** bananas"
+
+# initializing substring 
+test_sub = "**"
+
+# printing original string 
+print("The original string is : " + test_str) 
+
+# printing substring 
+print("The substring to find : " + test_sub) 
+
+# using list comprehension + startswith() 
+# All occurrences of substring in string 
+res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)] 
+
+# printing result 
+print("The start indices of the substrings are : " + str(res)) 
+fla = 2
+for i in reversed(res):
+    print(fla)
+    if fla % 2 == 0:
+        test_str = test_str[:i+1] + "" + test_str[i+2:]
+        test_str = test_str[:i] + "</br>" + test_str[i+1:]
+        fla += 1
+        print(fla)
+    elif fla % 2 == 1:
+        test_str = test_str[:i+1] + "" + test_str[i+2:]
+        test_str = test_str[:i] + "<br>" + test_str[i+1:]
+        fla += 1
+        print(fla)
+    
+print(test_str)
+
+	'''
 
 
 

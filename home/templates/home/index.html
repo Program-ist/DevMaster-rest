@@ -1,92 +1,128 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home | DevMaster</title>
-	
-    <link rel="stylesheet" type="text/css" href="{% static 'home/css/style.css'%}" />
 
-  </head>
-  <body class="poppins-regular">
-    <!-- Hero -->
-    <div class="hero">
-      <nav class="navbar">
-        <div class="brand-title">
-          <ul><li style = "list-style: none;"><a href="index.html">
-            <img src="{% static 'home/img/whitedevlogo.png'%}" width="150px" alt="logo" style = "margin-top:10px;"
-          /></a></li></ul>
-          
-        </div>
-        <a href="#" class="toggle-button">
-          <span class="bar"> </span>
-          <span class="bar"> </span>
-          <span class="bar"> </span>
-        </a>
-        <div class="navbar-links">
-          <ul>
-            {% if usern == "notLoggedIn" %}
-            <li><a href="{% url 'home:loginview' %}">Login</a></li>
-            <li><a href="{% url 'home:signup' %}">Register</a></li>
-            {% else %}
-            <li><a href = "{% url 'home:dashboard'%}">Hello {{ usern }}</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </nav>
-      <div>
-        <p id="hero-heading">
-          Orchestrating Software Success, from Start to Finish
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | DevMaster</title>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'home/css/style.css'%}" />
+
+</head>
+
+<body class="poppins-regular">
+  <!-- Hero -->
+  <div class="hero">
+    <nav class="navbar">
+      <div class="brand-title">
+        <ul>
+          <li style="list-style: none;"><a href="index.html">
+              <img src="{% static 'home/img/whitedevlogo.png'%}" width="150px" alt="logo"
+                style="margin-top:10px;" /></a></li>
+        </ul>
+
+      </div>
+      <a href="#" class="toggle-button">
+        <span class="bar"> </span>
+        <span class="bar"> </span>
+        <span class="bar"> </span>
+      </a>
+      <div class="navbar-links">
+        <ul>
+          {% if usern == "notLoggedIn" %}
+          <li><a href="{% url 'home:loginview' %}">Login</a></li>
+          <li><a href="{% url 'home:signup' %}">Register</a></li>
+          {% else %}
+          <li><a href="{% url 'home:dashboard'%}">Hello {{ usern }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <div>
+      <p id="hero-heading">
+        Orchestrating Software Success, from Start to Finish
+      </p>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="content_container">
+    <div class="content">
+      <div class="im">
+        <img src="{% static 'home/img/llm.png'%}" alt="" class="imgs" />
+      </div>
+      <div class="text">
+        <p class="head_para"> <span class="headi">Use LLM</span></p>
+        <p class="para">Solve your queries with the power of generative AI and simplify your workflow.
+          <br>
+          <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now
+              →</a></span>
         </p>
       </div>
     </div>
-    <!-- Content -->
-    <div class="content_container">
-      <div class="content">
-        <div class="im">
-          <img src="{% static 'home/img/llm.png'%}" alt="" class="imgs" />
-        </div>
-        <div class="text">
-          <p class="head_para"> <span class ="headi">Use LLM</span></p>
-          <p class = "para">Solve your queries with the power of generative AI and simplify your workflow.
-            <br>
-            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
-          </p>
-        </div>
-      </div>
 
-      <div class="content">
-        <div class="text">
-          <p class="head_para"> <span class ="headi">Use Chat</span></p>
-          <p class = "para">Easily Communicate with all your team members using the chat feature.<br>
-            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
-          </p>
-        </div>
-        <div class="im">
-          <img src="{% static 'home/img/chat.png'%}" alt="" class="imgs" />
-        </div>
+    <div class="content">
+      <div class="text">
+        <p class="head_para"> <span class="headi">Use Chat</span></p>
+        <p class="para">Easily Communicate with all your team members using the chat feature.<br>
+          <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now
+              →</a></span>
+        </p>
       </div>
-
-      <div class="content">
-        <div class="im">
-          <img src="{% static 'home/img/sprint.png'%}" alt="" class="imgs" />
-        </div>
-        <div class="text">
-          <p class="head_para"> <span class ="headi">Assign Sprint</span></p>
-          <p class="para">Assign tasks such as sprints, bug tickets and/or review tasks to the developers.<br>
-            <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now →</a></span>
-          </p>
-        </div>
+      <div class="im">
+        <img src="{% static 'home/img/chat.png'%}" alt="" class="imgs" />
       </div>
     </div>
 
+    <div class="content">
+      <div class="im">
+        <img src="{% static 'home/img/sprint.png'%}" alt="" class="imgs" />
+      </div>
+      <div class="text">
+        <p class="head_para"> <span class="headi">Assign Sprint</span></p>
+        <p class="para">Assign tasks such as sprints, bug tickets and/or review tasks to the developers.<br>
+          <span><a href="{% url 'home:signup' %}" style=" text-decoration: none;color: rgb(82, 79, 79);">Try Now
+              →</a></span>
+        </p>
+      </div>
+    </div>
+  </div>
 
 
 
-    {% comment %} <div class="footer" style="display:hidden;">
-        
-        Unlock the full potential of your productivity
-    </div> {% endcomment %}
-  </body>
+
+  {% comment %} <div class="footer" style="display:hidden;">
+
+    Unlock the full potential of your productivity
+  </div> {% endcomment %}
+  <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 320"
+      style="margin-bottom: 0; display: block"
+    >
+      <path
+        fill="rgb(159, 194, 188)"
+        fill-opacity="1"
+        d="M0,192L48,170.7C96,149,192,107,288,96C384,85,480,107,576,122.7C672,139,768,149,864,154.7C960,160,1056,160,1152,149.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
+    </svg>
+  <div class="footer">
+    <div></div>
+    
+    <div class="socials">
+
+      <img src="{% static 'home/img/fb.svg'%}" width="60px" alt="logo" style="margin-top:1px;cursor: pointer;"
+        onclick="myfunc()" />
+        <img src="{% static 'home/img/ins.svg'%}" width="60px" alt="logo" style="margin-top:1px;cursor: pointer;"
+        onclick="myfunc()" />
+        <img src="{% static 'home/img/lin.svg'%}" width="60px" alt="logo" style="margin-top:1px;cursor: pointer;"
+        onclick="myfunc()" />
+        <img src="{% static 'home/img/twi.svg'%}" width="60px" alt="logo" style="margin-top:1px;cursor: pointer;"
+        onclick="myfunc()" />
+    
+    </div>
+  </div>
+
+</body>
+
 </html>
