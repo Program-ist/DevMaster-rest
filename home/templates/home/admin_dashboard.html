@@ -106,17 +106,17 @@ LLM | DevMaster
 
         <div class="menuList">
             <ul>
-                <li style="background-color: #0026cf;border-radius: 15px;"><a href="{%url 'home:createProjectt'%}">Create Project</a></li>
-                {% for i in mem_projects %}
-            {% comment %} href to project {% endcomment %}
-            <li><a href="{% url 'home:projects' i.project_id %}">
-                {{i.project}} 
-                 {% comment %} {{i.project_id}} {% endcomment %}
-            </a></li>
-            {% comment %} <li><a>SimplyData</a></li>
-            <li><a>BigMech</a></li> {% endcomment %}
-            {% endfor %}
-                
+                <li class="current"><a href="">Users</a></li>
+                <li><a href="{% url 'home:adProject' %}">Projects</a></li>
+            
+                {% comment %} <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li  class="current"><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+                <li><a href="{% url 'home:details' iden %}">Details</a></li>
+                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li> {% endcomment %}
 
             </ul>
 
@@ -137,7 +137,7 @@ LLM | DevMaster
                 <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
               </ul>
             </div>
-        </div>
+        
         <script>
           const btnEl = document.getElementById("profileSubmenu");
 
@@ -147,53 +147,29 @@ LLM | DevMaster
             console.log("from submenu")
           }
         </script>
+        </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:1rem;">
             <div class="projectName">
-                <p class="page_heading"><span class="headi"> Announcements</span></p>
+                <p class="page_heading"><span class="headi"> Users</span></p>
             </div>
 
-            {% for i in mem_projects %}
-            
             <div class="list">
-
-              <h2>{{i.project}}</h2>
-              <ul>
-              {% for j in anno %}
-              {% if i.project == j.project %}
-              <li>{{j.announcement_msg}}</li>
-              {% endif %}               
-              
-              {% endfor %}
-              </ul>
-            </div>
-
-            {% endfor %}
-
-
-
-            {% comment %} <div class="list">
-                <h2>Auctioneer</h2> 
+                
                 <ul>
-                  <li><span>There will be new addition to the discussed project</span></li>
-                  <li><span>The deadline will be postponed for all developers</span></li>
+                    {% for i in all_users %}
+                    <li><span>{{i.user_name}}</span></li>
+                    {% endfor %}
+                  
                   
                 </ul>
               </div>
               
-              <div class="list">
-                <h2>SimplyData</h2> 
-                <ul>
-                  <li><span>There will be addition to the dataset.</span></li>
-                  <li><span>The deadline will be preponed for all developers</span></li>
-                  
-                </ul>
-              </div> {% endcomment %}
         </div>
 
     </div>
     
 </div>
-
+</div>
 <script>
 
     riBox.scrollTop = 99999999;

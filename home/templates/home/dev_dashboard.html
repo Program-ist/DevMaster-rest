@@ -106,7 +106,7 @@ LLM | DevMaster
 
         <div class="menuList">
             <ul>
-                <li style="background-color: #0026cf;border-radius: 15px;"><a href="{%url 'home:createProjectt'%}">Create Project</a></li>
+                {% comment %} <li style="background-color: #0026cf;border-radius: 15px;"><a href="{%url 'home:createProject'%}">Create Project</a></li> {% endcomment %}
                 {% for i in mem_projects %}
             {% comment %} href to project {% endcomment %}
             <li><a href="{% url 'home:projects' i.project_id %}">
@@ -155,7 +155,7 @@ LLM | DevMaster
             {% for i in mem_projects %}
             
             <div class="list">
-
+              
               <h2>{{i.project}}</h2>
               <ul>
               {% for j in anno %}

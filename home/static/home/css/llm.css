@@ -53,7 +53,35 @@ body {
     /* background-color: rgb(208, 232, 238); */
 }
 
+.submenu{
+  text-align: center;
+  width: 10vw;
+  
+  
+  
+}
+.submenu ul{
+  border-radius: 10px;
+  padding-top:0.5rem;
+  background-color: rgb(194, 248, 248);
+  width: 12vw;
+  position:fixed;
+  right:0;
+}
 
+.submenu ul li a {
+  text-decoration: none;
+  color:black;
+}
+
+.submenitem:hover{
+  background-color: rgb(159, 209, 209);
+}
+
+
+.hidden{
+  display:none;
+}
 .menuList{
     margin-top: 1rem;
 }

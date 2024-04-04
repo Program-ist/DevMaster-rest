@@ -199,7 +199,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    height:90vh;
+    height:85vh;
 }
 
 
@@ -212,12 +212,13 @@ body{
 /* Content */
 
 .content_container{
-    padding-top: 2rem;
+    padding-top: 0rem;
+    margin-top: -5rem;
 }
 .content{
     display: flex;
-    
-    margin-bottom: 4rem;
+    margin-top:1rem;
+    margin-bottom: 2rem;
     
     
     

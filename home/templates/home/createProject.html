@@ -1,51 +1,89 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% load static %}
 {% block title %}
 Create Project | DevMaster
 {% endblock title %}
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'home/css/edit.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(17, 0, 36, 1) 0%,
+          rgba(9, 38, 121, 1) 26%,
+          rgba(0, 255, 171, 1) 100%
+        );
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
+      
+        font-size: 3.5rem;
+        font-weight: bold;
+      }
+      .page_heading{
+        text-align: center;
+    }
+
+</style>
 {% endblock head %}
-
 {% block body %}
-<div class="poppins-regular cont">
-<form action="/createProject/" method="post">
-        {% csrf_token %}
 
+<div class="big_container poppins-regular">
+<div class="text">
+<p class="dev_head"><a href="{% url 'home:home' %}"><img src="{% static 'home/img/devlogo.png'%}" alt="" width = "300px"></a><br>
+Orchestrating Software Success, from Start to Finish</p>
+<p class="page_heading"><span class="headi"> Create Project </span></p>
+</div>
+<div class="page_form">
 
-{% comment %}
-fproject_name
-fproject_description
-fcreated_by
-fproject_created_time
-fproject_gtihub_link
-fproject_phase 
-{% endcomment %}
-<div class="eleCont">
-        <label for="fproject_name">Project Name: </label>
-        <input type="text" name="fproject_name" id="fproject_name">
-</div>
-        <br>
-        <div class="eleCont">
-        <label for="fproject_description">Project Description: </label>
-        <input type="text" name="fproject_description" id="fproject_description">
-</div>
-        <br>
-        <div class="eleCont">
-        {% comment %} <label for="fcreated_by">Created By: </label>
-        <input type="text" name="fcreated_by" id="fcreated_by"> 
-        <br>{% endcomment %}
+        <form action="/createProjectt/" method="post">
+                {% csrf_token %}
         
-        <label for="fproject_gtihub_link">Project Gtihub Link: </label>
-        <input type="text" name="fproject_gtihub_link" id="fproject_gtihub_link">
-</div>
-        <br>
+        
+        {% comment %}
+        fproject_name
+        fproject_description
+        fcreated_by
+        fproject_created_time
+        fproject_gtihub_link
+        fproject_phase 
+        {% endcomment %}
         <div class="eleCont">
-        <label for="fproject_phase">Project Phase: </label>
-        <input type="text" name="fproject_phase" id="fproject_phase">
+                <label for="fproject_name">Project Name: </label>
+                <input type="text" name="fproject_name" id="fproject_name">
+        </div>
+                <br>
+                <div class="eleCont">
+                <label for="fproject_description">Project Description: </label>
+                <br>
+                {% comment %} <input type="text" name="fproject_description" id="fproject_description" > {% endcomment %}
+                <textarea style="width:30vw;" name="fproject_description" id="fproject_description" ></textarea>
+                
+        </div>
+                <br>
+                <div class="eleCont">
+                {% comment %} <label for="fcreated_by">Created By: </label>
+                <input type="text" name="fcreated_by" id="fcreated_by"> 
+                <br>{% endcomment %}
+                
+                <label for="fproject_gtihub_link">Project Gtihub Link: </label>
+                <input type="text" name="fproject_gtihub_link" id="fproject_gtihub_link">
+        </div>
+                <br>
+                <div class="eleCont">
+                <label for="fproject_phase">Project Phase: </label>
+                <input type="text" name="fproject_phase" id="fproject_phase">
+        </div>
+                <br>
+                <input type="submit" value="Submit" id="subm">
+            </form>
+    <br>
 </div>
-        <br>
-        <input type="submit" value="Submit" id="subm">
-    </form>
 </div>
 {% endblock body %}

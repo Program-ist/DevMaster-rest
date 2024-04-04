@@ -22,6 +22,7 @@ from datetime import datetime
 
 from django.conf.urls.static import static
 
+import re
 '''   Home Page  '''
 def home(request):
 	usern = "notLoggedIn"
@@ -29,6 +30,7 @@ def home(request):
 		user= request.user
 		usern = user.username
 	diction = {'usern':usern}
+	# messages.error(request,"Wrong Credentials")
 	return render(request, 'home/index.html',diction)
 
 
@@ -78,7 +80,26 @@ def SignupView(request):
 		fuser_name = request.POST['user_name']
 		femail = request.POST['email']
 		fpassword = request.POST['password']
-		fstatus_of_account = "DEVELOPER"
+		fstatus_of_account = request.POST['status_of_account']
+		fstatus_of_account = fstatus_of_account.upper()
+		fstatus_of_account = fstatus_of_account.upper()
+		fstat_vali = 0
+		if fstatus_of_account == "DEVELOPER" or fstatus_of_account == "MANAGER" or fstatus_of_account == "ADMIN":
+			fstat_vali = 1
+		if fstat_vali == 0:
+			messages.error(request, 'Unknown status level')
+			return render(request, 'home/signup.html')
+		email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+		email_vali = 0
+		if re.fullmatch(email_regex, femail):
+			email_vali = 1
+		else: 
+			email_vali = 0
+
+		if email_vali == 0:
+			messages.error(request, 'Wrong Email Address')
+			return render(request, 'home/signup.html')
+
 		# allusers = UserDetail.objects.values_list('user_name')
 
 		if UserDetail.objects.filter(user_name = fuser_name).exists():
@@ -109,24 +130,42 @@ def dashboard(request):
 	username = currentUser.username #their username
 	Cuser = UserDetail.objects.get(user_name=username)
 	stat = Cuser.status_of_account
+	mem_projects = ProjectMembers.objects.filter(user=Cuser)
 	
+	
+	tsurl = "home/dev_dashboard.html"
 	if stat == "ADMIN":
-		#return render(request, tsurl)
-		pass
+		tsurl = "home/admin_dashboard.html"
+		all_users = UserDetail.objects.all()
+		val ={
+			'username':username,
+			'all_users':all_users
+		}
+		return render(request, tsurl,val)
+		
 
 	elif stat == "MANAGER":
-		tsurl = "home/man_dashboard.html"
-
-	else:
-		#tsurl = "home/dev_dashboard.html"
-		pass	
-	mem_projects = ProjectMembers.objects.filter(user=Cuser)
-	anno = Announcement.objects.filter(ann_from=Cuser)
-	val = {'username':username,
+		anno = Announcement.objects.all()
+		val = {'username':username,
 		'mem_projects':mem_projects,
 		'anno':anno
 		}
-	return render(request, tsurl, val)
+		tsurl = "home/man_dashboard.html"
+		return render(request, tsurl,val)
+
+	else:
+		anno = Announcement.objects.all()
+		val = {'username':username,
+		'mem_projects':mem_projects,
+		'anno':anno
+		}
+		tsurl = "home/dev_dashboard.html"
+		return render(request, tsurl,val)
+		#tsurl = "home/dev_dashboard.html"
+		pass	
+	
+	# return render(request, tsurl, val)
+	return render(request, "home/index.html")
 
 
 def ad(request):
@@ -175,7 +214,7 @@ def editProfile(request):
 
 '''		Create Project		'''
 @login_required
-def createProject(request):
+def createProjectt(request):
 	user = request.user
 	username = user.username
 	if not UserDetail.objects.filter(user_name = username,status_of_account = "MANAGER").exists():
@@ -195,11 +234,16 @@ def createProject(request):
 		temp.save()
 		messages.success(request, "Project Successfully Created")
 		
-		temp = ProjectDetail.objects.get(project_name=fproject_name)
+		temp = ProjectDetail.objects.filter(project_name = fproject_name).all()
+		for i in temp:
+			ctemp_id = str(i.id)
+			
+		url_val = "/projects/" + ctemp_id
 		
 		# returl = f'home/project/{temp.id}/projectMembers.html'
 		'''********** May break ************'''
-		return redirect('/projects/<int:pk>/members/',temp.id)
+		
+		return redirect(url_val,ctemp_id)
 	return render(request, "home/createProject.html")
 		
 
