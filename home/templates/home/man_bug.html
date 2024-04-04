@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+LLM | DevMaster
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/llm.css'%}" />
+
+<style>
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(90deg,
+                rgba(17, 0, 36, 1) 0%,
+                rgba(9, 38, 121, 1) 26%,
+                rgba(0, 255, 171, 1) 100%);
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
+
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-top: 0px;
+    }
+
+    .page_heading {
+        text-align: center;
+    }
+</style>
+<style>
+    .list {
+        position: relative;
+      }
+      .list h2 {
+        color: #000;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .list ul {
+        position: relative;
+      }
+      .list ul li {
+        position: relative;
+        left: 0;
+        color: #333;
+        list-style: none;
+        margin: 4px 0;
+        border-left: 2px solid #002df5;
+        transition: 0.5s;
+        cursor: pointer;
+        padding-bottom:1rem;
+      }
+      .list ul li:hover {
+        left: 10px;
+      }
+      .list ul li span {
+        position: relative;
+        padding: 8px;
+        padding-left: 12px;
+        display: inline-block;
+        
+        transition: 0.5s;
+      }
+      .list ul li:hover span {
+        color: #111;
+      }
+      /* .list ul li:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #6e88fc;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: 0.5s;
+      }
+      .list ul li:hover:before {
+        transform: scaleX(1);
+      } */
+</style>
+<style>
+    .mkdbutt{
+        font-size: 1.2rem;
+        background-color: rgb(166, 166, 250);
+        border-radius: 10px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+
+<div class="wholeConatiner">
+    <div class="leftBox" >
+        <div class="logo" style="text-align: center;background-color: #394647;background-color: #0567e7;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;">
+            <a href="{% url 'home:dashboard' %}">
+                <img src="{% static 'home/img/whitedevlogo.png'%}" width="200px" alt="logo"
+                    style="margin-top:2.5rem;margin-bottom:1.5rem;" /></a>
+        </div>
+        <!-- <hr id="insiderHR"> -->
+
+        <div class="menuList">
+            <ul>
+                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li  class="current"><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:review' iden %}">Review</a></li>
+                <li><a href="{% url 'home:details' iden %}">Details</a></li>
+                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="rightBox" >
+        <div class="dashNav">
+            <ul>
+                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+                  <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                    style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                
+            </ul>
+            <div class="submenu hidden" id="profileSubmenu">
+              <ul>
+                <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+                <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+              </ul>
+            </div>
+        </div>
+        <script>
+          const btnEl = document.getElementById("profileSubmenu");
+    
+    
+          function profileSubmenu(){
+            btnEl.classList.toggle("hidden")
+            console.log("from submenu")
+          }
+        </script>
+        <div class="projectName">
+            <p class="page_heading"><span class="headi"> Auctioneer</span></p>
+        </div>
+        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
+          <div style="margin-bottom:4rem;">
+            <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Assign Bug</span></p>
+            </div>
+
+
+
+
+            {% for i in set_of_members %}
+            <p>{{i}}:</p>
+            <div class="list">
+                <ul>
+            {% for j in all_project_bug %}
+            {% if i == j.bug_to %}
+            <li style="display:flex;justify-content: space-between;"><span>{{j.bug_title}}</span>
+                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                </li>
+            {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+
+
+
+            {% comment %} <p>3testu:</p>
+        <div class="list">
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
+            <ul>
+              <li style="display:flex;justify-content: space-between;"><span>The map API is not working</span> <span class="mkdbutt" >Mark as Solved</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>The background image of hero section isnt loading</span>  <span class="mkdbutt" >Mark as Solved</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>The javascript function to track user interaction is glitching</span>  <span class="mkdbutt" >Mark as Solved</span> </li>
+              
+              
+            </ul>
+          </div> {% endcomment %}
+          <div style="margin-top:4rem;">
+          <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Report a Bug</span></p>
+          </div>
+        </div>
+
+    </div>
+    
+</div>
+</div>
+<script>
+
+    riBox.scrollTop = 99999999;
+
+    function myfunc(){
+        console.log("helloooooo");
+    }
+</script>
+
+{% endblock body%}

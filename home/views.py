@@ -189,7 +189,7 @@ def editProfile(request):
 		fstatus_of_account = request.POST['status_of_account']
 		#check if username in use and then update
 		user = request.user
-		udun = user.user_name
+		udun = user.username
 		if UserDetail.objects.filter(user_name = fuser_name).exists():
 			messages.error(request,"User Name already in use")
 			return render(request,'home/editProfile.html',user)
@@ -200,7 +200,7 @@ def editProfile(request):
 		tempUD.password = fpassword
 		tempUD.status_of_account = fstatus_of_account
 		tempUD.save()
-		tempU = User.objects.filter(username = udun).first
+		tempU = User.objects.filter(username = udun).first()
 		tempU.username = fuser_name
 		tempU.set_password(fpassword)
 		tempU.save()
@@ -271,18 +271,21 @@ def projects(request,pk):
 
 	anno = Announcement.objects.filter(project=proj)
 	isMana = 0
-	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
-
 	di = {
 		'iden':pk,
 		'anno': anno,
-		'isMana': isMana,
 		'username':usern
+		
 	}
 
-	return render(request,"home/man_projects.html",di)
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		return render(request,"home/man_projects.html",di)
+	if sta == "DEVELOPER":
+		return render(request,"home/dev_projects.html",di)
+
+	
+	return render(request,"home/dev_projects.html",di)
 
 
 def chat(request,pk):
@@ -349,19 +352,29 @@ def sprint(request,pk):
 		return redirect('/dashboard/')
 	
 	spdatadev = SprintData.objects.filter(sprint_to=fuser,project=proj)
+	all_project_sprint = SprintData.objects.filter(project=proj)
+	set_of_members = set()
+	for i in all_project_sprint:
+		set_of_members.add(i.sprint_to)
+	
+	
 	spdataman = SprintData.objects.filter(sprint_from=fuser,project=proj)
 	isMana = 0
-	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
 	di = {
 		'iden':pk,
 		'spdatadev':spdatadev,
-		'spdataman': spdataman,
-		'isMana': isMana
+		'all_project_sprint': all_project_sprint,
+		'set_of_members':set_of_members,
+		'username':fuser
 
 	}
-	return render(request, "home/sprint.html", di)
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		return render(request, "home/man_sprint.html",di)
+	elif sta == "DEVELOPER":
+		return render(request, "home/dev_sprint.html",di)
+	
+	return render(request, "home/dev_sprint.html", di)
 
 
 
@@ -377,18 +390,25 @@ def bug(request,pk):
 		return redirect('/dashboard/')
 	
 	bgdatadev = BugData.objects.filter(bug_to=fuser,project=proj)
-	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
+	
+	all_project_bug = BugData.objects.filter(project=proj)
+	set_of_members = set()
+	for i in all_project_bug:
+		set_of_members.add(i.bug_to)
 	isMana = 0
 	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
 	di = {
 		'iden':pk,
 		'bgdatadev':bgdatadev,
-		'bgdataman': bgdataman,
-		'isMana': isMana
+		'all_project_bug': all_project_bug,
+		'set_of_members':set_of_members,
+		'username':fuser
 
 	}
+	if sta == "MANAGER":
+		return render(request,"home/man_bug.html",di)
+	elif sta == "DEVELOPER":
+		return render(request,"home/dev_bug.html",di)
 	return render(request,"home/bug.html",di)
 
 

@@ -122,6 +122,29 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
+      <div class="dashNav">
+        <ul>
+            <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+              <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+            
+        </ul>
+        <div class="submenu hidden" id="profileSubmenu">
+          <ul>
+            <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+            <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+          </ul>
+        </div>
+    </div>
+    <script>
+      const btnEl = document.getElementById("profileSubmenu");
+
+
+      function profileSubmenu(){
+        btnEl.classList.toggle("hidden")
+        console.log("from submenu")
+      }
+    </script>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
@@ -129,15 +152,33 @@ LLM | DevMaster
           <div style="margin-bottom:4rem;margin-top:-2rem;">
             <p><span style="padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Assign Sprint</span></p>
             </div>
-            <p>3testu:</p>
+
+
+            {% for i in set_of_members %}
+            <p>{{i}}:</p>
+            <div class="list">
+                <ul>
+            {% for j in all_project_sprint %}
+            {% if i == j.sprint_to %}
+            <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
+               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+              </li>
+            {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+
+            {% comment %} <p>3testu:</p>
         <div class="list">
-            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment %}
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
             <ul>
               <li style="display:flex;justify-content: space-between;"><span>Make the Navbar discussed project</span> <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Make the Hero section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Make the Footer Section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
-              <li  style="display:flex;justify-content: space-between;"><span>Add the Google map location map api</span>  <span class="mkdbutt" >Mark as Done</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Add the Google map location map api</span>  <span class="mkdbutt" >Mark as Done</span> </li> {% endcomment %}
               
             </ul>
           </div>

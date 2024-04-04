@@ -63,13 +63,13 @@ LLM | DevMaster
         padding: 8px;
         padding-left: 12px;
         display: inline-block;
-        z-index: 1;
+        
         transition: 0.5s;
       }
       .list ul li:hover span {
         color: #111;
       }
-      .list ul li:before {
+      /* .list ul li:before {
         content: "";
         position: absolute;
         width: 100%;
@@ -81,7 +81,15 @@ LLM | DevMaster
       }
       .list ul li:hover:before {
         transform: scaleX(1);
-      }
+      } */
+</style>
+<style>
+    .mkdbutt{
+        font-size: 1.2rem;
+        background-color: rgb(166, 166, 250);
+        
+        border-radius: 10px;
+    }
 </style>
 {% endblock head %}
 
@@ -99,14 +107,14 @@ LLM | DevMaster
 
         <div class="menuList">
             <ul>
-               <li  class="current"><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
-                 <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
                 <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
-                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li class="current"><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
                 <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
                 <li><a href="{% url 'home:review' iden %}">Review</a></li>
                 <li><a href="{% url 'home:review' iden %}">Details</a></li>
-                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li> 
+                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
 
             </ul>
 
@@ -114,49 +122,62 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
-      <div class="dashNav">
-        <ul>
-            <li style="padding-top:6px;text-align:right;">Hello {{username}} <span
-                    style="margin-left:2rem;margin-right:3rem;">
-                    <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                        style="position:fixed;cursor: pointer;" onclick="profileSubmenu()" /></span></li>
-    
-        </ul>
-        <div class="submenu hidden" id="profileSubmenu">
+        <div class="dashNav">
             <ul>
-                <li class="submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
-                <li class="submenitem"><a href="{% url 'home:logoutUser' %}">Logout</a></li>
+                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+                  <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                    style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                
             </ul>
+            <div class="submenu hidden" id="profileSubmenu">
+              <ul>
+                <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+                <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+              </ul>
+            </div>
         </div>
-    </div>
-    <script>
-        const btnEl = document.getElementById("profileSubmenu");
-    
-    
-        function profileSubmenu() {
+        <script>
+          const btnEl = document.getElementById("profileSubmenu");
+
+
+          function profileSubmenu(){
             btnEl.classList.toggle("hidden")
             console.log("from submenu")
-        }
-    </script>
+          }
+        </script>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
-          <div style="margin-bottom:4rem;">
-            <p><span style="padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Make Announcement</span></p>
+          
+            {% for i in spdatadev %}
+            
+            <div class="list">
+                <ul>
+            
+            <li style="display:flex;justify-content: space-between;"><span>{{i.sprint_title}}</span> <span class="mkdbutt" >Mark as Done</span> </li>
+            
+                </ul>
             </div>
+            {% endfor %}
 
-        <div class="list">
-            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment %}
+
+            {% comment %} <p>3testu:</p>
+            <div class="list">
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
             <ul>
-              {% for i in anno %}
-              <li><span>{{i.announcement_msg}}</span></li>
-              {% endfor %}
+              <li style="display:flex;justify-content: space-between;"><span>Make the Navbar discussed project</span> <span class="mkdbutt" >Mark as Done</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Make the Hero section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Mark as Done</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Make the Footer Section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Add the Google map location map api</span>  <span class="mkdbutt" >Mark as Done</span> </li>
+              
             </ul>
-          </div>
+          </div> {% endcomment %}
         </div>
 
     </div>
+    
 </div>
 </div>
 <script>
