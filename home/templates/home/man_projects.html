@@ -32,6 +32,7 @@ LLM | DevMaster
     }
 </style>
 <style>
+  
     .list {
         position: relative;
       }
@@ -82,6 +83,7 @@ LLM | DevMaster
       .list ul li:hover:before {
         transform: scaleX(1);
       }
+      
 </style>
 {% endblock head %}
 
@@ -141,16 +143,16 @@ LLM | DevMaster
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
-          <div style="margin-bottom:4rem;">
-            <p><span style="padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Make Announcement</span></p>
+        <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
+          <div style="margin-bottom:2rem;">
+            <p><a href="{% url 'home:makeAnnouncement' iden %}" style="text-decoration:none;"><span class="btn-grad" >Make Announcement</span></a></p>
             </div>
 
         <div class="list">
             {% comment %} <h2>List Item Hover Effect</h2> {% endcomment %}
             <ul>
               {% for i in anno %}
-              <li><span>{{i.announcement_msg}}</span></li>
+              <li style="cursor:context-menu"><span>{{i.announcement_msg}}</span></li>
               {% endfor %}
             </ul>
           </div>

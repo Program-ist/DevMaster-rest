@@ -147,9 +147,10 @@ LLM | DevMaster
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
-          <div style="margin-bottom:4rem;">
-            <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Assign Bug</span></p>
+        <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
+          <div style="margin-bottom:2rem;display:flex;justify-content:space-around;">
+            <p><span class="btn-grad" >Assign Bug</span></p>
+            <p><span class="btn-grad" >Report a Bug</span></p>
             </div>
 
 
@@ -161,7 +162,7 @@ LLM | DevMaster
                 <ul>
             {% for j in all_project_bug %}
             {% if i == j.bug_to %}
-            <li style="display:flex;justify-content: space-between;"><span>{{j.bug_title}}</span>
+            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
                  {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                 </li>
             {% endif %}
@@ -184,9 +185,7 @@ LLM | DevMaster
               
             </ul>
           </div> {% endcomment %}
-          <div style="margin-top:4rem;">
-          <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Report a Bug</span></p>
-          </div>
+          
         </div>
 
     </div>

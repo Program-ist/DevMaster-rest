@@ -1,0 +1,127 @@
+{% extends "base.html" %} {% load static %} {% block title %} Create Project |
+DevMaster {% endblock title %} {% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+  .headi {
+    /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+    background: rgb(17, 0, 36);
+    background: linear-gradient(
+      90deg,
+      rgba(17, 0, 36, 1) 0%,
+      rgba(9, 38, 121, 1) 26%,
+      rgba(0, 255, 171, 1) 100%
+    );
+    align-self: center;
+    background-clip: border-box;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    text-align: center;
+
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
+  .page_heading {
+    text-align: center;
+  }
+</style>
+{% endblock head %} {% block body %}
+
+<div class="big_container poppins-regular">
+  <div class="text">
+    <p class="dev_head">
+      <a href="{% url 'home:home' %}"
+        ><img
+          src="{% static 'home/img/devlogo.png'%}"
+          alt=""
+          width="300px" /></a
+      ><br />
+      Orchestrating Software Success, from Start to Finish
+    </p>
+    <p class="page_heading"><span class="headi"> Assign Sprint </span></p>
+  </div>
+  <div class="page_form">
+    <form action="/assignedSprint/" method="post">
+      {% csrf_token %} {% comment %} fproject_name fproject_description
+      fcreated_by fproject_created_time fproject_gtihub_link fproject_phase {% endcomment %}
+      <div class="eleCont" style="display: none">
+        <label for="fproject_id">Project Name: </label>
+        
+        <input
+          type="text"
+          name="fproject_id"
+          id="fproject_id"
+          value="{{iden}}"
+        />
+      </div>
+
+      <div class="eleCont">
+        <label for="fsprint_to">fsprint_to: </label>
+        <br />
+        <input
+          type="text"
+          name="fsprint_to"
+          id="fsprint_to"
+          
+        />
+      </div>
+      <div class="eleCont">
+        <label for="fsprint_reviewer">fsprint_reviewer: </label>
+        <br />
+        <input
+          type="text"
+          name="fsprint_reviewer"
+          id="fsprint_reviewer"
+          
+        />
+      </div>
+      <div class="eleCont">
+        <label for="fsprint_title">fsprint_title: </label>
+        <br />
+        <input
+          type="text"
+          name="fsprint_title"
+          id="fsprint_title"
+          
+        />
+      </div>
+
+      
+      <div class="eleCont">
+        <label for="fdeadline_time">fdeadline_time: </label>
+        <br />
+        <input
+          type="text"
+          name="fdeadline_time"
+          id="fdeadline_time"
+          
+        />
+      </div>
+
+     
+      <div class="eleCont">
+        <label for="fsprint_detail">fsprint_detail: </label>
+        <br />
+        
+        {% comment %}
+        <input
+          type="text"
+          name="fproject_description"
+          id="fproject_description"
+        />
+        {% endcomment %}
+        <textarea
+          class="poppins-regular"
+          style="width: 30vw; height: 40vh; font-size: 1.5rem"
+          name="fsprint_detail"
+          id="fsprint_detail"
+        ></textarea>
+      </div>
+      <br />
+
+      <input type="submit" value="Submit" id="subm" />
+    </form>
+    <br />
+  </div>
+</div>
+{% endblock body %}

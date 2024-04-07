@@ -122,6 +122,29 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
+      <div class="dashNav">
+        <ul>
+            <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+              <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+            
+        </ul>
+        <div class="submenu hidden" id="profileSubmenu">
+          <ul>
+            <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+            <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+          </ul>
+        </div>
+    </div>
+    <script>
+      const btnEl = document.getElementById("profileSubmenu");
+
+
+      function profileSubmenu(){
+        btnEl.classList.toggle("hidden")
+        console.log("from submenu")
+      }
+    </script>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>

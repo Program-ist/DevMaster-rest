@@ -424,19 +424,42 @@ def review(request,pk):
 		messages.error(request, "Forbidden project")
 		return redirect('/dashboard/')
 	
+
+	# spreview = SprintReviewer.filter()
 	bgdatadev = BugData.objects.filter(bug_to=fuser,project=proj)
 	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
-	isMana = 0
-	sta = fuser.status_of_account
-	if sta == "MANAGER":
-		isMana = 1
+
+
+	all_project_bug = BugData.objects.filter(project=proj)
+	bug_set_of_members = set()
+	for i in all_project_bug:
+		bug_set_of_members.add(i.bug_reviewer)
+	
+
+	all_project_sprint = SprintData.objects.filter(project=proj)
+	sprint_set_of_members = set()
+	for i in all_project_sprint:
+		sprint_set_of_members.add(i.sprint_reviewer)
+
+
+	bugrev = BugReviewer.objects.all()
+	sprrev = SprintReviewer.objects.all()
+
 	di = {
 		'iden':pk,
-		'bgdatadev':bgdatadev,
-		'bgdataman': bgdataman,
-		'isMana': isMana
+		'all_project_bug':all_project_bug,
+		'all_project_sprint': all_project_sprint,
+		'bug_set_of_members': bug_set_of_members,
+		'sprint_set_of_members': sprint_set_of_members,
+		'username':fuser,
+		'bugrev':bugrev,
+		'sprrev':sprrev
 
 	}
+	sta = fuser.status_of_account
+	if sta == "MANAGER":
+		return render(request,"home/man_review.html",di)
+	
 	return render(request,"home/review.html",di)
 
 def details(request,pk):
@@ -460,10 +483,192 @@ def details(request,pk):
 		'iden':pk,
 		'bgdatadev':bgdatadev,
 		'bgdataman': bgdataman,
+		'username': fuser,
 		'isMana': isMana
 
 	}
 	return render(request,"home/details.html",di)
+
+
+def makeAnnouncement(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	di = {
+		'iden':pk
+	}
+	if request.method == 'POST':
+
+		fann_from = UserDetail.objects.get(user_name = username)
+		fproject = proj
+		fannouncement_msg = request.POST['fannouncement_msg']
+		ftime_of_message = int(datetime.now().timestamp())
+
+		temp = Announcement(ann_from = fann_from, project=fproject, announcement_msg=fannouncement_msg, time_of_message=ftime_of_message)
+		temp.save()
+		messages.success(request, "Announcement Made Successfully")
+		
+		# temp = ProjectDetail.objects.filter(project_name = fproject_name).all()
+		# for i in temp:
+		# 	ctemp_id = str(i.id)
+			
+		# url_val = "/projects/" + ctemp_id
+		url_val = "/projects/" + proj.id
+		
+		
+		return redirect(url_val,ctemp_id)
+	return render(request,"home/makeAnnouncement.html",di)
+
+
+def madeAnn(request):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	if request.method == 'POST':
+		fann_from = UserDetail.objects.get(user_name = usern)
+		fproject = request.POST['fproject_id']
+		fannouncement_msg = request.POST['fannouncement_msg']
+		ftime_of_message = int(datetime.now().timestamp())
+		proj = ProjectDetail.objects.get(id = fproject)
+		temp = Announcement(ann_from = fann_from, project=proj, announcement_msg=fannouncement_msg, time_of_message=ftime_of_message)
+		temp.save()
+		messages.success(request, "Announcement Made Successfully")
+		
+		# temp = ProjectDetail.objects.filter(project_name = fproject_name).all()
+		# for i in temp:
+		ctemp_id = str(proj.id)
+			
+		# url_val = "/projects/" + ctemp_id
+		url_val = "/projects/" + str(proj.id)
+		
+		
+		return redirect(url_val,ctemp_id)
+	return redirect("/dashboard/")
+
+
+def assignSprint(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	di = {
+		'iden':pk
+	}
+
+	
+
+	
+	return render(request,"home/assignSprint.html",di)
+
+def assignedSprint(request):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	if request.method == "POST":
+		fsprint_from = fuser
+		fsprint_to = request.POST['fsprint_to']
+		fsprint_reviewer = request.POST['fsprint_reviewer']
+		fproject_id = request.POST['fproject_id']
+		fsprint_title = request.POST['fsprint_title']
+		fsprint_detail = request.POST['fsprint_detail']
+		fsp_created_time = int(datetime.now().timestamp())
+		fdeadline_time = request.POST['fdeadline_time']
+		# fsubmitted_time = request.POST['fsubmitted_time']
+
+		proj = ProjectDetail.objects.get(id = fproject_id)
+		spto = UserDetail.objects.get(user_name = fsprint_to)
+		spreviewer = UserDetail.objects.get(user_name = fsprint_reviewer)
+
+		temp = SprintData(sprint_from = fsprint_from, sprint_to = spto, sprint_reviewer = spreviewer, project_id = fproject_id, sprint_title = fsprint_title, sprint_detail = fsprint_detail, sp_created_time = fsp_created_time, deadline_time = fdeadline_time)
+		temp.save()
+		ctemp_id = str(proj.id)
+			
+		# url_val = "/projects/" + ctemp_id
+		url_val = "/projects/" + str(proj.id) + "/sprint/"
+		
+		
+		return redirect(url_val,ctemp_id)
+	
+	return redirect("/dashboard/")
+
+
+
+
+
+
+
+def assignBug(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	di = {
+		'iden':pk
+	}
+
+	
+
+	
+	return render(request,"home/assignBug.html",di)
+
+def assignedBug(request):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	if request.method == "POST":
+		fbug_from = fuser
+		fbug_to = request.POST['fbug_to']
+		fbug_reviewer = request.POST['fbug_reviewer']
+		fproject_id = request.POST['fproject_id']
+		fbug_title = request.POST['fbug_title']
+		fbug_detail = request.POST['fbug_detail']
+		fbu_created_time = int(datetime.now().timestamp())
+		fdeadline_time = request.POST['fdeadline_time']
+		fbugreported_by = ""
+		# fsubmitted_time = request.POST['fsubmitted_time']
+
+		proj = ProjectDetail.objects.get(id = fproject_id)
+		bgto = UserDetail.objects.get(user_name = fbg_to)
+		bgreviewer = UserDetail.objects.get(user_name = fbg_reviewer)
+
+		temp = SprintData(bug_from = fbug_from, bug_to = bgto, bug_reviewer = bgreviewer, bugreported_by = fbugreported_by, bug_title = fbug_title, bug_detail = fbug_detail, bu_created_time = fbu_created_time, deadline_time = fdeadline_time)
+		temp.save()
+		ctemp_id = str(proj.id)
+			
+		# url_val = "/projects/" + ctemp_id
+		url_val = "/projects/" + str(proj.id) +'/bug/'
+		
+		
+		return redirect(url_val,ctemp_id)
+	
+	return redirect("/dashboard/")
+
+
+
+
+
+
+
+
 
 
 '''		LLM API		'''
