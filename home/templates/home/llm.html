@@ -68,19 +68,28 @@ LLM | DevMaster
         <div class="wholeBox">
         <div class="llmBox" id="riBox">
             
+
+            {% for i in ldata %}
+            
             <div class="msgFromUser" style="padding:0rem;margin-top: 0px;">
                 <p style="margin-bottom: 0px;">You:</p>
                 <p class=" bubble right" style="padding-left: 2.4rem;margin-top:0px;">
-                    What more functionalities could be added
+                    {{i.question_asked}}
                 </p>
             </div>
-        
+
             <div class="msgFromServer" style="padding: 0rem;">
                 <p style="margin-bottom: 0px;">LLM:</p>
                 <p class="bubblee left" style="padding-left: 2.4rem;margin-top:0px">
-                **Additional Functionalities for Auctioneer Software**<br><br>**Ownership Management:**<br><br>* **Fractional Ownership:** Allow users to purchase fractional shares of items, enabling group ownership with different levels of participation.<br>* **Co-Ownership Management:** Facilitate the sharing of ownership, responsibilities, and benefits among multiple users.<br>* **Ownership Transfer and Succession Planning:** Provide tools for seamless ownership transfer between users and inheritance planning.<br><br>**Item Management:**<br><br>* **Detailed Item Catalog:** Create a comprehensive catalog with detailed descriptions, images, and specifications of items for sale.<br>* **Item History Tracking:** Track the history of items, including previous auctions, ownership changes, and condition reports.<br>* **Item Appraisal and Certification:** Integrate with third-party appraisal and certification services to verify the authenticity and value of items.<br><br>**Auction Customization:**<br><br>* **Reserve Pricing:** Allow sellers to set minimum prices for items, ensuring they are not sold below a certain threshold.<br>* **Proxy Bidding:** Enable users to place bids on behalf of others, ensuring competitive pricing and anonymity.<br>* **Extended Warranty and Protection Plans:** Offer optional extended warranties and protection plans for purchased items.<br><br>**Community Features:**<br><br>* **User Profiles and Reputation:** Build a community by allowing users to create profiles and establish their reputation as buyers or sellers.<br>* **Item Discussions and Q&A:** Facilitate communication between users, allowing them to ask questions, share information, and build relationships.<br>* **Referral and Loyalty Programs:** Reward users for referring new members and participating in the platform.<br><br>**Analytics and Reporting:**<br><br>* **Sales Dashboard:** Provide sellers with real-time insights into auction performance, including sales data, conversion rates, and revenue generated.<br>* **Bidder Activity Analysis:** Track and analyze bidder behavior to identify patterns and optimize auction strategies.<br>* **Financial Reporting:** Generate detailed financial reports for accounting and tax purposes.<br><br>**Additional Enhancements:**<br><br>* **Mobile App:** Enhance accessibility by developing a mobile application for on-the-go auctioning and bidding.<br>* **Automated Bidding:** Integrate with automated bidding services to allow users to set pre-defined bidding limits.<br>* **Artificial Intelligence Integration:** Utilize AI to analyze bidding data, predict auction outcomes, and provide personalized recommendations.
+                    {% autoescape off %}
+                    {{i.answer_from_api}}
+                    {% endautoescape %}
             </p>
         </div>
+            
+            {% endfor %}
+
+
         <!-- <hr> -->
         
 

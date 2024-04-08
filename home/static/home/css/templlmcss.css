@@ -1,4 +1,4 @@
-.bubble {
+.chat_bubble {
   --r: 25px; /* the radius */
   --t: 30px; /* the size of the tail */
   
@@ -14,13 +14,13 @@
   background: linear-gradient(135deg,#FE6D00,#1384C5) border-box;
   color: #fff;
 }
-.left {
+.chat_left {
   --_d: 0%;
   border-left: var(--t) solid #0000;
   margin-right: var(--t);
   place-self: start;
 }
-.right {
+.chat_right {
   --_d: 100%;
   border-right: var(--t) solid #0000;
   margin-left: var(--t);

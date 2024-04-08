@@ -62,31 +62,81 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
+        <div class="dashNav">
+            <ul>
+                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+                  <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                    style="position:absolute;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                
+            </ul>
+            <div class="submenu hidden" id="profileSubmenu">
+              <ul>
+                <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+                <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+              </ul>
+            </div>
+        </div>
+        <script>
+          const btnEl = document.getElementById("profileSubmenu");
+    
+    
+          function profileSubmenu(){
+            btnEl.classList.toggle("hidden")
+            console.log("from submenu")
+          }
+        </script>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> {{na}}</span></p>
         </div>
         <div class="wholeBox">
         <div class="llmBox" id="riBox">
             
+
+            {% for i in cha %}
+            
+            {% if i.id == username %}
+            
+            {% endif %}
+            {% if i.msg_from_id == userid %}
             <div class="msgFromUser" style="padding:0rem;margin-top: 0px; margin-left:50vw;">
+                <p style="margin-bottom: 0px;">{{i.msg_from}}:</p>
+                <p class=" chat_bubble chat_right" style="padding-left: 2.4rem;margin-top:0px;">
+                {{i.msg}}
+                </p>
+            </div>
+            {% else %}
+            <div class="msgFromServer" style="padding: 0rem;">
+                <p style="margin-bottom: 0px;">{{i.msg_from}}:</p>
+                <p class="chat_bubble chat_left" style="padding-left: 2.4rem;margin-top:0px">
+                {{i.msg}}
+            </p>
+        </div>
+            {% endif %}
+
+            {% endfor %}
+
+
+
+
+            {% comment %} <div class="msgFromUser" style="padding:0rem;margin-top: 0px; margin-left:50vw;">
                 <p style="margin-bottom: 0px;">1testu:</p>
-                <p class=" bubble right" style="padding-left: 2.4rem;margin-top:0px;">
+                <p class=" chat_bubble chat_right" style="padding-left: 2.4rem;margin-top:0px;">
                 Have you all started to make the front page yet?
                 </p>
             </div>
         
             <div class="msgFromServer" style="padding: 0rem;">
                 <p style="margin-bottom: 0px;">3testu:</p>
-                <p class="bubble left" style="padding-left: 2.4rem;margin-top:0px">
+                <p class="chat_bubble chat_left" style="padding-left: 2.4rem;margin-top:0px">
                 Yeah, I have started making the api hooks required for the loading of the front page.
             </p>
         </div>
         <div class="msgFromServer" style="padding: 0rem;">
             <p style="margin-bottom: 0px;">4testu:</p>
-            <p class="bubble left" style="padding-left: 2.4rem;margin-top:0px">
+            <p class="chat_bubble chat_left" style="padding-left: 2.4rem;margin-top:0px">
             Yeah, I have started implementing the design of the frontpage.
         </p>
-    </div>
+    </div> {% endcomment %}
         <!-- <hr> -->
         
 

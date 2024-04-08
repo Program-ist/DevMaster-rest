@@ -149,7 +149,7 @@ LLM | DevMaster
         </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
           <div style="margin-bottom:2rem;display:flex;justify-content:space-around;">
-            <p><span class="btn-grad" >Assign Bug</span></p>
+            <p><a href="{% url 'home:assignBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Assign Bug</span></a></p>
             <p><span class="btn-grad" >Report a Bug</span></p>
             </div>
 
@@ -162,7 +162,7 @@ LLM | DevMaster
                 <ul>
             {% for j in all_project_bug %}
             {% if i == j.bug_to %}
-            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
+            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="bugAPI(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
                  {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                 </li>
             {% endif %}
@@ -199,6 +199,50 @@ LLM | DevMaster
     function myfunc(){
         console.log("helloooooo");
     }
+</script>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+var url = 'http://127.0.0.1:8000/bug_done/';
+
+
+function bugAPI(clicked_id){
+  console.log(clicked_id)
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({ 'clicked_id': clicked_id })
+
+
+}
+).then(function (response) {
+     location.reload()
+    console.log("doneeee")
+
+})
+} 
+
+
+
+
 </script>
 
 {% endblock body%}

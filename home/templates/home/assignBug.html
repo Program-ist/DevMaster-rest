@@ -41,12 +41,12 @@ DevMaster {% endblock title %} {% block head %}
     <p class="page_heading"><span class="headi"> Assign Bug </span></p>
   </div>
   <div class="page_form">
-    <form action="/assignedSprint/" method="post">
+    <form action="/assignedBug/" method="post">
       {% csrf_token %} {% comment %} fproject_name fproject_description
       fcreated_by fproject_created_time fproject_gtihub_link fproject_phase {% endcomment %}
       <div class="eleCont" style="display: none">
         <label for="fproject_id">Project Name: </label>
-        
+
         <input
           type="text"
           name="fproject_id"
@@ -56,53 +56,31 @@ DevMaster {% endblock title %} {% block head %}
       </div>
 
       <div class="eleCont">
-        <label for="fsprint_to">fsprint_to: </label>
+        <label for="fbug_to">Bug To: </label>
         <br />
-        <input
-          type="text"
-          name="fsprint_to"
-          id="fsprint_to"
-          
-        />
+        <input type="text" name="fbug_to" id="fbug_to" />
       </div>
       <div class="eleCont">
-        <label for="fsprint_reviewer">fsprint_reviewer: </label>
+        <label for="fbug_reviewer">Bug Reviewer: </label>
         <br />
-        <input
-          type="text"
-          name="fsprint_reviewer"
-          id="fsprint_reviewer"
-          
-        />
+        <input type="text" name="fbug_reviewer" id="fbug_reviewer" />
       </div>
       <div class="eleCont">
-        <label for="fsprint_title">fsprint_title: </label>
+        <label for="fbug_title">Bug Title: </label>
         <br />
-        <input
-          type="text"
-          name="fsprint_title"
-          id="fsprint_title"
-          
-        />
+        <input type="text" name="fbug_title" id="fbug_title" />
       </div>
 
-      
       <div class="eleCont">
-        <label for="fdeadline_time">fdeadline_time: </label>
+        <label for="fdeadline_time">Deadline_time: </label>
         <br />
-        <input
-          type="text"
-          name="fdeadline_time"
-          id="fdeadline_time"
-          
-        />
+        <input type="text" name="fdeadline_time" id="fdeadline_time" />
       </div>
 
-     
       <div class="eleCont">
-        <label for="fsprint_detail">fsprint_detail: </label>
+        <label for="fbug_detail">Bug detail: </label>
         <br />
-        
+
         {% comment %}
         <input
           type="text"
@@ -113,8 +91,8 @@ DevMaster {% endblock title %} {% block head %}
         <textarea
           class="poppins-regular"
           style="width: 30vw; height: 40vh; font-size: 1.5rem"
-          name="fsprint_detail"
-          id="fsprint_detail"
+          name="fbug_detail"
+          id="fbug_detail"
         ></textarea>
       </div>
       <br />

@@ -66,7 +66,7 @@ LLM | DevMaster
         
         transition: 0.5s;
       }
-      .list ul li:hover span {
+ /*     .list ul li:hover span {
         color: #111;
       }
        .list ul li:before {
@@ -81,7 +81,7 @@ LLM | DevMaster
       }
       .list ul li:hover:before {
         transform: scaleX(1);
-      } 
+      } */
 </style>
 <style>
     .mkdbutt{
@@ -163,7 +163,17 @@ LLM | DevMaster
             {% comment %} <li style="display:flex;justify-content: space-between;"><span style = "width:80%;">{{j.sprint_title}}</span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
               </li> {% endcomment %}
-              <li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
+              <li style="display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.sprint_title}}</span>
+                  <span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  </span>
+                </span>
+                <span style="color:white;text-decoration:none;" id={{j.id}} onclick="sprintAPI(this.id)">
+                  <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">
+                    Mark as done
+                  </span>
+                </span>
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
             {% endif %}
@@ -199,5 +209,48 @@ LLM | DevMaster
         console.log("helloooooo");
     }
 </script>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
 
+var url = 'http://127.0.0.1:8000/sprint_done/';
+
+
+function sprintAPI(clicked_id){
+  console.log(clicked_id)
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({ 'clicked_id': clicked_id })
+
+
+}
+).then(function (response) {
+     location.reload()
+    console.log("doneeee")
+
+})
+} 
+
+
+
+
+</script>
 {% endblock body%}

@@ -2,27 +2,20 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 from django.http import JsonResponse
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import *
 from .geminillmapi import gemini_result
-# Create your views here.
-
-# @login_required
-
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .models import *
 from django.db.models import Avg, Max, Min, Sum
-
 from datetime import datetime
-
 from django.conf.urls.static import static
-
 import re
+
 '''   Home Page  '''
 def home(request):
 	usern = "notLoggedIn"
@@ -302,15 +295,20 @@ def chat(request,pk):
 	cha = ChatData.objects.filter(project=proj)
 	arg1 = ChatData.objects.filter(project=proj).aggregate(Max('time_of_message'))
 	arg1 = arg1['time_of_message__max']
-	arg1 = int(arg1)
+	try:
+		arg1 = int(arg1)
+	except:
+		arg1 = 0
 	sta = fuser.status_of_account
 	
 
 	di = {
 		'iden':pk,
 		'cha':cha,
-		'username':usern,
-		'highest_time':arg1
+		'username':fuser.user_name,
+		'userid':fuser.id,
+		'highest_time':arg1,
+		'na':proj.project_name
 		
 	}
 	return render(request, "home/chat.html" ,di)
@@ -329,10 +327,15 @@ def llm(request,pk):
 
 	ldata = LlmData.objects.filter(user=fuser,project=proj)
 	na = proj.project_name
+
+
+	
+
+
 	di = {
 		'iden':pk,
 		'ldata':ldata,
-		
+		'username':fuser.user_name,
 		'na':na
 		
 
@@ -643,14 +646,18 @@ def assignedBug(request):
 		fbug_detail = request.POST['fbug_detail']
 		fbu_created_time = int(datetime.now().timestamp())
 		fdeadline_time = request.POST['fdeadline_time']
-		fbugreported_by = ""
+
+		try:
+			fbugreported_by = request.POST['fbugreported_by']
+		except:
+			fbugreported_by = ReportBug.objects.get(id = 1)
 		# fsubmitted_time = request.POST['fsubmitted_time']
 
 		proj = ProjectDetail.objects.get(id = fproject_id)
-		bgto = UserDetail.objects.get(user_name = fbg_to)
-		bgreviewer = UserDetail.objects.get(user_name = fbg_reviewer)
+		bgto = UserDetail.objects.get(user_name = fbug_to)
+		bgreviewer = UserDetail.objects.get(user_name = fbug_reviewer)
 
-		temp = SprintData(bug_from = fbug_from, bug_to = bgto, bug_reviewer = bgreviewer, bugreported_by = fbugreported_by, bug_title = fbug_title, bug_detail = fbug_detail, bu_created_time = fbu_created_time, deadline_time = fdeadline_time)
+		temp =BugData(bug_from = fbug_from, bug_to = bgto, bug_reviewer = bgreviewer,bug_reported_by = fbugreported_by ,bug_title = fbug_title, bug_detail = fbug_detail, bu_created_time = fbu_created_time, deadline_time = fdeadline_time,project = proj)
 		temp.save()
 		ctemp_id = str(proj.id)
 			
@@ -675,6 +682,28 @@ def assignedBug(request):
 
 @api_view(['POST'])
 def llm_api(request):
+
+	a = "ans"
+	a = a.replace("\n","<br>")
+	test_str = a 
+	test_sub = "*"
+	res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)]
+	fla = 0
+	for i in reversed(res):
+		if fla % 2 == 0:
+			test_str =  test_str[:i+1] + "" + test_str[i+2:]
+			test_str = test_str[:i] + "</b>" + test_str[i+1:]
+			fla += 1
+		elif fla % 2 == 1:
+			test_str = test_str[:i+1] + "" + test_str[i+2:]
+			test_str = test_str[:i] + "<b>" + test_str[i+1:]
+			fla += 1
+	test_str = test_str.replace("*","")
+
+
+	
+
+
 	d = request.data
 
 	funcs = ""
@@ -686,6 +715,40 @@ def llm_api(request):
 		'ans':ans
 	}
 	return Response(an)
+
+	
+	'''
+
+	a = a.replace("\n", "<br>")
+
+
+	test_str = a
+	test_sub = "**"
+
+	res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)]
+
+
+	fla= 0
+
+	for i in reversed(res):
+    
+    	if fla % 2 == 0:
+        	test_str = test_str[:i+1] + "" + test_str[i+2:]
+        	test_str = test_str[:i] + "</b>" + test_str[i+1:]
+        	fla += 1
+        
+    	elif fla % 2 == 1:
+        	test_str = test_str[:i+1] + "" + test_str[i+2:]
+        	test_str = test_str[:i] + "<b>" + test_str[i+1:]
+        	fla += 1
+        
+	print(test_str)
+
+	'''
+
+
+
+
 	'''
 	test_str = "I **like** **bananas** bananas"
 
@@ -933,3 +996,24 @@ def llm_ans(request):
 	return Response(answer)
 	
 
+@api_view(['POST'])
+def sprint_done(request):
+	da = request.data
+	a = SprintData.objects.get(id = da['clicked_id'])
+	a.submitted_time = int(datetime.now().timestamp())
+	a.save()
+	done = {
+		'done':'done'
+	}
+	return Response(done)
+
+@api_view(['POST'])
+def bug_done(request):
+	da = request.data
+	a = BugData.objects.get(id = da['clicked_id'])
+	a.submitted_time = int(datetime.now().timestamp())
+	a.save()
+	done = {
+		'done':'done'
+	}
+	return Response(done)
