@@ -24,6 +24,8 @@ urlpatterns = [
     path('assignedSprint/',views.assignedSprint, name = "assignedSprint"),
     path('projects/<int:pk>/assignBug/',views.assignBug, name = "assignBug"),
     path('assignedBug/',views.assignedBug, name = "assignedBug"),
+    path('projects/<int:pk>/reportBug/',views.reportBug, name = "reportBug"),
+    path('reportedBug/',views.reportedBug, name = "reportedBug"),
     path('sprint_done/',views.sprint_done, name="sprint_done"),
     path('bug_done/',views.bug_done, name="bug_done"),
     path('projects/<int:pk>/sprint/',views.sprint, name = "sprint"),
@@ -38,7 +40,7 @@ urlpatterns = [
 
     path('ap', views.ap, name = "ap"),
 	path('api/', views.apiOverview, name="api-overview"),
-    path('testbase/',views.testbase, name = 'testbase'),
+    
     path('logout/', LogoutView.as_view(next_page= settings.LOGOUT_REDIRECT_URL), name='logout'),
     path('llm', views.llm, name = "llm"),
     # path('logout',views.logout, name = 'logout'),
@@ -69,19 +71,3 @@ urlpatterns = [
 	# path('task-delete/<str:pk>/', views.taskDelete, name="task-delete"),
 ]
 
-'''
-##login
-##register
-
-(simple)
-project details
-llm-api
-
-
-(setInterval)
-sprint_data
-bug_data
-chat message
-announcement
-
-'''

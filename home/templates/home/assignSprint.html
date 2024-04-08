@@ -56,27 +56,27 @@ DevMaster {% endblock title %} {% block head %}
       </div>
 
       <div class="eleCont">
-        <label for="fsprint_to">fsprint_to: </label>
+        <label for="fsprint_to">Sprint To: </label>
         <br />
-        <input
-          type="text"
-          name="fsprint_to"
-          id="fsprint_to"
-          
-        />
+        <select name="fsprint_to" id="fsprint_to" style="width:30vw;text-align:center;height:30px;">
+          <option value="" selected="">-------------</option>
+        {% for i in projMembers %}
+        <option value="{{i.user_id}}">{{i.user}}</option>
+        {% endfor %}
+      </select>
       </div>
       <div class="eleCont">
-        <label for="fsprint_reviewer">fsprint_reviewer: </label>
+        <label for="fsprint_reviewer">Sprint Reviewer: </label>
         <br />
-        <input
-          type="text"
-          name="fsprint_reviewer"
-          id="fsprint_reviewer"
-          
-        />
+        <select name="fsprint_reviewer" id="fsprint_reviewer" style="width:30vw;text-align:center;height:30px;">
+          <option value="" selected="">-------------</option>
+        {% for i in projMembers %}
+        <option value="{{i.user_id}}">{{i.user}}</option>
+        {% endfor %}
+      </select>
       </div>
       <div class="eleCont">
-        <label for="fsprint_title">fsprint_title: </label>
+        <label for="fsprint_title">Sprint Title: </label>
         <br />
         <input
           type="text"
@@ -85,22 +85,8 @@ DevMaster {% endblock title %} {% block head %}
           
         />
       </div>
-
-      
       <div class="eleCont">
-        <label for="fdeadline_time">fdeadline_time: </label>
-        <br />
-        <input
-          type="text"
-          name="fdeadline_time"
-          id="fdeadline_time"
-          
-        />
-      </div>
-
-     
-      <div class="eleCont">
-        <label for="fsprint_detail">fsprint_detail: </label>
+        <label for="fsprint_detail">Sprint Detail: </label>
         <br />
         
         {% comment %}
@@ -117,6 +103,16 @@ DevMaster {% endblock title %} {% block head %}
           id="fsprint_detail"
         ></textarea>
       </div>
+
+      
+      <div class="eleCont">
+        <label for="fdeadline_time">Deadline Time: </label>
+        <br />
+        <input type="datetime-local" id="fdeadline_time" name="fdeadline_time" style="text-align:center;">
+      </div>
+
+     
+      
       <br />
 
       <input type="submit" value="Submit" id="subm" />

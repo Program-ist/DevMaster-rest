@@ -15,6 +15,10 @@ from django.db.models import Avg, Max, Min, Sum
 from datetime import datetime
 from django.conf.urls.static import static
 import re
+import ciso8601
+import time
+
+
 
 '''   Home Page  '''
 def home(request):
@@ -25,12 +29,6 @@ def home(request):
 	diction = {'usern':usern}
 	# messages.error(request,"Wrong Credentials")
 	return render(request, 'home/index.html',diction)
-
-
-
-
-def testbase(request):
-	return render(request,'home/testbase.html')
 
 
 
@@ -53,15 +51,9 @@ def LoginView(request):
 		
 	
 '''		Code to Logout	'''
-# # {% url 'logout' %}
-# def LogoutView(request):
-# 	logout(request)
-# 	return redirect('login')
-
 def logoutUser(request):
     logout(request)
     return redirect('/loginview/')
-
 
 
 '''		Registration Page	'''
@@ -116,6 +108,7 @@ def SignupView(request):
 	
 	return render(request, 'home/signup.html')
 
+
 '''		Dashboard		'''
 @login_required
 def dashboard(request):
@@ -160,15 +153,11 @@ def dashboard(request):
 	# return render(request, tsurl, val)
 	return render(request, "home/index.html")
 
-
+'''		ADMIN 	'''
 def ad(request):
 	return render(request, 'home/ad.html')
-
 def adProject(request):
 	return render(request,'home/adProject.html')
-
-
-
 
 
 '''		EditProfile		'''
@@ -240,16 +229,12 @@ def createProjectt(request):
 	return render(request, "home/createProject.html")
 		
 
-
+'''		Project Members		'''
 def members(request,pk):
 	pass
 
+
 '''		Page for Individual Project	'''
-
-
-
-
-
 @login_required
 def projects(request,pk):
 	fuser = request.user
@@ -281,6 +266,8 @@ def projects(request,pk):
 	return render(request,"home/dev_projects.html",di)
 
 
+'''		Chat Page	'''
+@login_required
 def chat(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -314,6 +301,8 @@ def chat(request,pk):
 	return render(request, "home/chat.html" ,di)
 
 
+'''		LLM Page	'''
+@login_required
 def llm(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -343,6 +332,9 @@ def llm(request,pk):
 
 	return render(request, "home/llm.html",di)
 
+
+'''		Sprint Page	'''
+@login_required
 def sprint(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -380,7 +372,8 @@ def sprint(request,pk):
 	return render(request, "home/dev_sprint.html", di)
 
 
-
+'''		Bug Page	'''
+@login_required
 def bug(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -415,7 +408,8 @@ def bug(request,pk):
 	return render(request,"home/bug.html",di)
 
 
-	
+'''		Review Page	'''
+@login_required
 def review(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -465,6 +459,9 @@ def review(request,pk):
 	
 	return render(request,"home/review.html",di)
 
+
+'''		Project Details Page	'''
+@login_required
 def details(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -492,7 +489,8 @@ def details(request,pk):
 	}
 	return render(request,"home/details.html",di)
 
-
+'''		Make Announcement Page	'''
+@login_required
 def makeAnnouncement(request,pk):
 	fuser = request.user
 	usern = fuser.username
@@ -528,7 +526,6 @@ def makeAnnouncement(request,pk):
 		return redirect(url_val,ctemp_id)
 	return render(request,"home/makeAnnouncement.html",di)
 
-
 def madeAnn(request):
 	fuser = request.user
 	usern = fuser.username
@@ -555,25 +552,34 @@ def madeAnn(request):
 		return redirect(url_val,ctemp_id)
 	return redirect("/dashboard/")
 
-
+'''		Assign Sprint Page	'''
+@login_required
 def assignSprint(request,pk):
 	fuser = request.user
 	usern = fuser.username
 	fuser = UserDetail.objects.get(user_name = usern)
 
 	proj = ProjectDetail.objects.get(id = pk)
-
+	projMembers = ProjectMembers.objects.filter(project=proj)
 	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
 		messages.error(request, "Forbidden project")
 		return redirect('/dashboard/')
 	di = {
-		'iden':pk
+		'iden':pk,
+		'projMembers':projMembers
 	}
 
-	
-
-	
 	return render(request,"home/assignSprint.html",di)
+
+
+''' str to timestamp
+import ciso8601
+t = "2024-04-26 13:07"
+ts = ciso8601.parse_datetime(t)
+# to get time in seconds:
+print(time.mktime(ts.timetuple()))
+'''
+
 
 def assignedSprint(request):
 	fuser = request.user
@@ -589,11 +595,20 @@ def assignedSprint(request):
 		fsprint_detail = request.POST['fsprint_detail']
 		fsp_created_time = int(datetime.now().timestamp())
 		fdeadline_time = request.POST['fdeadline_time']
+		fdeadline_time = fdeadline_time.replace("T"," ")
+		t = fdeadline_time
+		ts = ciso8601.parse_datetime(t)
+		fdeadline_time = time.mktime(ts.timetuple())
+		fdeadline_time = str(fdeadline_time)
+		fdeadline_time = float(fdeadline_time)
+		fdeadline_time = int(fdeadline_time)
+		fdeadline_time = str(fdeadline_time)
 		# fsubmitted_time = request.POST['fsubmitted_time']
+		
 
 		proj = ProjectDetail.objects.get(id = fproject_id)
-		spto = UserDetail.objects.get(user_name = fsprint_to)
-		spreviewer = UserDetail.objects.get(user_name = fsprint_reviewer)
+		spto = UserDetail.objects.get(id = fsprint_to)
+		spreviewer = UserDetail.objects.get(id = fsprint_reviewer)
 
 		temp = SprintData(sprint_from = fsprint_from, sprint_to = spto, sprint_reviewer = spreviewer, project_id = fproject_id, sprint_title = fsprint_title, sprint_detail = fsprint_detail, sp_created_time = fsp_created_time, deadline_time = fdeadline_time)
 		temp.save()
@@ -608,28 +623,23 @@ def assignedSprint(request):
 	return redirect("/dashboard/")
 
 
-
-
-
-
-
+'''		Assign Bug Page	'''
+@login_required
 def assignBug(request,pk):
 	fuser = request.user
 	usern = fuser.username
 	fuser = UserDetail.objects.get(user_name = usern)
 
 	proj = ProjectDetail.objects.get(id = pk)
-
+	projMembers = ProjectMembers.objects.filter(project=proj)
 	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
 		messages.error(request, "Forbidden project")
 		return redirect('/dashboard/')
 	di = {
-		'iden':pk
+		'iden':pk,
+		'projMembers': projMembers
 	}
 
-	
-
-	
 	return render(request,"home/assignBug.html",di)
 
 def assignedBug(request):
@@ -670,12 +680,60 @@ def assignedBug(request):
 	return redirect("/dashboard/")
 
 
+'''		Assign Bug Page	'''
+@login_required
+def reportBug(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
 
+	proj = ProjectDetail.objects.get(id = pk)
 
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	di = {
+		'iden':pk
+	}
 
+	return render(request,"home/reportBug.html",di)
 
+def reportedBug(request):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
 
+	if request.method == "POST":
+		fbug_from = fuser
+		fbug_to = request.POST['fbug_to']
+		fbug_reviewer = request.POST['fbug_reviewer']
+		fproject_id = request.POST['fproject_id']
+		fbug_title = request.POST['fbug_title']
+		fbug_detail = request.POST['fbug_detail']
+		fbu_created_time = int(datetime.now().timestamp())
+		fdeadline_time = request.POST['fdeadline_time']
 
+		try:
+			fbugreported_by = request.POST['fbugreported_by']
+		except:
+			fbugreported_by = ReportBug.objects.get(id = 1)
+		# fsubmitted_time = request.POST['fsubmitted_time']
+
+		proj = ProjectDetail.objects.get(id = fproject_id)
+		bgto = UserDetail.objects.get(user_name = fbug_to)
+		bgreviewer = UserDetail.objects.get(user_name = fbug_reviewer)
+
+		temp =BugData(bug_from = fbug_from, bug_to = bgto, bug_reviewer = bgreviewer,bug_reported_by = fbugreported_by ,bug_title = fbug_title, bug_detail = fbug_detail, bu_created_time = fbu_created_time, deadline_time = fdeadline_time,project = proj)
+		temp.save()
+		ctemp_id = str(proj.id)
+			
+		# url_val = "/projects/" + ctemp_id
+		url_val = "/projects/" + str(proj.id) +'/bug/'
+		
+		
+		return redirect(url_val,ctemp_id)
+	
+	return redirect("/dashboard/")
 
 
 '''		LLM API		'''
@@ -717,75 +775,6 @@ def llm_api(request):
 	return Response(an)
 
 	
-	'''
-
-	a = a.replace("\n", "<br>")
-
-
-	test_str = a
-	test_sub = "**"
-
-	res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)]
-
-
-	fla= 0
-
-	for i in reversed(res):
-    
-    	if fla % 2 == 0:
-        	test_str = test_str[:i+1] + "" + test_str[i+2:]
-        	test_str = test_str[:i] + "</b>" + test_str[i+1:]
-        	fla += 1
-        
-    	elif fla % 2 == 1:
-        	test_str = test_str[:i+1] + "" + test_str[i+2:]
-        	test_str = test_str[:i] + "<b>" + test_str[i+1:]
-        	fla += 1
-        
-	print(test_str)
-
-	'''
-
-
-
-
-	'''
-	test_str = "I **like** **bananas** bananas"
-
-# initializing substring 
-test_sub = "**"
-
-# printing original string 
-print("The original string is : " + test_str) 
-
-# printing substring 
-print("The substring to find : " + test_sub) 
-
-# using list comprehension + startswith() 
-# All occurrences of substring in string 
-res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)] 
-
-# printing result 
-print("The start indices of the substrings are : " + str(res)) 
-fla = 2
-for i in reversed(res):
-    print(fla)
-    if fla % 2 == 0:
-        test_str = test_str[:i+1] + "" + test_str[i+2:]
-        test_str = test_str[:i] + "</br>" + test_str[i+1:]
-        fla += 1
-        print(fla)
-    elif fla % 2 == 1:
-        test_str = test_str[:i+1] + "" + test_str[i+2:]
-        test_str = test_str[:i] + "<br>" + test_str[i+1:]
-        fla += 1
-        print(fla)
-    
-print(test_str)
-
-	'''
-
-
 
 
 
@@ -804,8 +793,6 @@ def post_chat(request):
 		'ans':"donnnnnn"
 	}
 	return Response(an)
-
-
 
 
 @login_required
@@ -853,26 +840,6 @@ def taskCreate(request):
 
 
 
-
-
-
-'''		API to see update in dashboard'''
-'''		
-
-Income:
-announcement_unix
-sprint_unix
-chat_unix
-
-Return:
-announcement_bit
-sprint_bit
-chat_bit
-
-
-
-'''
-
 @api_view(['POST'])
 def dash_check(request):
 	income_data = eval(request.data)
@@ -898,17 +865,7 @@ def dash_check(request):
 	return Response(json.dumps(send_data))
 
 
-'''
 
-Income
-chat_unix
-
-Return
-chat_bit
-new_chat_unix
-data
-
-'''
 @api_view(['POST'])
 def chat_check(request):
 	d = request.data
@@ -938,16 +895,7 @@ def chat_check(request):
 
 
 
-'''
-Income:
-announcement_unix
 
-Return:
-announcement_bit
-new_announcement_unix
-announcement_data
-
-'''
 
 
 @api_view(['POST'])
@@ -996,6 +944,10 @@ def llm_ans(request):
 	return Response(answer)
 	
 
+
+
+
+'''		API for Sprint (Mark as Done)	'''
 @api_view(['POST'])
 def sprint_done(request):
 	da = request.data
@@ -1007,6 +959,7 @@ def sprint_done(request):
 	}
 	return Response(done)
 
+'''		API for Bug (Mark as Done)	'''
 @api_view(['POST'])
 def bug_done(request):
 	da = request.data

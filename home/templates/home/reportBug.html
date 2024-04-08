@@ -38,7 +38,7 @@ DevMaster {% endblock title %} {% block head %}
       ><br />
       Orchestrating Software Success, from Start to Finish
     </p>
-    <p class="page_heading"><span class="headi"> Assign Bug </span></p>
+    <p class="page_heading"><span class="headi"> Report Bug </span></p>
   </div>
   <div class="page_form">
     <form action="/assignedBug/" method="post">
@@ -58,22 +58,12 @@ DevMaster {% endblock title %} {% block head %}
       <div class="eleCont">
         <label for="fbug_to">Bug To: </label>
         <br />
-        <select name="fbug_to" id="fbug_to" style="width:30vw;text-align:center;height:30px;">
-          <option value="" selected="">-------------</option>
-        {% for i in projMembers %}
-        <option value="{{i.user_id}}">{{i.user}}</option>
-        {% endfor %}
-      </select>
+        <input type="text" name="fbug_to" id="fbug_to" />
       </div>
       <div class="eleCont">
         <label for="fbug_reviewer">Bug Reviewer: </label>
         <br />
-        <select name="fbug_reviewer" id="fbug_reviewer" style="width:30vw;text-align:center;height:30px;">
-          <option value="" selected="">-------------</option>
-        {% for i in projMembers %}
-        <option value="{{i.user_id}}">{{i.user}}</option>
-        {% endfor %}
-      </select>
+        <input type="text" name="fbug_reviewer" id="fbug_reviewer" />
       </div>
       <div class="eleCont">
         <label for="fbug_title">Bug Title: </label>
@@ -81,7 +71,11 @@ DevMaster {% endblock title %} {% block head %}
         <input type="text" name="fbug_title" id="fbug_title" />
       </div>
 
-      
+      <div class="eleCont">
+        <label for="fdeadline_time">Deadline_time: </label>
+        <br />
+        <input type="text" name="fdeadline_time" id="fdeadline_time" />
+      </div>
 
       <div class="eleCont">
         <label for="fbug_detail">Bug detail: </label>
@@ -100,11 +94,6 @@ DevMaster {% endblock title %} {% block head %}
           name="fbug_detail"
           id="fbug_detail"
         ></textarea>
-      </div>
-      <div class="eleCont">
-        <label for="fdeadline_time">Deadline_time: </label>
-        <br />
-        <input type="datetime-local" id="fdeadline_time" name="fdeadline_time" style="text-align:center;">
       </div>
       <br />
 

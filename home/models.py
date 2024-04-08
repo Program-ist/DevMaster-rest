@@ -84,6 +84,7 @@ class ReportBug(models.Model):
     bug_by = models.ForeignKey(UserDetail, null=True, on_delete = models.SET_NULL)
     project = models.ForeignKey(ProjectDetail, on_delete = models.CASCADE)
     bug_by_detail = models.TextField()
+    addressed = models.TextField(max_length = 5, defaul = "")
 
 
 class BugData(models.Model):
