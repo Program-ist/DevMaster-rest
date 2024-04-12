@@ -316,8 +316,14 @@ def llm(request,pk):
 
 	ldata = LlmData.objects.filter(user=fuser,project=proj)
 	na = proj.project_name
+	try:
+		proj_func = ProjectFunctionalities.objects.get(project=proj)
+	except:
+		proj_func = None
 
 
+
+	sprint = SprintData.objects.filter(project=proj)
 	
 
 
@@ -325,7 +331,12 @@ def llm(request,pk):
 		'iden':pk,
 		'ldata':ldata,
 		'username':fuser.user_name,
-		'na':na
+		'na':na,
+		'proj':proj,
+		'proj_func':proj_func,
+		'sprint':sprint,
+		
+
 		
 
 	}
@@ -741,10 +752,24 @@ def reportedBug(request):
 @api_view(['POST'])
 def llm_api(request):
 
-	a = "ans"
+	us = request.user
+	fusern = us.username
+	fuser = UserDetail.objects.get(user_name = fusern)
+	
+
+
+	d = request.data
+	pk = d['pk']
+	funcs = ""
+	for i in d['project_func']:
+		funcs = " "+funcs + i +","
+	# questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs + " in "+d['project_phase'] + " phase. "+ d['quest']
+	questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs +". "+ d['quest']
+	ans = gemini_result(questi)
+	a = ans
 	a = a.replace("\n","<br>")
 	test_str = a 
-	test_sub = "*"
+	test_sub = "**"
 	res = [i for i in range(len(test_str)) if test_str.startswith(test_sub, i)]
 	fla = 0
 	for i in reversed(res):
@@ -757,21 +782,15 @@ def llm_api(request):
 			test_str = test_str[:i] + "<b>" + test_str[i+1:]
 			fla += 1
 	test_str = test_str.replace("*","")
+	ans = test_str
 
+	temp = LlmData(user=fuser ,question_asked=d['quest'],project_id=d['pk'],answer_from_api=ans,time_of_message=int(datetime.now().timestamp()))
+	temp.save()
 
-	
-
-
-	d = request.data
-
-	funcs = ""
-	for i in d['project_func']:
-		funcs = funcs + i +","
-	questi = d['project_name'] +" which is "+ d['project_details'] +" with functionalities "+ funcs + " in "+d['project_phase'] + " phase. "+ d['quest']
-	ans = gemini_result(questi)
 	an = {
 		'ans':ans
 	}
+	print(ans)
 	return Response(an)
 
 	

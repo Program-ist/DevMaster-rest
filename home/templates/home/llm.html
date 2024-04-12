@@ -1,142 +1,306 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
-LLM | DevMaster
-{% endblock title %}
-
-{% block head %}
+{% extends "base.html" %} {% load static %} {% block title %} LLM | DevMaster {%endblock title %} {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'home/css/llm.css'%}" />
 
 <style>
-    .headi {
-        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  .headi {
+    /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
            */
-        background: rgb(17, 0, 36);
-        background: linear-gradient(90deg,
-                rgba(17, 0, 36, 1) 0%,
-                rgba(9, 38, 121, 1) 26%,
-                rgba(0, 255, 171, 1) 100%);
-        align-self: center;
-        background-clip: border-box;
-        -webkit-text-fill-color: transparent;
-        -webkit-background-clip: text;
-        text-align: center;
+    background: rgb(17, 0, 36);
+    background: linear-gradient(
+      90deg,
+      rgba(17, 0, 36, 1) 0%,
+      rgba(9, 38, 121, 1) 26%,
+      rgba(0, 255, 171, 1) 100%
+    );
+    align-self: center;
+    background-clip: border-box;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    text-align: center;
 
-        font-size: 3.5rem;
-        font-weight: bold;
-        margin-top: 0px;
-    }
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-top: 0px;
+  }
 
-    .page_heading {
-        text-align: center;
-    }
+  .page_heading {
+    text-align: center;
+  }
+  #myModal input {
+    width: 30vw;
+    height: 3rem;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  #myModal {
+    font-size: 1.5rem;
+  }
+  #myModal textarea {
+    width: 30vw;
+    height: 30vh;
+    border-radius: 5px;
+  }
 </style>
-{% endblock head %}
 
-
-{% block body %}
+<script src="{% static 'home/css/llmClass.js'%}" defer></script>
+{% endblock head %} {% block body %}
 
 <div class="wholeConatiner">
-    <div class="leftBox" >
-        <div class="logo" style="text-align: center;background-color: #394647;background-color: #0567e7;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;">
-            <a href="{% url 'home:dashboard' %}">
-                <img src="{% static 'home/img/whitedevlogo.png'%}" width="200px" alt="logo"
-                    style="margin-top:2.5rem;margin-bottom:1.5rem;" /></a>
-        </div>
-        <!-- <hr id="insiderHR"> -->
-
-        <div class="menuList">
-            <ul>
-                <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
-                <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
-                <li class="current"><a href="{% url 'home:llm' iden %}">LLM</a></li>
-                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
-                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
-                <li><a href="{% url 'home:review' iden %}">Review</a></li>
-                <li><a href="{% url 'home:review' iden %}">Details</a></li>
-                <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
-
-            </ul>
-
-        </div>
+  <div class="leftBox">
+    <div
+      class="logo"
+      style="
+        text-align: center;
+        background-color: #394647;
+        background-color: #0567e7;
+        border-bottom-left-radius: 35px;
+        border-bottom-right-radius: 35px;
+      "
+    >
+      <a href="{% url 'home:dashboard' %}">
+        <img
+          src="{% static 'home/img/whitedevlogo.png'%}"
+          width="200px"
+          alt="logo"
+          style="margin-top: 2.5rem; margin-bottom: 1.5rem"
+      /></a>
     </div>
+    <!-- <hr id="insiderHR"> -->
 
-    <div class="rightBox" >
-        <div class="dashNav">
-            <ul>
-                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
-                  <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                    style="position:absolute;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
-                
-            </ul>
-            <div class="submenu hidden" id="profileSubmenu">
-              <ul>
-                <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
-                <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
-              </ul>
-            </div>
+    <div class="menuList">
+      <ul>
+        <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
+        <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
+        <li class="current"><a href="{% url 'home:llm' iden %}">LLM</a></li>
+        <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+        <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+        <li><a href="{% url 'home:review' iden %}">Review</a></li>
+        <li><a href="{% url 'home:review' iden %}">Details</a></li>
+        <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rightBox">
+    <div class="dashNav">
+      <ul>
+        <li style="padding-top: 6px; text-align: right">
+          Hello {{username}}
+          <span style="margin-left: 2rem; margin-right: 3rem">
+            <img
+              src="{% static 'home/img/acc_cir.svg'%}"
+              width="35px"
+              alt="logo"
+              style="position: absolute; cursor: pointer"
+              onclick="profileSubmenu()"
+          /></span>
+        </li>
+      </ul>
+      <div class="submenu hidden" id="profileSubmenu">
+        <ul>
+          <li class="submenitem">
+            <a href="{% url 'home:editProfile' %}">Edit Profile</a>
+          </li>
+          <li class="submenitem">
+            <a href="{% url 'home:logoutUser' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      const btnEl = document.getElementById("profileSubmenu");
+
+      function profileSubmenu() {
+        btnEl.classList.toggle("hidden");
+        console.log("from submenu");
+      }
+    </script>
+    <div class="projectName">
+      <p class="page_heading"><span class="headi"> {{na}}</span></p>
+    </div>
+    <div class="wholeBox">
+      <div class="llmBox" id="riBox">
+        {% for i in ldata %}
+
+        <div class="msgFromUser" style="padding: 0rem; margin-top: 0px">
+          <p style="margin-bottom: 0px">You:</p>
+          <p class="bubble right" style="padding-left: 2.4rem; margin-top: 0px">
+            {{i.question_asked}}
+          </p>
         </div>
-        <script>
-          const btnEl = document.getElementById("profileSubmenu");
-    
-    
-          function profileSubmenu(){
-            btnEl.classList.toggle("hidden")
-            console.log("from submenu")
-          }
-        </script>
-        <div class="projectName">
-            <p class="page_heading"><span class="headi"> {{na}}</span></p>
+
+        <div class="msgFromServer" style="padding: 0rem">
+          <p style="margin-bottom: 0px">LLM:</p>
+          <p class="bubblee left" style="padding-left: 2.4rem; margin-top: 0px">
+            {% autoescape off %} {{i.answer_from_api}} {% endautoescape %}
+          </p>
         </div>
-        <div class="wholeBox">
-        <div class="llmBox" id="riBox">
-            
 
-            {% for i in ldata %}
-            
-            <div class="msgFromUser" style="padding:0rem;margin-top: 0px;">
-                <p style="margin-bottom: 0px;">You:</p>
-                <p class=" bubble right" style="padding-left: 2.4rem;margin-top:0px;">
-                    {{i.question_asked}}
-                </p>
-            </div>
-
-            <div class="msgFromServer" style="padding: 0rem;">
-                <p style="margin-bottom: 0px;">LLM:</p>
-                <p class="bubblee left" style="padding-left: 2.4rem;margin-top:0px">
-                    {% autoescape off %}
-                    {{i.answer_from_api}}
-                    {% endautoescape %}
-            </p>
-        </div>
-            
-            {% endfor %}
-
+        {% endfor %}
 
         <!-- <hr> -->
-        
-
-        </div>
-        <div class="inputField">
-            <img src="{% static 'home/img/settin.svg'%}" width="30px" alt="logo"
-                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/>
-            <input type="text" name="inpLLM" id="inpLLM">
-            <!-- <input type="button" value="submit" id="subBut"> -->
-            <!-- <button class="btn" id="subBut">Submit</button> -->
-            <img src="{% static 'home/img/send.svg'%}" width="35px" alt="logo"
-                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/>
-        </div>
-
+      </div>
+      <div class="inputField">
+        <img
+          src="{% static 'home/img/settin.svg'%}"
+          width="30px"
+          alt="logo"
+          style="margin-top: 1px; cursor: pointer"
+          onclick="Modal()"
+        />
+        <input type="text" name="inpLLM" id="inpLLM" />
+        <!-- <input type="button" value="submit" id="subBut"> -->
+        <!-- <button class="btn" id="subBut">Submit</button> -->
+        <img
+          src="{% static 'home/img/send.svg'%}"
+          width="35px"
+          alt="logo"
+          style="margin-top: 1px; cursor: pointer"
+          onclick="llm()"
+        />
+      </div>
     </div>
-</div>
+  </div>
 </div>
 <script>
+  riBox.scrollTop = 99999999;
 
-    riBox.scrollTop = 99999999;
+  function myfunc() {
+    console.log("helloooooo");
+  }
+</script>
 
-    function myfunc(){
-        console.log("helloooooo");
+<div
+  id="myModal"
+  style="
+    width: 70vw;
+    height: 85vh;
+    background-color: #b9f7ed;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 20px;
+  "
+  class="hidden"
+>
+  <div></div>
+  <div style="display: flex; justify-content: center; padding-bottom: 2rem">
+    <div>
+      <label>Project Name:</label>
+      <br />
+      <input value="{{proj.project_name}}" id="project_name" />
+      <br />
+      <br />
+      <label>Project Description:</label>
+      <br />
+      <textarea id="project_details">{{proj.project_description}}</textarea>
+      <br />
+      <br />
+      <label>Project Functionalities:</label>
+
+      {% for i in sprint %}
+
+      <p id="">{{i.sprint_title}}</p>
+      {% endfor %}
+      <br />
+      {% for j in sprint %}
+      <input value="{{j.sprint_title}}" class="proo_func_class" id="" />
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div style="display: none" ; id="pk">{{iden}}</div>
+
+<script>
+  const myModal = document.getElementById("myModal");
+  function Modal() {
+    myModal.classList.toggle("hidden");
+    idk();
+  }
+</script>
+
+<script>
+  
+  function idk() {
+    le = colle.length;
+    let proj_func = []
+    for (let i = 0; i < colle.length; i++) {
+      proj_func.push(document.getElementById("func_" + i.toString()).value);
     }
+    return proj_func;
+  }
+</script>
+<script>
+  var url = 'http://127.0.0.1:8000/llm_api/';
+
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+
+
+
+
+  function llm() {
+    var pk = document.getElementById("pk").innerHTML
+    var project_name = document.getElementById("project_name").value;
+    var project_details = document.getElementById("project_details").innerHTML;
+    var quest = "";
+    var project_func = idk();
+    quest = document.getElementById("inpLLM").value;
+    document.getElementById("inpLLM").value = "";
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({
+            'pk': pk,
+            'project_name': project_name,
+            'project_details': project_details,
+            'quest': quest,
+            'project_func': project_func
+        })
+
+
+    }).then(response=>response.json())
+    .then(data=>{ document.getElementById("riBox") += `<div class="msgFromUser" style="padding: 0rem; margin-top: 0px">
+        <p style="margin-bottom: 0px">You:</p>
+        <p class="bubble right" style="padding-left: 2.4rem; margin-top: 0px">
+          ${quest}
+        </p>
+      </div>
+      <div class="msgFromServer" style="padding: 0rem">
+        <p style="margin-bottom: 0px">LLM:</p>
+        <p class="bubblee left" style="padding-left: 2.4rem; margin-top: 0px">
+        ${data}
+        </p>
+      </div>` })
+    {% comment %} .then(function(response) {
+        console.log("doneeee")
+
+    }) {% endcomment %}
+}
 </script>
 
 {% endblock body%}

@@ -152,23 +152,23 @@ LLM | DevMaster
         <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
 
             <p style="text-decoration:underline;font-size:2rem;margin-top:0px;">Sprint:</p>
-            {% for i in sprint_set_of_members %}
-            <p>{{i}}:</p>
+            
             <div class="list">
                 <ul>
-            {% for j in all_project_sprint %}
-            {% if i == j.sprint_reviewer %}
+            {% for i in all_project_sprint %}
+            {% if  username == i.sprint_reviewer %}
 
-            {% for k in sprrev %}
-            {% if j.id == k.sprint_id %}
-                    {% if k.review == "PASS" %}<li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span>
+            
+            {% if i.submitted_time != "" %}
+                    {% if i.review == "PASS" %}
+                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span>
                       {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                      </li>
-                      {% elif k.review == "FAIL" %}
-                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span>
+                      {% elif i.review == "FAIL" %}
+                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span>
                         {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                        </li>
-                       {% else %}<li style="background-color:blue;display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
+                       {% else %}<li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
                         {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                        </li>
 
@@ -176,7 +176,7 @@ LLM | DevMaster
                        {% endif %}
             
             {% endif %}
-            {% endfor %}
+            
 
             {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
@@ -185,7 +185,7 @@ LLM | DevMaster
             {% endfor %}
                 </ul>
             </div>
-            {% endfor %}
+            
 
             {% comment %} <p style="text-decoration:underline;">Bug:</p>
             {% for i in bug_set_of_members %}
@@ -204,28 +204,27 @@ LLM | DevMaster
             {% endfor %} {% endcomment %}
 
             <p style="text-decoration:underline;font-size:2rem;">Bug:</p>
-            {% for i in bug_set_of_members %}
-            <p>{{i}}:</p>
+            
             <div class="list">
                 <ul>
-            {% for j in all_project_bug %}
-            {% if i == j.bug_reviewer %}
+            {% for i in all_project_bug %}
+            {% if username == i.bug_reviewer %}
 
-            {% for k in bugrev %}
-            {% if j.id == k.bug_id %}
-                    {% if k.review == "PASS" %}
-                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+            
+            {% if i.submitted_time != "" %}
+                    {% if i.review == "PASS" %}
+                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span>
                       {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                      </li>
                      
-                      {% elif k.review == "FAIL" %}
-                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+                      {% elif i.review == "FAIL" %}
+                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span>
                         {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                        </li>
                        {% else %}
                        
 
-                       <li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
+                       <li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
                         {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                        </li>
 
@@ -236,7 +235,7 @@ LLM | DevMaster
                        {% endif %}
             
             {% endif %}
-            {% endfor %}
+            
 
             {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
@@ -245,7 +244,7 @@ LLM | DevMaster
             {% endfor %}
                 </ul>
             </div>
-            {% endfor %}
+            
 
 
 

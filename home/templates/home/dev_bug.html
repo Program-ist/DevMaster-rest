@@ -163,9 +163,19 @@ LLM | DevMaster
                 <ul>
             {% for j in all_project_bug %}
             {% if username == j.bug_to %}
-            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="myFunction(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
+              {% if j.review == "PASS" %}
+            <li style="background-color:#bbf7b9;display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
                  {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                 </li>
+              {% elif j.review == "FAIL" %}
+              <li style="background-color:#f7b9b9;display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% else %}
+               <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="myFunction(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% endif %}
             {% endif %}
             {% endfor %}
                 </ul>
