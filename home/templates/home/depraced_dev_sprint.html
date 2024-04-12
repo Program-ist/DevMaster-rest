@@ -52,7 +52,7 @@ LLM | DevMaster
         margin: 4px 0;
         border-left: 2px solid #002df5;
         transition: 0.5s;
-        cursor: context-menu;
+        cursor: pointer;
         padding-bottom:1rem;
       }
       .list ul li:hover {
@@ -66,10 +66,10 @@ LLM | DevMaster
         
         transition: 0.5s;
       }
- /*     .list ul li:hover span {
+      .list ul li:hover span {
         color: #111;
       }
-       .list ul li:before {
+      /* .list ul li:before {
         content: "";
         position: absolute;
         width: 100%;
@@ -122,76 +122,58 @@ LLM | DevMaster
     </div>
 
     <div class="rightBox" >
-      <div class="dashNav">
-        <ul>
-            <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
-              <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
-            
-        </ul>
-        <div class="submenu hidden" id="profileSubmenu">
-          <ul>
-            <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
-            <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
-          </ul>
+        <div class="dashNav">
+            <ul>
+                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+                  <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
+                    style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                
+            </ul>
+            <div class="submenu hidden" id="profileSubmenu">
+              <ul>
+                <li class = "submenitem"><a href="{% url 'home:editProfile' %}">Edit Profile</a></li>
+                <li class = "submenitem"><a href = "{% url 'home:logoutUser' %}">Logout</a></li>
+              </ul>
+            </div>
         </div>
-    </div>
-    <script>
-      const btnEl = document.getElementById("profileSubmenu");
+        <script>
+          const btnEl = document.getElementById("profileSubmenu");
 
 
-      function profileSubmenu(){
-        btnEl.classList.toggle("hidden")
-        console.log("from submenu")
-      }
-    </script>
+          function profileSubmenu(){
+            btnEl.classList.toggle("hidden")
+            console.log("from submenu")
+          }
+        </script>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
+        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
           
-
-
+            {% for i in spdatadev %}
             
             <div class="list">
                 <ul>
-            {% for j in all_project_sprint %}
-            {% if username == j.sprint_to %}
-            {% comment %} <li style="display:flex;justify-content: space-between;"><span style = "width:80%;">{{j.sprint_title}}</span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
-               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
-              </li> {% endcomment %}
-              <li style="display:flex;align-items: center;justify-content: center;">
-                <span style="display:flex;flex-direction:column;">
-                  <span>{{j.sprint_title}}</span>
-                  <span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
-                  </span>
-                </span>
-                <span style="color:white;text-decoration:none;" id={{j.id}} onclick="sprintAPI(this.id)">
-                  <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">
-                    Mark as done
-                  </span>
-                </span>
-                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-               </li>
-            {% endif %}
-            {% endfor %}
+            
+            <li style="display:flex;justify-content: space-between;"><span>{{i.sprint_title}}</span> <span class="mkdbutt" >Mark as Done</span> </li>
+            
                 </ul>
             </div>
-            
+            {% endfor %}
 
 
             {% comment %} <p>3testu:</p>
-        <div class="list">
+            <div class="list">
             {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
             <ul>
               <li style="display:flex;justify-content: space-between;"><span>Make the Navbar discussed project</span> <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Make the Hero section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Mark as Done</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Make the Footer Section</span>  <span class="mkdbutt" >Mark as Done</span> </li>
-              <li  style="display:flex;justify-content: space-between;"><span>Add the Google map location map api</span>  <span class="mkdbutt" >Mark as Done</span> </li> {% endcomment %}
+              <li  style="display:flex;justify-content: space-between;"><span>Add the Google map location map api</span>  <span class="mkdbutt" >Mark as Done</span> </li>
               
             </ul>
-          </div>
+          </div> {% endcomment %}
         </div>
 
     </div>
@@ -206,48 +188,5 @@ LLM | DevMaster
         console.log("helloooooo");
     }
 </script>
-<script>
-  function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
 
-var url = 'http://127.0.0.1:8000/sprint_done/';
-
-
-function sprintAPI(clicked_id){
-  console.log(clicked_id)
-  fetch(url, {
-    method: 'POST',
-    headers: {
-        'Content-type': 'application/json',
-        'X-CSRFToken': csrftoken,
-    },
-    body: JSON.stringify({ 'clicked_id': clicked_id })
-
-
-}
-).then(function (response) {
-     location.reload()
-    console.log("doneeee")
-
-})
-} 
-
-
-
-
-</script>
 {% endblock body%}

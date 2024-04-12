@@ -52,7 +52,7 @@ LLM | DevMaster
         margin: 4px 0;
         border-left: 2px solid #002df5;
         transition: 0.5s;
-        cursor: pointer;
+        cursor: context-menu;
         padding-bottom:1rem;
       }
       .list ul li:hover {
@@ -126,7 +126,7 @@ LLM | DevMaster
         <ul>
             <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
               <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                style="position:absolute;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
             
         </ul>
         <div class="submenu hidden" id="profileSubmenu">
@@ -148,14 +148,114 @@ LLM | DevMaster
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
+       
+        <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
 
-        <div class="list">
-            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment %}
+            <p style="text-decoration:underline;font-size:2rem;margin-top:0px;">Sprint:</p>
+            {% for i in sprint_set_of_members %}
+            <p>{{i}}:</p>
+            <div class="list">
+                <ul>
+            {% for j in all_project_sprint %}
+            {% if i == j.sprint_reviewer %}
+
+            {% for k in sprrev %}
+            {% if j.id == k.sprint_id %}
+                    {% if k.review == "PASS" %}<li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span>
+                      {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                     </li>
+                      {% elif k.review == "FAIL" %}
+                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span>
+                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                       </li>
+                       {% else %}<li style="background-color:blue;display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
+                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                       </li>
+
+
+                       {% endif %}
+            
+            {% endif %}
+            {% endfor %}
+
+            {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
+               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
+              </li> {% endcomment %}
+            {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+            {% comment %} <p style="text-decoration:underline;">Bug:</p>
+            {% for i in bug_set_of_members %}
+            <p>{{i}}:</p>
+            <div class="list">
+                <ul>
+            {% for j in all_project_bug %}
+            {% if i == j.bug_reviewer %}
+            <li style="display:flex;justify-content: space-between;"><span>{{j.bug_title}}</span>
+               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
+              </li>
+            {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            {% endfor %} {% endcomment %}
+
+            <p style="text-decoration:underline;font-size:2rem;">Bug:</p>
+            {% for i in bug_set_of_members %}
+            <p>{{i}}:</p>
+            <div class="list">
+                <ul>
+            {% for j in all_project_bug %}
+            {% if i == j.bug_reviewer %}
+
+            {% for k in bugrev %}
+            {% if j.id == k.bug_id %}
+                    {% if k.review == "PASS" %}
+                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+                      {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                     </li>
+                     
+                      {% elif k.review == "FAIL" %}
+                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                       </li>
+                       {% else %}
+                       
+
+                       <li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
+                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                       </li>
+
+                      
+
+
+
+                       {% endif %}
+            
+            {% endif %}
+            {% endfor %}
+
+            {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
+               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
+              </li> {% endcomment %}
+            {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+
+
+
+        {% comment %} <div class="list">
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
             <ul>
               <li style="display:flex;justify-content: space-between;"><span>Make the Navbar discussed project</span> <span class="mkdbutt" >Pass</span> </li>
               <li  style="display:flex;justify-content: space-between;"><span>Make the Hero section</span>  <span class="mkdbutt" >Pass</span> </li>
-              <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Pass</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>Center the div containing reviews</span>  <span class="mkdbutt" >Pass</span> </li> {% endcomment %}
               
               
             </ul>

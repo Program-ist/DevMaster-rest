@@ -457,7 +457,7 @@ def review(request,pk):
 	if sta == "MANAGER":
 		return render(request,"home/man_review.html",di)
 	
-	return render(request,"home/review.html",di)
+	return render(request,"home/dev_review.html",di)
 
 
 '''		Project Details Page	'''

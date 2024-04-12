@@ -78,13 +78,15 @@ class SprintData(models.Model):
     sp_created_time = models.CharField(max_length = 20,default="")
     deadline_time = models.CharField(max_length = 20)
     submitted_time = models.CharField(max_length = 20)
+    review = models.CharField(max_length=20, default="")
+    rev_sub_time = models.CharField(max_length = 20,default="")
 
 
 class ReportBug(models.Model):
     bug_by = models.ForeignKey(UserDetail, null=True, on_delete = models.SET_NULL)
     project = models.ForeignKey(ProjectDetail, on_delete = models.CASCADE)
     bug_by_detail = models.TextField()
-    addressed = models.TextField(max_length = 5, defaul = "")
+    addressed = models.TextField(max_length = 5, default = "")
 
 
 class BugData(models.Model):
@@ -98,6 +100,9 @@ class BugData(models.Model):
     bu_created_time = models.CharField(max_length = 20, default="")
     deadline_time = models.CharField(max_length = 20)
     submitted_time = models.CharField(max_length = 20)
+    review = models.CharField(max_length=20, default="")
+    rev_sub_time = models.CharField(max_length = 20,default="")
+    
 
 
 class SprintReviewer(models.Model):

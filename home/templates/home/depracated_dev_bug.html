@@ -144,33 +144,30 @@ LLM | DevMaster
             console.log("from submenu")
           }
         </script>
-        <div id="demo"></div>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
-        <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
-          <div style="margin-bottom:2rem;">
-            
-            <p><a href="{% url 'home:reportBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Report a Bug</span></a></p>
-            </div>
+        <div class="con" style="width:60vw;margin:auto;padding-top:5rem;">
+          {% comment %} <div style="margin-bottom:4rem;">
+            <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Assign Bug</span></p>
+            </div> {% endcomment %}
 
 
 
 
-            
+            {% for i in bgdatadev %}
             
             <div class="list">
                 <ul>
-            {% for j in all_project_bug %}
-            {% if username == j.bug_to %}
-            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="myFunction(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
-                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                </li>
-            {% endif %}
-            {% endfor %}
+            
+            <li style="display:flex;justify-content: space-between;"><span>{{i.bug_title}}</span> 
+                <span class="mkdbutt" >Mark as Done</span>
+             </li>
+            
                 </ul>
             </div>
-            
+            {% endfor %}
+
 
 
 
@@ -185,7 +182,9 @@ LLM | DevMaster
               
             </ul>
           </div> {% endcomment %}
-          
+          <div style="margin-top:4rem;">
+          <p><span style="margin-top:2rem;padding:1rem;background-color:rgb(107, 184, 255);border-radius:10px;cursor:pointer;" >Report a Bug</span></p>
+          </div>
         </div>
 
     </div>
@@ -199,62 +198,6 @@ LLM | DevMaster
     function myfunc(){
         console.log("helloooooo");
     }
-</script>
-<script>
-  function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-
-var url = 'http://127.0.0.1:8000/bug_done/';
-
-
-function myFunction(clicked_id) {
-    let text = "Are You Sure? ";
-    if (confirm(text) == true) {
-      bugAPI(clicked_id);
-    } else {
-      text = "You canceled!";
-    }
-    document.getElementById("demo").innerHTML = text;
-  }
-
-
-
-function bugAPI(clicked_id){
-  console.log(clicked_id)
-  fetch(url, {
-    method: 'POST',
-    headers: {
-        'Content-type': 'application/json',
-        'X-CSRFToken': csrftoken,
-    },
-    body: JSON.stringify({ 'clicked_id': clicked_id })
-
-
-}
-).then(function (response) {
-     location.reload()
-    console.log("doneeee")
-
-})
-} 
-
-
-
-
 </script>
 
 {% endblock body%}
