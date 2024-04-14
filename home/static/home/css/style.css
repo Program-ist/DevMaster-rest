@@ -218,7 +218,11 @@ body{
 .content{
     display: flex;
     margin-top:1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 6rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    /* background-color: green; */
+
     
     
     

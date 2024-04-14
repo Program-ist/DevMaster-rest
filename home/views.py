@@ -362,7 +362,7 @@ def sprint(request,pk):
 	set_of_members = set()
 	for i in all_project_sprint:
 		set_of_members.add(i.sprint_to)
-	
+
 	
 	spdataman = SprintData.objects.filter(sprint_from=fuser,project=proj)
 	isMana = 0
