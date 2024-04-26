@@ -30,6 +30,27 @@ LLM | DevMaster
     .page_heading {
         text-align: center;
     }
+    ::-webkit-scrollbar{
+        width:15px;
+      }
+      ::-webkit-scrollbar-track{
+        background: rgb(2,0,36);
+background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+border-radius: 100vw;
+margin-block: .5em;
+      }
+      ::-webkit-scrollbar-thumb{
+        background: rgb(131,58,180);
+background: linear-gradient(180deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+border-radius: 100vw;
+      }
+      {% comment %} @supports (scrollbar-color: red blue){
+        * {
+          scrollbar-color:red linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+          scrollbar-color:red blue;
+          scrollbar-width:thin;
+        }
+      }  {% endcomment %}
 </style>
 {% endblock head %}
 

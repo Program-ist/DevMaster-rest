@@ -163,19 +163,47 @@ LLM | DevMaster
             {% comment %} <li style="display:flex;justify-content: space-between;"><span style = "width:80%;">{{j.sprint_title}}</span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></a>
                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
               </li> {% endcomment %}
-              <li style="display:flex;align-items: center;justify-content: center;">
+              {% if j.review == "PASS" %}
+              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.sprint_title}}</span>
-                  <span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
                   </span>
                 </span>
-                <span style="color:white;text-decoration:none;" id={{j.id}} onclick="sprintAPI(this.id)">
-                  <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">
-                    Mark as done
-                  </span>
-                </span>
+                
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
+               {% elif j.review == "FAIL" %}
+               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.sprint_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% elif j.submitted_time != "" %}
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.sprint_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% else %}
+               <li style="display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.sprint_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% endif %}
             {% endif %}
             {% endfor %}
                 </ul>

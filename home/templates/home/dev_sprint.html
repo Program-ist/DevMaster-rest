@@ -180,6 +180,16 @@ LLM | DevMaster
                 
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
+               {% elif j.submitted_time != "" %}
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.sprint_title}}</span>
+                  <span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
                {% else %}
                <li style="display:flex;align-items: center;justify-content: center;">
                 <span style="display:flex;flex-direction:column;">

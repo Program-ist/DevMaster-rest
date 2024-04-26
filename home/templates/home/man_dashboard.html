@@ -57,6 +57,7 @@ LLM | DevMaster
       }
       .list ul li:hover {
         left: 10px;
+        cursor:pointer;
       }
       .list ul li span {
         position: relative;
@@ -69,7 +70,7 @@ LLM | DevMaster
       .list ul li:hover span {
         color: #111;
       }
-      /* .list ul li:before {
+      .list ul li:before {
         content: "";
         position: absolute;
         width: 100%;
@@ -81,7 +82,7 @@ LLM | DevMaster
       }
       .list ul li:hover:before {
         transform: scaleX(1);
-      } */
+      } 
 </style>
 <style>
     .mkdbutt{
@@ -125,10 +126,10 @@ LLM | DevMaster
 
     <div class="rightBox" >
         <div class="dashNav">
-            <ul>
-                <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
+            <ul style="position:fixed;right:10px;padding-top:6px;text-align:right;">
+                <li style="">Hello {{username}} <span style="margin-left:2rem;">
                   <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                    style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                    style="cursor: pointer;margin-top:5px;"  onclick="profileSubmenu()"/></span></li>
                 
             </ul>
             <div class="submenu hidden" id="profileSubmenu">
@@ -160,7 +161,7 @@ LLM | DevMaster
               <ul>
               {% for j in anno %}
               {% if i.project == j.project %}
-              <li>{{j.announcement_msg}}</li>
+              <a href="{% url 'home:projects' i.project_id %}"><li><span>{{j.announcement_msg}}</span></li></a>
               {% endif %}               
               
               {% endfor %}

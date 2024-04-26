@@ -252,7 +252,8 @@ def projects(request,pk):
 	di = {
 		'iden':pk,
 		'anno': anno,
-		'username':usern
+		'username':usern,
+		'proj':proj
 		
 	}
 
@@ -358,7 +359,7 @@ def sprint(request,pk):
 		return redirect('/dashboard/')
 	
 	spdatadev = SprintData.objects.filter(sprint_to=fuser,project=proj)
-	all_project_sprint = SprintData.objects.filter(project=proj)
+	all_project_sprint = SprintData.objects.filter(project=proj).order_by('-sp_created_time')
 	set_of_members = set()
 	for i in all_project_sprint:
 		set_of_members.add(i.sprint_to)
