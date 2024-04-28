@@ -38,10 +38,10 @@ DevMaster {% endblock title %} {% block head %}
       ><br />
       Orchestrating Software Success, from Start to Finish
     </p>
-    <p class="page_heading"><span class="headi"> Report Bug </span></p>
+    <p class="page_heading"><span class="headi"> Report A Bug </span></p>
   </div>
   <div class="page_form">
-    <form action="/assignedBug/" method="post">
+    <form action="/reportBug/" method="post">
       {% csrf_token %} {% comment %} fproject_name fproject_description
       fcreated_by fproject_created_time fproject_gtihub_link fproject_phase {% endcomment %}
       <div class="eleCont" style="display: none">
@@ -55,27 +55,7 @@ DevMaster {% endblock title %} {% block head %}
         />
       </div>
 
-      <div class="eleCont">
-        <label for="fbug_to">Bug To: </label>
-        <br />
-        <input type="text" name="fbug_to" id="fbug_to" />
-      </div>
-      <div class="eleCont">
-        <label for="fbug_reviewer">Bug Reviewer: </label>
-        <br />
-        <input type="text" name="fbug_reviewer" id="fbug_reviewer" />
-      </div>
-      <div class="eleCont">
-        <label for="fbug_title">Bug Title: </label>
-        <br />
-        <input type="text" name="fbug_title" id="fbug_title" />
-      </div>
-
-      <div class="eleCont">
-        <label for="fdeadline_time">Deadline_time: </label>
-        <br />
-        <input type="text" name="fdeadline_time" id="fdeadline_time" />
-      </div>
+      
 
       <div class="eleCont">
         <label for="fbug_detail">Bug detail: </label>

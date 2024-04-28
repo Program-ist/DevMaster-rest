@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-LLM | DevMaster
+Bug | DevMaster
 {% endblock title %}
 
 {% block head %}
@@ -149,10 +149,20 @@ LLM | DevMaster
         </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
           <div style="margin-bottom:2rem;display:flex;justify-content:space-around;">
-            <p><a href="{% url 'home:assignBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Assign Bug</span></a></p>
-            <p><a href="{% url 'home:reportBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Report a Bug</span></a></p>
+
+            <div><a href="{% url 'home:assignBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Assign a New Bug</span></a></div>          
+            <div><a href="{% url 'home:areportedBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Reported Bugs</span></a></div>
             </div>
 
+            <script>
+              const bgbt = document.getElementById("bugbutton");
+    
+    
+          function hid(){
+            bgbt.classList.toggle("hidden")
+            console.log("from bug")
+          }
+            </script>
 
 
 
@@ -162,9 +172,50 @@ LLM | DevMaster
                 <ul>
             {% for j in all_project_bug %}
             {% if i == j.bug_to %}
-            <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="bugAPI(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
+            {% if j.review == "PASS" %}
+              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% elif j.review == "FAIL" %}
+               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% elif j.submitted_time != "" %}
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% else %}
+               <li style="display:flex;align-items: center;justify-content: center;">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% endif %}
+            {% comment %} <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="bugAPI(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span> {% endcomment %}
                  {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                </li>
+                {% comment %} </li> {% endcomment %}
             {% endif %}
             {% endfor %}
                 </ul>

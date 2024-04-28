@@ -40,7 +40,13 @@
     height: 30vh;
     border-radius: 5px;
   }
-
+  {% comment %} @supports (scrollbar-color: red blue){
+    * {
+      
+      scrollbar-color:red blue;
+      scrollbar-width:thin;
+    }
+  }  {% endcomment %}
   ::-webkit-scrollbar{
     width:15px;
   }
@@ -55,6 +61,8 @@ margin-block: .5em;
 background: linear-gradient(180deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
 border-radius: 100vw;
   }
+
+ 
   {% comment %} 
   ::webkit-scrollbar{
     width:15px;
@@ -209,13 +217,16 @@ border-radius: 100vw;
     width: 70vw;
     height: 85vh;
     {% comment %} background-color: #b9f7ed; {% endcomment %}
-    backdrop-filter:blur(1000px);
+    backdrop-filter:blur(30px);
     position: fixed;
     z-index: 1;
     padding-top: 100px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: calc(calc(100vw - 70vw)/2);
+    top: calc(calc(100vh - 85vh)/2);
+    {% comment %} top:calc((100vh-85vh)/2vh); {% endcomment %}
+    {% comment %} top:0px; {% endcomment %}
+  
+    {% comment %} transform: translate(-50%, -50%); {% endcomment %}
     margin: auto;
     overflow-y: auto;
     border-radius: 20px;
@@ -223,8 +234,10 @@ border-radius: 100vw;
   class="hidden"
 >
   <div></div>
-  <div style="display: flex; justify-content: center; padding-bottom: 2rem">
+  <div style="display: flex; justify-content: center; padding-bottom: 2rem;width:60vw;margin:auto;">
     <div>
+      <p>{% lorem 2 b random %}
+      </p>
       <label>Project Name:</label>
       <br />
       <input value="{{proj.project_name}}" id="project_name" />
@@ -247,6 +260,7 @@ border-radius: 100vw;
       {% endfor %}
     </div>
   </div>
+  
 </div>
 
 <div style="display: none" ; id="pk">{{iden}}</div>

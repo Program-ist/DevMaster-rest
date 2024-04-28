@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-LLM | DevMaster
+Sprint | DevMaster
 {% endblock title %}
 
 {% block head %}
@@ -153,6 +153,8 @@ LLM | DevMaster
             <p><a href="{% url 'home:assignSprint' iden %}" style="text-decoration:none;"><span class="btn-grad">Assign Sprint</span></a></p>
             </div>
 
+           
+
 
             {% for i in set_of_members %}
             <p>{{i}}:</p>
@@ -164,7 +166,7 @@ LLM | DevMaster
                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
               </li> {% endcomment %}
               {% if j.review == "PASS" %}
-              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;">
+              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.sprint_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
@@ -174,7 +176,7 @@ LLM | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% elif j.review == "FAIL" %}
-               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;">
+               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.sprint_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
@@ -184,7 +186,7 @@ LLM | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% elif j.submitted_time != "" %}
-               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;">
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.sprint_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
@@ -194,7 +196,7 @@ LLM | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% else %}
-               <li style="display:flex;align-items: center;justify-content: center;">
+               <li style="display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.sprint_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}
@@ -224,14 +226,77 @@ LLM | DevMaster
             </ul>
           </div>
         </div>
+        
 
+         
+  {% for i in  all_project_sprint %}
+  
+  <div
+  id="modal{{i.id}}"
+  style="
+    width: 70vw;
+    height: 85vh;
+    {% comment %} background-color: #b9f7ed; {% endcomment %}
+    backdrop-filter:blur(30px);
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: calc(calc(100vw - 70vw)/2);
+    top: calc(calc(100vh - 85vh)/2);
+    {% comment %} top:calc((100vh-85vh)/2vh); {% endcomment %}
+    {% comment %} top:0px; {% endcomment %}
+  
+    {% comment %} transform: translate(-50%, -50%); {% endcomment %}
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 20px;
+  "
+  class="hidden"
+>
+<div style="width:60vw;margin:auto;">
+  <b><p>Sprint Title:</p></b>
+  <p>{{i.sprint_title}}</p>
+  <br>
+  <b><p>Sprint Detail:</p></b>
+  <p>{{i.sprint_detail}}</p>
+  <br>
+  <b><p>Deadline Time: </p></b>
+  <p>{{i.deadline_time}}
+</div>
+</div>
+  {% endfor %}
+
+<script>
+  {% comment %} var dict = {
+  {% for i in all_project_sprint %}
+  {{i.id}}:{
+    'title':{{i.sprint_title}},
+    'detail':{{i.sprint_detail}},
+    'deadline':{{i.deadline_time}},
+  },
+  
+  {% endfor %}
+  }; {% endcomment %}
+  var nm = "some";
+  console.log(nm);
+  {% comment %} console.log(dict); {% endcomment %}
+          
+
+
+    function showModal(ide){
+      let va = "modal"+ide;
+      let myModal = document.getElementById(va);
+    myModal.classList.toggle("hidden");
+    }
+          
+</script>
     </div>
     
 </div>
 </div>
 <script>
 
-    riBox.scrollTop = 99999999;
+    {% comment %} riBox.scrollTop = 99999999; {% endcomment %}
 
     function myfunc(){
         console.log("helloooooo");

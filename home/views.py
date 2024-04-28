@@ -231,7 +231,57 @@ def createProjectt(request):
 
 '''		Project Members		'''
 def members(request,pk):
-	pass
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	projMembers = ProjectMembers.objects.filter(project=proj)
+	tempmemb = []
+	for i in projMembers:
+		tempmemb.append(i.user_id)
+	projMembers = []
+	projMemversid = []
+	projManager = []
+	for i in tempmemb:
+		tempname = UserDetail.objects.get(id = i)
+		if tempname.status_of_account == "MANAGER":
+			projManager.append(tempname)
+		else:
+			projMembers.append(tempname)
+	di = {
+		'iden':pk,
+		'projManager':projManager,
+		'projMembers':projMembers
+	}
+	if request.method == 'POST':
+
+		ffrom = UserDetail.objects.get(user_name = usern)
+		fproject = proj
+		fnewMember = request.POST['newMember']
+		try:
+			nMember = UserDetail.objects.get(user_name = fnewMember)
+		except:
+			messages.error(request, "User with this User Name do not exist")
+			return render(request, "home/man_members.html",di)
+
+		
+		temp = ProjectMembers(user=nMember,project=proj)
+		temp.save()
+		messages.success(request, "Announcement Made Successfully")
+		
+		url_val = "/projects/" + proj.id
+		
+		
+		return redirect(url_val,ctemp_id)
+	# return render(request,"home/makeAnnouncement.html",di)
+	return render(request, "home/man_members.html",di)
 
 
 '''		Page for Individual Project	'''
@@ -439,16 +489,18 @@ def review(request,pk):
 	bgdataman = BugData.objects.filter(bug_from=fuser,project=proj)
 
 
-	all_project_bug = BugData.objects.filter(project=proj)
+	all_project_bug = BugData.objects.filter(project=proj,bug_reviewer=fuser)
 	bug_set_of_members = set()
 	for i in all_project_bug:
-		bug_set_of_members.add(i.bug_reviewer)
+		if i.submitted_time != "":
+			bug_set_of_members.add(i.bug_reviewer)
 	
 
-	all_project_sprint = SprintData.objects.filter(project=proj)
+	all_project_sprint = SprintData.objects.filter(project=proj,sprint_reviewer=fuser)
 	sprint_set_of_members = set()
 	for i in all_project_sprint:
-		sprint_set_of_members.add(i.sprint_reviewer)
+		if i.submitted_time !=  "":
+			sprint_set_of_members.add(i.sprint_reviewer)
 
 
 	bugrev = BugReviewer.objects.all()
@@ -708,7 +760,21 @@ def reportBug(request,pk):
 		'iden':pk
 	}
 
+	if request.method == "POST":
+		bu = request.POST['fbug_detail']
+		temp = ReportBug(bug_by=fuser,project=proj,addressed="NO",bug_by_detail=bu)
+
 	return render(request,"home/reportBug.html",di)
+
+
+def areportedBug(request,pk):
+	proj = ProjectDetail.objects.get(id = pk)
+	reportedBugs = ReportBug.objects.filter(project=proj)
+	di={
+		'iden':pk,
+		'reportedBugs':reportedBugs
+	}
+	return render(request,"home/areportedBug.html",di)
 
 def reportedBug(request):
 	fuser = request.user

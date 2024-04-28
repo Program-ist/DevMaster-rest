@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-Make Announcement | DevMaster
+Members | DevMaster
 {% endblock title %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
@@ -38,22 +38,49 @@ Make Announcement | DevMaster
 <div class="text">
 <p class="dev_head"><a href="{% url 'home:home' %}"><img src="{% static 'home/img/devlogo.png'%}" alt="" width = "300px"></a><br>
 Orchestrating Software Success, from Start to Finish</p>
-<p class="page_heading"><span class="headi"> Make Announcement </span></p>
+<p class="page_heading"><span class="headi"> Add or Remove Members</span></p>
 </div>
 <div class="page_form">
+    {% for i in projManager %}
+    <p style="color:#555;">{{i.user_name}}</p>
+    {% endfor %}
+{% for i in projMembers %}
+<div style="width:60%;margin:auto;"><span style="display:flex;justify-content:space-between;"><span>{{i.user_name}}</span><span id="{{i.id}}" style="cursor:pointer;color:red;" onclick="conf(this.id)">&times;</span></span></div>
+{% endfor %}
 
-        <form action="/madeAnn/" method="post">
+
+
+<script>
+var dict={
+{% for i in projMembers %}
+{{i.id}} : "{{i.user_name}}",
+
+
+{% endfor %}
+}
+    function conf(ide){
+        ide = parseInt(ide);
+        console.log(dict[ide]);
+        let text = "Are you sure you want to remove " + dict[ide] +" from the project?"
+        if(confirm(text) == true){
+            del;
+        }
+        else{
+            console.log("not deleted")
+        }
+    }
+
+</script>
+
+
+
+
+
+        <form action="/projects/{{iden}}/members/" method="post">
                 {% csrf_token %}
         
         
-        {% comment %}
-        fproject_name
-        fproject_description
-        fcreated_by
-        fproject_created_time
-        fproject_gtihub_link
-        fproject_phase 
-        {% endcomment %}
+    
         <div class="eleCont" style="display:none">
             <label for="fproject_id">Project Name: </label>
             <input type="text" name="fproject_id" id="fproject_id" value="{{iden}}">
@@ -61,10 +88,10 @@ Orchestrating Software Success, from Start to Finish</p>
    
                 <br>
                 <div class="eleCont">
-                <label for="fannouncement_msg">Announcement message: </label>
+                <label for="newMember">User Name of new Member: </label>
                 <br>
-                {% comment %} <input type="text" name="fproject_description" id="fproject_description" > {% endcomment %}
-                <textarea class = "poppins-regular" style="width:30vw;height:40vh;font-size:1.5rem;" name="fannouncement_msg" id="fannouncement_msg" ></textarea>
+                
+                <input type="text" name="newMember" id="newMember">
                 
         </div>
                 <br>

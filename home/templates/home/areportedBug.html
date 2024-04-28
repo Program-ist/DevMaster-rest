@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-Details | DevMaster
+Bug | DevMaster
 {% endblock title %}
 
 {% block head %}
@@ -87,7 +87,6 @@ Details | DevMaster
     .mkdbutt{
         font-size: 1.2rem;
         background-color: rgb(166, 166, 250);
-        
         border-radius: 10px;
     }
 </style>
@@ -110,10 +109,10 @@ Details | DevMaster
                 <li><a href="{% url 'home:projects' iden %}"> Announcements</a></li>
                 <li><a href="{% url 'home:chat' iden %}">Chat</a></li>
                 <li><a href="{% url 'home:llm' iden %}">LLM</a></li>
-                <li ><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
-                <li><a href="{% url 'home:bug' iden %}">Bug</a></li>
+                <li><a href="{% url 'home:sprint' iden %}">Sprint</a></li>
+                <li  class="current"><a href="{% url 'home:bug' iden %}">Bug</a></li>
                 <li><a href="{% url 'home:review' iden %}">Review</a></li>
-                <li class="current"><a href="{% url 'home:details' iden %}">Details</a></li>
+                <li><a href="{% url 'home:details' iden %}">Details</a></li>
                 <li><a href="{% url 'home:dashboard' %}">All Projects</a></li>
 
             </ul>
@@ -122,7 +121,7 @@ Details | DevMaster
     </div>
 
     <div class="rightBox" >
-      <div class="dashNav">
+        <div class="dashNav">
             <ul>
                 <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
                   <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
@@ -149,12 +148,49 @@ Details | DevMaster
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
-
-          <div style="margin-bottom:2rem;display:flex;flex-direction:column;justify-content:space-around;">
-            <p><a href="{% url 'home:members' iden %}" style="text-decoration:none;"><span class="btn-grad" >Members</span></a></p>
-            <p><a href="{% url 'home:assignBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Project Functionalities</span></a></p>
-            <p><a href="{% url 'home:assignBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Project Details</span></a></p>
+          <div style="margin-bottom:2rem;">
+            
+            <div><a href="{% url 'home:bug' iden %}" style="text-decoration:none;"><span class="btn-grad" >← Go Back </span></a></div>
             </div>
+            <script>
+              const bgbt = document.getElementById("bugbutton");
+    
+    
+          function hid(){
+            bgbt.classList.toggle("hidden")
+            console.log("from bug")
+          }
+            </script>
+
+
+            <div class="list">
+                <ul>
+           {% for i in reportedBugs %}
+           <li style="display:flex;align-items: center;justify-content: center;">
+            <span style="display:flex;flex-direction:column;">
+              <span style="width:50vw;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;cursor:context-menu;">{{i.bug_by_detail}}
+              </span>
+            </span>
+           </li>
+           {% endfor %}
+                </ul>
+            </div>
+
+
+
+
+            {% comment %} <p>3testu:</p>
+        <div class="list">
+            {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
+            <ul>
+              <li style="display:flex;justify-content: space-between;"><span>The map API is not working</span> <span class="mkdbutt" >Mark as Solved</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>The background image of hero section isnt loading</span>  <span class="mkdbutt" >Mark as Solved</span> </li>
+              <li  style="display:flex;justify-content: space-between;"><span>The javascript function to track user interaction is glitching</span>  <span class="mkdbutt" >Mark as Solved</span> </li>
+              
+              
+            </ul>
+          </div> {% endcomment %}
+          
         </div>
 
     </div>
@@ -168,6 +204,50 @@ Details | DevMaster
     function myfunc(){
         console.log("helloooooo");
     }
+</script>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+var url = 'http://127.0.0.1:8000/bug_done/';
+
+
+function bugAPI(clicked_id){
+  console.log(clicked_id)
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({ 'clicked_id': clicked_id })
+
+
+}
+).then(function (response) {
+     location.reload()
+    console.log("doneeee")
+
+})
+} 
+
+
+
+
 </script>
 
 {% endblock body%}
