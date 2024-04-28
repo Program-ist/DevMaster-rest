@@ -144,43 +144,91 @@ Bug | DevMaster
             console.log("from submenu")
           }
         </script>
-        <div id="demo"></div>
         <div class="projectName">
             <p class="page_heading"><span class="headi"> Auctioneer</span></p>
         </div>
         <div class="con" style="width:60vw;margin:auto;padding-top:0rem;">
-          <div style="margin-bottom:2rem;">
-            
-            <p><a href="{% url 'home:reportBug' iden %}" style="text-decoration:none;"><span class="btn-grad" >Report a Bug</span></a></p>
+          <div style="margin-bottom:2rem;display:flex;justify-content:space-around;">
+
+            <div><span ></span></div>          
+            <div><span ></span></div>
             </div>
 
+            <script>
+              const bgbt = document.getElementById("bugbutton");
+    
+    
+          function hid(){
+            bgbt.classList.toggle("hidden")
+            console.log("from bug")
+          }
+            </script>
 
 
 
-            
-            
+            {% for i in set_of_members %}
+            <p>{{i}}:</p>
             <div class="list">
                 <ul>
             {% for j in all_project_bug %}
-            {% if username == j.bug_to %}
-              {% if j.review == "PASS" %}
-            <li style="background-color:#bbf7b9;display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
-                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                </li>
-              {% elif j.review == "FAIL" %}
-              <li style="background-color:#f7b9b9;display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span>
+            {% if i == j.bug_to %}
+            {% if j.review == "PASS" %}
+              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% elif j.review == "FAIL" %}
+               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
+                {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+               </li>
+               {% elif j.submitted_time != "" %}
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
+                <span style="display:flex;flex-direction:column;">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% else %}
-               <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="myFunction(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span>
+               <li style="display:flex;align-items: center;justify-content: center;" >
+                <span style="display:flex;flex-direction:column;" id="{{j.id}}" onclick="showModal(this.id)">
+                  <span>{{j.bug_title}}</span>
+                  <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                  </span>
+                </span>
+                <a href="" style="color:white;text-decoration:none;" id="bugpass{{j.id}}" onclick="BugPass(this.id)">
+                  <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass
+                  </span>
+                </a>
+                <a href="" style="color:white;text-decoration:none;" id="bugfail{{j.id}}" onclick="BugFail(this.id)">
+                  <span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail
+                  </span>
+                </a>
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% endif %}
+            {% comment %} <li style="display:flex;justify-content: space-between;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{j.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}</span></span><span id={{j.id}} onclick="bugAPI(this.id)" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Mark as done</span></span> {% endcomment %}
+                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                {% comment %} </li> {% endcomment %}
             {% endif %}
             {% endfor %}
                 </ul>
             </div>
-            
+            {% endfor %}
+
 
 
 
@@ -197,7 +245,92 @@ Bug | DevMaster
           </div> {% endcomment %}
           
         </div>
+        <script>
+          var myUnixTimestamp;
+      
+          var myDate;
+          var s ;
+          var a ;
+         
+      
+          </script>
+         
+  {% for i in  all_project_bug %}
+  
+  <div
+  id="modal{{i.id}}"
+  style="
+    width: 70vw;
+    height: 85vh;
+    {% comment %} background-color: #b9f7ed; {% endcomment %}
+    backdrop-filter:blur(30px);
+    position: fixed;
+    z-index: 1;
+    
+    left: calc(calc(100vw - 70vw)/2);
+    top: calc(calc(100vh - 85vh)/2);
+    
+    overflow-y: auto;
+    border-radius: 20px;
+  "
+  class="hidden"
+>
+<p  id="close{{i.id}}" style="margin:1rem;color:red;font-size:3rem;text-align:right;cursor:pointer;font-weight:700;" onclick=closeModal(this.id) >&times;</p>
+<div style="width:60vw;margin:auto;">
+  <b><p style="font-size:2rem;">Bug Title:</p></b>
+  <p>{{i.bug_title}}</p>
+  <br>
+  <b><p style="font-size:2rem;">Bug Detail:</p></b>
+  <p>{{i.bug_detail}}</p>
+  <br>
+  <b><p style="font-size:2rem;">Deadline Time: </p></b>
+  <p id="time{{i.id}}"></p>
+  <script>
+   myUnixTimestamp = {{i.deadline_time}};
 
+   myDate = new Date(myUnixTimestamp * 1000);
+   s = "time"+{{i.id}};
+   a = document.getElementById(s);
+   console.log(myDate);
+   
+   a.innerHTML = `
+    
+      <p>${myDate}<p>
+`
+    </script>
+</div>
+</div>
+  {% endfor %}
+
+<script>
+  {% comment %} var dict = {
+  {% for i in all_project_sprint %}
+  {{i.id}}:{
+    'title':{{i.sprint_title}},
+    'detail':{{i.sprint_detail}},
+    'deadline':{{i.deadline_time}},
+  },
+  
+  {% endfor %}
+  }; {% endcomment %}
+  var nm = "some";
+  console.log(nm);
+  {% comment %} console.log(dict); {% endcomment %}
+          
+
+
+    function showModal(ide){
+      let va = "modal"+ide;
+      let myModal = document.getElementById(va);
+    myModal.classList.toggle("hidden");
+    }
+    function closeModal(ide){
+      let x = document.getElementById(ide).parentElement.id;
+      let myModal = document.getElementById(x);
+      myModal.classList.toggle("hidden");
+    }
+          
+</script>
     </div>
     
 </div>
@@ -229,18 +362,6 @@ Bug | DevMaster
 var csrftoken = getCookie('csrftoken');
 
 var url = 'http://127.0.0.1:8000/bug_done/';
-
-
-function myFunction(clicked_id) {
-    let text = "Are You Sure? ";
-    if (confirm(text) == true) {
-      bugAPI(clicked_id);
-    } else {
-      text = "You canceled!";
-    }
-    document.getElementById("demo").innerHTML = text;
-  }
-
 
 
 function bugAPI(clicked_id){

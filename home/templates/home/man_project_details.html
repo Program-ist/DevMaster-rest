@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% load static %} {% block title %} 
+Edit Project |
+DevMaster {% endblock title %} {% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/llm.css'%}" />
+{% comment %} "{% url 'home:assignSprint' iden %}" {% endcomment %}
+<style>
+  .headi {
+    /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+    background: rgb(17, 0, 36);
+    background: linear-gradient(
+      90deg,
+      rgba(17, 0, 36, 1) 0%,
+      rgba(9, 38, 121, 1) 26%,
+      rgba(0, 255, 171, 1) 100%
+    );
+    align-self: center;
+    background-clip: border-box;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    text-align: center;
+
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
+  .page_heading {
+    text-align: center;
+  }
+</style>
+{% endblock head %} {% block body %}
+
+<div class="big_container poppins-regular">
+  <div class="text">
+    <p class="dev_head">
+      <a href="{% url 'home:home' %}"
+        ><img
+          src="{% static 'home/img/devlogo.png'%}"
+          alt=""
+          width="300px" /></a
+      ><br />
+      Orchestrating Software Success, from Start to Finish
+    </p>
+    <p class="page_heading"><span class="headi"> Edit Project Details </span></p>
+  </div>
+  <div class="page_form">
+    {% comment %} <a href="{% url 'home/admin_members' proj.id%}" style="text-decoration:none;"><span class="btn-grad" style="margin:auto;">Change Members</span></a> {% endcomment %}
+    <form action="/adminProjectEdit/" method="post" style="margin-top:2rem;">
+      {% csrf_token %}
+
+      <div class="eleCont">
+        <label for="project_name">Project Name: </label><br>
+        <input
+          type="text"
+          name="project_name"
+          id="project_name"
+          value="{{proj.project_name}}"
+        />
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="project_description">Project Description: </label><br>
+        
+        <textarea name="project_description"
+        id="project_description" style="width:30vw;height:20vh;"
+        >{{proj.project_description}}</textarea>
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="project_gtihub_link">Project Gtihub Link: </label><br>
+        <input type="project_gtihub_link" name="project_gtihub_link" id="project_gtihub_link" value="{{proj.project_gtihub_link}}" />
+      </div>
+      
+      <br />
+
+      <input type="submit" value="Submit" id="subm" />
+    </form>
+
+    <br />
+  </div>
+</div>
+{% endblock body %} {% comment %} {% endcomment %}

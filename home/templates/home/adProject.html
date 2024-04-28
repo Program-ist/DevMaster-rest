@@ -139,9 +139,9 @@ LLM | DevMaster
             <div class="list">
                 
                 <ul>
-                  <li><span>Auctioneer</span></li>
-                  <li><span>SimplyData</span></li>
-            <li><span>BigMech</span></li>
+                  {% for i in proj %}
+                  <a href="{% url 'home:adminProjectEdit' i.id %}"><li><span>{{i.project_name}}</span></li></a>
+                  {% endfor %}
                   
                 </ul>
               </div>

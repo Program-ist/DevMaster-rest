@@ -173,7 +173,7 @@ Bug | DevMaster
             {% for j in all_project_bug %}
             {% if i == j.bug_to %}
             {% if j.review == "PASS" %}
-              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;">
+              <li style="background-color:#bbf7b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.bug_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
@@ -183,7 +183,7 @@ Bug | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% elif j.review == "FAIL" %}
-               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;">
+               <li style="background-color:#f7b9b9;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.bug_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
@@ -193,7 +193,7 @@ Bug | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% elif j.submitted_time != "" %}
-               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;">
+               <li style="background-color:#eceff7;display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.bug_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
@@ -203,7 +203,7 @@ Bug | DevMaster
                 {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
                </li>
                {% else %}
-               <li style="display:flex;align-items: center;justify-content: center;">
+               <li style="display:flex;align-items: center;justify-content: center;" id="{{j.id}}" onclick="showModal(this.id)">
                 <span style="display:flex;flex-direction:column;">
                   <span>{{j.bug_title}}</span>
                   <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
@@ -238,7 +238,92 @@ Bug | DevMaster
           </div> {% endcomment %}
           
         </div>
+        <script>
+          var myUnixTimestamp;
+      
+          var myDate;
+          var s ;
+          var a ;
+         
+      
+          </script>
+         
+  {% for i in  all_project_bug %}
+  
+  <div
+  id="modal{{i.id}}"
+  style="
+    width: 70vw;
+    height: 85vh;
+    {% comment %} background-color: #b9f7ed; {% endcomment %}
+    backdrop-filter:blur(30px);
+    position: fixed;
+    z-index: 1;
+    
+    left: calc(calc(100vw - 70vw)/2);
+    top: calc(calc(100vh - 85vh)/2);
+    
+    overflow-y: auto;
+    border-radius: 20px;
+  "
+  class="hidden"
+>
+<p  id="close{{i.id}}" style="margin:1rem;color:red;font-size:3rem;text-align:right;cursor:pointer;font-weight:700;" onclick=closeModal(this.id) >&times;</p>
+<div style="width:60vw;margin:auto;">
+  <b><p style="font-size:2rem;">Bug Title:</p></b>
+  <p>{{i.bug_title}}</p>
+  <br>
+  <b><p style="font-size:2rem;">Bug Detail:</p></b>
+  <p>{{i.bug_detail}}</p>
+  <br>
+  <b><p style="font-size:2rem;">Deadline Time: </p></b>
+  <p id="time{{i.id}}"></p>
+  <script>
+   myUnixTimestamp = {{i.deadline_time}};
 
+   myDate = new Date(myUnixTimestamp * 1000);
+   s = "time"+{{i.id}};
+   a = document.getElementById(s);
+   console.log(myDate);
+   
+   a.innerHTML = `
+    
+      <p>${myDate}<p>
+`
+    </script>
+</div>
+</div>
+  {% endfor %}
+
+<script>
+  {% comment %} var dict = {
+  {% for i in all_project_sprint %}
+  {{i.id}}:{
+    'title':{{i.sprint_title}},
+    'detail':{{i.sprint_detail}},
+    'deadline':{{i.deadline_time}},
+  },
+  
+  {% endfor %}
+  }; {% endcomment %}
+  var nm = "some";
+  console.log(nm);
+  {% comment %} console.log(dict); {% endcomment %}
+          
+
+
+    function showModal(ide){
+      let va = "modal"+ide;
+      let myModal = document.getElementById(va);
+    myModal.classList.toggle("hidden");
+    }
+    function closeModal(ide){
+      let x = document.getElementById(ide).parentElement.id;
+      let myModal = document.getElementById(x);
+      myModal.classList.toggle("hidden");
+    }
+          
+</script>
     </div>
     
 </div>

@@ -109,6 +109,40 @@ def SignupView(request):
 	return render(request, 'home/signup.html')
 
 
+@login_required
+def adminUserEdit(request,pk):
+	if request.method == 'POST':
+		fname = request.POST['full_name']
+		fuser_name = request.POST['user_name']
+		femail = request.POST['email']
+		fpassword = request.POST['password']
+		fstatus_of_account = request.POST['status_of_account']
+		#check if username in use and then update
+		user = request.user
+		udun = user.username
+		if UserDetail.objects.filter(user_name = fuser_name).exists():
+			messages.error(request,"User Name already in use")
+			return render(request,'home/editProfile.html',user)
+		tempUD = UserDetail.objects.filter(user_name = udun).first()
+		tempUD.name = fname
+		tempUD.user_name = fuser_name
+		tempUD.email = femail
+		tempUD.password = fpassword
+		tempUD.status_of_account = fstatus_of_account
+		tempUD.save()
+		tempU = User.objects.filter(username = udun).first()
+		tempU.username = fuser_name
+		tempU.set_password(fpassword)
+		tempU.save()
+		return redirect('/dashboard/')
+	det = UserDetail.objects.get(id = pk)
+	di = {
+		'det':det
+	}
+	return render(request,"home/adminUserEdit.html",di)
+
+
+
 '''		Dashboard		'''
 @login_required
 def dashboard(request):
@@ -127,7 +161,7 @@ def dashboard(request):
 			'username':username,
 			'all_users':all_users
 		}
-		return render(request, tsurl,val)
+		return render(request, tsurl, val)
 		
 
 	elif stat == "MANAGER":
@@ -157,7 +191,12 @@ def dashboard(request):
 def ad(request):
 	return render(request, 'home/ad.html')
 def adProject(request):
-	return render(request,'home/adProject.html')
+
+	proj = ProjectDetail.objects.all()
+	di ={
+		'proj':proj
+	}
+	return render(request,'home/adProject.html',di)
 
 
 '''		EditProfile		'''
@@ -274,12 +313,13 @@ def members(request,pk):
 		
 		temp = ProjectMembers(user=nMember,project=proj)
 		temp.save()
-		messages.success(request, "Announcement Made Successfully")
+		messages.success(request, "Added Member Successfully")
 		
-		url_val = "/projects/" + proj.id
+		# url_val = "/projects/" + proj.id
 		
-		
-		return redirect(url_val,ctemp_id)
+		# return redirect(url_val,ctemp_id)
+	if fuser.status_of_account == "DEVELOPER":
+		return render(request, "home/dev_members.html",di)
 	# return render(request,"home/makeAnnouncement.html",di)
 	return render(request, "home/man_members.html",di)
 
@@ -368,7 +408,7 @@ def llm(request,pk):
 	ldata = LlmData.objects.filter(user=fuser,project=proj)
 	na = proj.project_name
 	try:
-		proj_func = ProjectFunctionalities.objects.get(project=proj)
+		proj_func = ProjectFunctionalities.objects.filter(project=proj)
 	except:
 		proj_func = None
 
@@ -952,32 +992,7 @@ def dash_check(request):
 
 
 
-@api_view(['POST'])
-def chat_check(request):
-	d = request.data
-	proo = d['proid']
-	proo = ProjectDetail.objects.get(id = proo)
-	arg1 = ChatData.objects.filter(project=proo).aggregate(Max('time_of_message'))
-	send_data = {
-		'chat_bit':0,
-		'new_chat_unix':"",
-		'chat_data':{}
-	}
 
-	old_unix = d['highest']
-	old_unix = int(old_unix)
-	
-	arg = arg1['time_of_message__max']
-	arg = int(arg)
-	if arg>old_unix:
-		send_data['chat_bit'] = 1
-		send_data['new_chat_unix'] = arg
-		que = ChatData.objects.filter(time_of_message__gt = old_unix, time_of_message__lt = arg1 )
-		serializer = ChatDataSerializer(que,many = True)
-		send_data['chat_data'] = serializer
-	else:
-		pass
-	return Response(json.dumps(send_data))
 
 
 
@@ -1056,3 +1071,179 @@ def bug_done(request):
 		'done':'done'
 	}
 	return Response(done)
+
+@api_view(['POST'])
+def reviewpof(request):
+	da = request.data
+	if da['review'] == "pass":
+		temp = SprintData.objects.get(id = da['sprintId'])
+		temp.review = "PASS"
+		temp.rev_sub_time = int(datetime.now().timestamp())
+		temp.save()
+		done = {
+			'done':'done'
+		}
+	elif da['review'] == "fail":
+		temp = SprintData.objects.get(id = da['sprintId'])
+		temp.review = "FAIL"
+		temp.rev_sub_time = int(datetime.now().timestamp())
+		temp.save()
+		done = {
+			'done':'done'
+		}
+	return Response(done)
+
+@api_view(['POST'])
+def reviewbugpof(request):
+	da = request.data
+	if da['review'] == "pass":
+		temp = BugData.objects.get(id = da['BugId'])
+		temp.review = "PASS"
+		temp.rev_sub_time = int(datetime.now().timestamp())
+		temp.save()
+		done = {
+			'done':'done'
+		}
+	elif da['review'] == "fail":
+		temp = BugData.objects.get(id = da['BugId'])
+		temp.review = "FAIL"
+		temp.rev_sub_time = int(datetime.now().timestamp())
+		temp.save()
+		done = {
+			'done':'done'
+		}
+	return Response(done)
+
+@api_view(['POST'])
+def sentmsg(request):
+	da = request.data
+	userr = request.user
+	urn = userr.username
+	userr = UserDetail.objects.get(user_name = urn)
+	cmsg = da['chatmsg']
+	proj = ProjectDetail.objects.get(id = da['projectId'])
+	temp = ChatData(msg_from=userr,msg=cmsg,project=proj,time_of_message=int(datetime.now().timestamp()))
+	temp.save()
+	done={
+		'done':'done'
+	}
+	return Response(done)
+
+@api_view(['POST'])
+def chat_check(request):
+
+	d = request.data
+	proo = d['projectId']
+	proj = ProjectDetail.objects.get(id = proo)
+	arg1 = ChatData.objects.filter(project=proo).aggregate(Max('time_of_message'))
+	send_data = {
+		'chat_bit':0,
+		'new_chat_unix':"",
+		'chat_data':{}
+	}
+
+	old_unix = d['highestTime']
+	old_unix = int(old_unix)
+	
+	arg = arg1['time_of_message__max']
+	arg = int(arg)
+	if arg>old_unix:
+		send_data['chat_bit'] = 1
+		send_data['new_chat_unix'] = arg
+		que = ChatData.objects.filter(project=proj,time_of_message__gt = old_unix, time_of_message__lt = arg1 )
+		di = {
+
+		}
+		for i in que:
+			di['chat_msg'] = i.msg
+			tp = UserDetail.objects.get(id = i.msg_from_id)
+			di['sender'] = tp.user_name
+			send_data['chat_data'] = di
+	else:
+		pass
+	return Response(send_data)
+
+@login_required
+def functionalities(request,pk):
+	fuser = request.user
+	usern = fuser.username
+	fuser = UserDetail.objects.get(user_name = usern)
+
+	proj = ProjectDetail.objects.get(id = pk)
+
+
+
+	if not ProjectMembers.objects.filter(project=proj,user=fuser).exists():
+		messages.error(request, "Forbidden project")
+		return redirect('/dashboard/')
+	
+	funct = ProjectFunctionalities.objects.filter(project=proj)
+
+
+	di = {
+		'iden':pk,
+		'funct':funct,
+		
+	}
+	if request.method == 'POST':
+
+		
+		fnewfunct = request.POST['newfunct']
+		
+
+		
+		temp = ProjectFunctionalities(project=proj,project_funcionalities = fnewfunct)
+		temp.save()
+		messages.success(request, "New functionality saved Successfully")
+		
+		
+	# return render(request,"home/makeAnnouncement.html",di)
+	return render(request, "home/man_functionalities.html",di)
+
+@login_required
+def adminProjectEdit(request,pk):
+	proj = ProjectDetail.objects.get(id = pk)
+	if request.method == "POST":
+		proj.project_name = POST['project_name']
+		proj.project_description = POST['project_description']
+		proj.project_gtihub_link = POST['project_gtihub_link']
+		proj.save()
+		return redirect("/dashboard/")
+	
+	di={
+		'proj':proj
+	}
+	return render(request,"home/adminProjectEdit.html",di)
+
+def adminProjectMembers(request,pk):
+	return render(request, "home/admin_Members.html",di)
+
+def projDetails(request,pk):
+	proj = ProjectDetail.objects.get(id = pk)
+	if request.method =="POST":
+		proj.project_name = POST['project_name']
+		proj.project_description = POST['project_description']
+		proj.project_gtihub_link = POST['project_gtihub_link']
+		proj.save()
+		return redirect("/dashboard/")
+
+	di = {
+		'proj':proj
+	}
+	return render(request,"home/man_project_details.html",di)
+
+def report(request,pk):
+	proj = ProjectDetail.objects.get(id = pk)
+	sprintD = SprintData.objects.filter(project=proj)
+	bugD = BugData.objects.filter(project = proj)
+	ann = Announcement.objects.filter(project=proj)
+
+	di = {
+		'proj':proj,
+		'sprintD':sprintD,
+		'bugD':bugD,
+		'ann':ann
+	}
+	return render(request,"home/report.html",di)
+
+	

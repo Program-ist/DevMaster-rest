@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% load static %} {% block title %} Edit Profile |
+DevMaster {% endblock title %} {% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+  .headi {
+    /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+    background: rgb(17, 0, 36);
+    background: linear-gradient(
+      90deg,
+      rgba(17, 0, 36, 1) 0%,
+      rgba(9, 38, 121, 1) 26%,
+      rgba(0, 255, 171, 1) 100%
+    );
+    align-self: center;
+    background-clip: border-box;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    text-align: center;
+
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
+  .page_heading {
+    text-align: center;
+  }
+</style>
+{% endblock head %} {% block body %}
+
+<div class="big_container poppins-regular">
+  <div class="text">
+    <p class="dev_head">
+      <a href="{% url 'home:home' %}"
+        ><img
+          src="{% static 'home/img/devlogo.png'%}"
+          alt=""
+          width="300px" /></a
+      ><br />
+      Orchestrating Software Success, from Start to Finish
+    </p>
+    <p class="page_heading"><span class="headi"> Edit This Profile </span></p>
+  </div>
+  <div class="page_form">
+    <form action="/adminUserEdit/" method="post">
+      {% csrf_token %}
+      <div class="eleCont">
+        <label for="full_name">Full Name: </label><br>
+        <input
+          type="text"
+          name="full_name"
+          id="full_name"
+          value="{{det.name}}"
+        />
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="user_name">User Name: </label><br>
+        <input
+          type="text"
+          name="user_name"
+          id="user_name"
+          value="{{det.user_name}}"
+        />
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="email">Email: </label><br>
+        <input type="email" name="email" id="email" value="{{det.email}}" />
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="password">Password: </label><br>
+        <input
+          type="text"
+          name="password"
+          id="password"
+          value="{{det.password}}"
+        />
+      </div>
+      <br />
+      <div class="eleCont">
+        <label for="status_of_account">Status of Account: </label><br>
+        <input
+          type="text"
+          name="status_of_account"
+          id="status_of_account"
+          value="{{det.status_of_account}}"
+        />
+      </div>
+      <br />
+
+      <input type="submit" value="Submit" id="subm" />
+    </form>
+
+    <br />
+  </div>
+</div>
+{% endblock body %} {% comment %} {% endcomment %}

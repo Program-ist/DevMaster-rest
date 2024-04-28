@@ -157,7 +157,7 @@ LLM | DevMaster
                 
                 <ul>
                     {% for i in all_users %}
-                    <li><span>{{i.user_name}}</span></li>
+                    <a href="{% url 'home:adminUserEdit' i.id %}"><li id="{{i.id}}"><span>{{i.user_name}}</span></li></a>
                     {% endfor %}
                   
                   

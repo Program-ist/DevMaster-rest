@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-LLM | DevMaster
+Review | DevMaster
 {% endblock title %}
 
 {% block head %}
@@ -154,36 +154,28 @@ LLM | DevMaster
             <p style="text-decoration:underline;font-size:2rem;margin-top:0px;">Sprint:</p>
             
             <div class="list">
-                <ul>
-            {% for i in all_project_sprint %}
-            {% if  username == i.sprint_reviewer %}
+              <ul>
+                {% for j in all_project_sprint %}
+                {% if j.submitted_time != "" and j.review != "PASS" and j.review != "FAIL"%}
+                <li style="display:flex;align-items: center;justify-content: center;" >
+                  <span style="display:flex;flex-direction:column;" id="{{j.id}}"  onclick="showModal(this.id)">
+                    <span>{{j.sprint_title}}</span>
+                    <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.sprint_detail}}</span>
+                  </span>
+                  <span style="color:white;text-decoration:none;" id="sprintpass{{j.id}}" onclick="SprintPass(this.id)">
+                    <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass             
+                    </span>
+                  </span>
+                  <a href="" style="color:white;text-decoration:none;" id="sprintfail{{j.id}}" onclick="SprintFail(this.id)">
+                    <span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail
+                    </span>
+                  </a>
+                  
+                 </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
 
-            
-            {% if i.submitted_time != "" %}
-                    {% if i.review == "PASS" %}
-                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span>
-                      {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                     </li>
-                      {% elif i.review == "FAIL" %}
-                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span>
-                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                       </li>
-                       {% else %}<li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{i.sprint_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.sprint_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
-                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                       </li>
-
-
-                       {% endif %}
-            
-            {% endif %}
-            
-
-            {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
-               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
-              </li> {% endcomment %}
-            {% endif %}
-            {% endfor %}
-                </ul>
             </div>
             
 
@@ -206,48 +198,322 @@ LLM | DevMaster
             <p style="text-decoration:underline;font-size:2rem;">Bug:</p>
             
             <div class="list">
-                <ul>
-            {% for i in all_project_bug %}
-            {% if username == i.bug_reviewer %}
+              <ul>
+                {% for j in all_project_bug %}
+                
+                {% if j.submitted_time != ""  and j.review != "PASS" and j.review != "FAIL"%}
+                <li style="display:flex;align-items: center;justify-content: center;" >
+                  <span style="display:flex;flex-direction:column;" id="{{j.id}}" onclick="showModal(this.id)">
+                    <span>{{j.bug_title}}</span>
+                    <span style="width:40vw;font-size:1rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{j.bug_detail}}
+                    </span>
+                  </span>
+                  <a href="" style="color:white;text-decoration:none;" id="bugpass{{j.id}}" onclick="BugPass(this.id)">
+                    <span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass
+                    </span>
+                  </a>
+                  <a href="" style="color:white;text-decoration:none;" id="bugfail{{j.id}}" onclick="BugFail(this.id)">
+                    <span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail
+                    </span>
+                  </a>
+                  {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
+                 </li>
+                {% endif %}
+                
+                {% endfor %}
+              </ul>
 
-            
-            {% if i.submitted_time != "" %}
-                    {% if i.review == "PASS" %}
-                    <li style="background-color:#bbf7b9;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span>
-                      {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                     </li>
-                     
-                      {% elif i.review == "FAIL" %}
-                      <li style="background-color:#f7b9b9;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span>
-                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                       </li>
-                       {% else %}
-                       
-
-                       <li style="display:flex;align-items: center;justify-content: center;"><span style="display:flex;flex-direction:column;"><span>{{i.bug_title}}</span><span style="width:40vw;font-size:0.7rem;text-overflow: ellipsis;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{i.bug_detail}}</span></span><a href="" style="color:white;text-decoration:none;"><span class="small-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Pass</span></a><a href="" style="color:white;text-decoration:none;"><span class="fail-btn-grad" style="width:8vw;font-size:0.75rem;color:white;">Fail</span></a>
-                        {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment %}
-                       </li>
-
-                      
-
-
-
-                       {% endif %}
-            
-            {% endif %}
-            
-
-            {% comment %} <li style="display:flex;justify-content: space-between;"><span>{{j.sprint_title}}</span>
-               {% comment %} <span class="mkdbutt" >Mark as Done</span>  {% endcomment 
-              </li> {% endcomment %}
-            {% endif %}
-            {% endfor %}
-                </ul>
             </div>
+
+<script>
+
+  var sprint_url = 'http://127.0.0.1:8000/reviewpof/';
+  var bug_url = 'http://127.0.0.1:8000/reviewbugpof/';
+
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function SprintPass(ide){
+    console.log(ide);
+    newide = ide.replace('sprintpass','');
+    console.log(newide);
+
+    sprint_url = sprint_url
+    if (confirm("Do you want to Proceed with this action ?")){
+    fetch(sprint_url, {
+      method: 'POST',
+      headers: {
+          'Content-type': 'application/json',
+          'X-CSRFToken': csrftoken,
+      },
+      body: JSON.stringify({
+        'review':"pass",
+        "sprintId":newide
+      })
+  }).then(response=>response.json()
+  ).then(data=>console.log(data)).then(e=>location.reload())}
+  else{
+    console.log("Something Went Wrong");
+  }
+  
+  
+
+
+  };
+  function SprintFail(ide){
+    newide = ide.replace('sprintfail','');
+    sprint_url = sprint_url
+    if (confirm("Do you want to Proceed with this action ?")){
+    fetch(sprint_url, {
+      method: 'POST',
+      headers: {
+          'Content-type': 'application/json',
+          'X-CSRFToken': csrftoken,
+      },
+      body: JSON.stringify({
+        'review':"fail",
+        "sprintId":newide
+      })
+  
+  
+  }).then(response=>response.json()
+  ).then(data=>console.log(data)).then(e=>location.reload())}
+  else{
+    console.log("Something Went Wrong");
+  }
+
+  };
+  function BugPass(ide){
+    newide = ide.replace('bugpass','');
+    
+    if (confirm("Do you want to Proceed with this action ?")){
+    fetch(bug_url, {
+      method: 'POST',
+      headers: {
+          'Content-type': 'application/json',
+          'X-CSRFToken': csrftoken,
+      },
+      body: JSON.stringify({
+        'review':"fail",
+        "BugId":newide
+      })
+  
+  
+  }).then(response=>response.json()
+  ).then(data=>console.log(data)).then(e=>location.reload())}
+  else{
+    console.log("Something Went Wrong");
+  }
+
+  };
+  function BugFail(ide){
+    newide = ide.replace('bugfail','');
+
+    if (confirm("Do you want to Proceed with this action ?")){
+      fetch(bug_url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({
+          'review':"fail",
+          "BugId":newide
+        })
+    
+    
+    }).then(response=>response.json()
+    ).then(data=>console.log(data)).then(e=>location.reload())}
+    else{
+      console.log("Something Went Wrong");
+    }
+  };
+
+</script>
             
+            <script>
+              var myUnixTimestamp;
+          
+              var myDate;
+              var s ;
+              var a ;
+             
+          
+              </script>
+             
+      {% for i in  all_project_sprint %}
+      
+      <div
+      id="modal{{i.id}}"
+      style="
+        width: 70vw;
+        height: 85vh;
+        {% comment %} background-color: #b9f7ed; {% endcomment %}
+        backdrop-filter:blur(30px);
+        position: fixed;
+        z-index: 1;
+        
+        left: calc(calc(100vw - 70vw)/2);
+        top: calc(calc(100vh - 85vh)/2);
+        
+        overflow-y: auto;
+        border-radius: 20px;
+      "
+      class="hidden"
+    >
+    <p  id="close{{i.id}}" style="margin:1rem;color:red;font-size:3rem;text-align:right;cursor:pointer;font-weight:700;" onclick=closeModal(this.id) >&times;</p>
+    <div style="width:60vw;margin:auto;">
+      <b><p style="font-size:2rem;">Sprint Title:</p></b>
+      <p>{{i.sprint_title}}</p>
+      <br>
+      <b><p style="font-size:2rem;">Sprint Detail:</p></b>
+      <p>{{i.sprint_detail}}</p>
+      <br>
+      <b><p style="font-size:2rem;">Deadline Time: </p></b>
+      <p id="time{{i.id}}"></p>
+      <script>
+       myUnixTimestamp = {{i.deadline_time}};
+    
+       myDate = new Date(myUnixTimestamp * 1000);
+       s = "time"+{{i.id}};
+       a = document.getElementById(s);
+       console.log(myDate);
+       
+       a.innerHTML = `
+        
+          <p>${myDate}<p>
+    `
+        </script>
+    </div>
+    </div>
+      {% endfor %}
+    
+    <script>
+      {% comment %} var dict = {
+      {% for i in all_project_sprint %}
+      {{i.id}}:{
+        'title':{{i.sprint_title}},
+        'detail':{{i.sprint_detail}},
+        'deadline':{{i.deadline_time}},
+      },
+      
+      {% endfor %}
+      }; {% endcomment %}
+      
+      {% comment %} console.log(dict); {% endcomment %}
+              
+    
+    
+        function showModal(ide){
+          let va = "modal"+ide;
+          let myModal = document.getElementById(va);
+        myModal.classList.toggle("hidden");
+        }
+        function closeModal(ide){
+          let x = document.getElementById(ide).parentElement.id;
+          let myModal = document.getElementById(x);
+          myModal.classList.toggle("hidden");
+        }
+              
+    </script>
 
-
-
+    {% for i in  all_project_bug %}
+  
+    <div
+    id="modal{{i.id}}"
+    style="
+      width: 70vw;
+      height: 85vh;
+      {% comment %} background-color: #b9f7ed; {% endcomment %}
+      backdrop-filter:blur(30px);
+      position: fixed;
+      z-index: 1;
+      
+      left: calc(calc(100vw - 70vw)/2);
+      top: calc(calc(100vh - 85vh)/2);
+      
+      overflow-y: auto;
+      border-radius: 20px;
+    "
+    class="hidden"
+  >
+  <p  id="close{{i.id}}" style="margin:1rem;color:red;font-size:3rem;text-align:right;cursor:pointer;font-weight:700;" onclick=closeModal(this.id) >&times;</p>
+  <div style="width:60vw;margin:auto;">
+    <b><p style="font-size:2rem;">Bug Title:</p></b>
+    <p>{{i.bug_title}}</p>
+    <br>
+    <b><p style="font-size:2rem;">Bug Detail:</p></b>
+    <p>{{i.bug_detail}}</p>
+    <br>
+    <b><p style="font-size:2rem;">Deadline Time: </p></b>
+    <p id="time{{i.id}}"></p>
+    <script>
+     myUnixTimestamp = {{i.deadline_time}};
+  
+     myDate = new Date(myUnixTimestamp * 1000);
+     s = "time"+{{i.id}};
+     a = document.getElementById(s);
+     console.log(myDate);
+     
+     a.innerHTML = `
+      
+        <p>${myDate}<p>
+  `
+      </script>
+  </div>
+  </div>
+    {% endfor %}
+  
+  <script>
+    {% comment %} var dict = {
+    {% for i in all_project_sprint %}
+    {{i.id}}:{
+      'title':{{i.sprint_title}},
+      'detail':{{i.sprint_detail}},
+      'deadline':{{i.deadline_time}},
+    },
+    
+    {% endfor %}
+    }; {% endcomment %}
+    var nm = "some";
+    console.log(nm);
+    {% comment %} console.log(dict); {% endcomment %}
+            
+  
+  
+  </script>
 
         {% comment %} <div class="list">
             {% comment %} <h2>List Item Hover Effect</h2> {% endcomment 
@@ -267,7 +533,7 @@ LLM | DevMaster
 </div>
 <script>
 
-    riBox.scrollTop = 99999999;
+    {% comment %} riBox.scrollTop = 99999999; {% endcomment %}
 
     function myfunc(){
         console.log("helloooooo");

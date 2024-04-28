@@ -126,7 +126,7 @@ Sprint | DevMaster
         <ul>
             <li style="padding-top:6px;text-align:right;">Hello {{username}} <span style="margin-left:2rem;margin-right:3rem;">
               <img src="{% static 'home/img/acc_cir.svg'%}" width="35px" alt="logo"
-                style="position:fixed;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
+                style="position:absolute;cursor: pointer;"  onclick="profileSubmenu()"/></span></li>
             
         </ul>
         <div class="submenu hidden" id="profileSubmenu">
@@ -227,7 +227,15 @@ Sprint | DevMaster
           </div>
         </div>
         
-
+        <script>
+          var myUnixTimestamp;
+      
+          var myDate;
+          var s ;
+          var a ;
+         
+      
+          </script>
          
   {% for i in  all_project_sprint %}
   
@@ -240,28 +248,38 @@ Sprint | DevMaster
     backdrop-filter:blur(30px);
     position: fixed;
     z-index: 1;
-    padding-top: 100px;
+    
     left: calc(calc(100vw - 70vw)/2);
     top: calc(calc(100vh - 85vh)/2);
-    {% comment %} top:calc((100vh-85vh)/2vh); {% endcomment %}
-    {% comment %} top:0px; {% endcomment %}
-  
-    {% comment %} transform: translate(-50%, -50%); {% endcomment %}
-    margin: auto;
+    
     overflow-y: auto;
     border-radius: 20px;
   "
   class="hidden"
 >
+<p  id="close{{i.id}}" style="margin:1rem;color:red;font-size:3rem;text-align:right;cursor:pointer;font-weight:700;" onclick=closeModal(this.id) >&times;</p>
 <div style="width:60vw;margin:auto;">
-  <b><p>Sprint Title:</p></b>
+  <b><p style="font-size:2rem;">Sprint Title:</p></b>
   <p>{{i.sprint_title}}</p>
   <br>
-  <b><p>Sprint Detail:</p></b>
+  <b><p style="font-size:2rem;">Sprint Detail:</p></b>
   <p>{{i.sprint_detail}}</p>
   <br>
-  <b><p>Deadline Time: </p></b>
-  <p>{{i.deadline_time}}
+  <b><p style="font-size:2rem;">Deadline Time: </p></b>
+  <p id="time{{i.id}}"></p>
+  <script>
+   myUnixTimestamp = {{i.deadline_time}};
+
+   myDate = new Date(myUnixTimestamp * 1000);
+   s = "time"+{{i.id}};
+   a = document.getElementById(s);
+   console.log(myDate);
+   
+   a.innerHTML = `
+    
+      <p>${myDate}<p>
+`
+    </script>
 </div>
 </div>
   {% endfor %}
@@ -287,6 +305,11 @@ Sprint | DevMaster
       let va = "modal"+ide;
       let myModal = document.getElementById(va);
     myModal.classList.toggle("hidden");
+    }
+    function closeModal(ide){
+      let x = document.getElementById(ide).parentElement.id;
+      let myModal = document.getElementById(x);
+      myModal.classList.toggle("hidden");
     }
           
 </script>

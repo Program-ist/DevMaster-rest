@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Members | DevMaster
+{% endblock title %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/for.css'%}" />
+<style>
+
+    .headi {
+        /* background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+           */
+        background: rgb(17, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(17, 0, 36, 1) 0%,
+          rgba(9, 38, 121, 1) 26%,
+          rgba(0, 255, 171, 1) 100%
+        );
+        align-self: center;
+        background-clip: border-box;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        text-align: center;
+      
+        font-size: 3.5rem;
+        font-weight: bold;
+      }
+      .page_heading{
+        text-align: center;
+    }
+
+</style>
+{% endblock head %}
+{% block body %}
+
+<div class="big_container poppins-regular">
+<div class="text">
+<p class="dev_head"><a href="{% url 'home:home' %}"><img src="{% static 'home/img/devlogo.png'%}" alt="" width = "300px"></a><br>
+Orchestrating Software Success, from Start to Finish</p>
+<p class="page_heading"><span class="headi"> Add or Remove Functionalitites</span></p>
+</div>
+<div class="page_form">
+    
+{% for i in funct %}
+<div style="width:60%;margin:auto;"><span style="display:flex;justify-content:space-between;"><span>{{i.project_funcionalities}}</span><span id="{{i.id}}" style="cursor:pointer;color:red;" onclick="conf(this.id)">&times;</span></span></div>
+{% endfor %}
+
+
+
+<script>
+var dict={
+{% for i in projMembers %}
+{{i.id}} : "{{i.user_name}}",
+
+
+{% endfor %}
+}
+    function conf(ide){
+        ide = parseInt(ide);
+        console.log(dict[ide]);
+        let text = "Are you sure you want to remove " + dict[ide] +" from the project?"
+        if(confirm(text) == true){
+            del;
+        }
+        else{
+            console.log("not deleted")
+        }
+    }
+
+</script>
+
+
+
+
+
+        <form action="/projects/{{iden}}/members/" method="post">
+                {% csrf_token %}
+        
+        
+    
+        <div class="eleCont" style="display:none">
+            <label for="fproject_id">Project Name: </label>
+            <input type="text" name="fproject_id" id="fproject_id" value="{{iden}}">
+    </div>
+   
+                <br>
+                <div class="eleCont">
+                <label for="newMember">New Functionality: </label>
+                <br>
+                
+                <input type="text" name="newfunct" id="newfunct">
+                
+        </div>
+                <br>
+                
+                <input type="submit" value="Submit" id="subm">
+            </form>
+    <br>
+</div>
+</div>
+{% endblock body %}

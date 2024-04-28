@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% load static %} {% block title %} LLM | DevMaster {%endblock title %} {% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/css/llm.css'%}" />
+{% endblock head %} {% block body %}
+
+<div style="width:80vw;margin:auto;">
+<div style=" padding:1rem;">
+    <br>
+    <b><p>Project Details</p></b>
+    
+    <p>project_name: {{proj.project_name}}</p>
+    <p>project_description: {{proj.project_description}}</p>
+    <p>created_by: {{proj.created_by}}</p>
+    <p>project_created_time: {{proj.project_created_time}}</p>
+    <p>project_gtihub_link: {{proj.project_gtihub_link}}</p>
+    <p>project_phase: {{proj.project_phase}}</p>   
+    <br>
+
+</div>
+
+<div style="background-color:#dcf0e1; padding:1rem;border-radius:15px;">
+    <br> 
+    <b><p>Announcements</p></b>
+    
+    {% for i in ann %}
+    <p>ann_from: {{i.ann_from}}</p>
+    <p>project: {{i.project}}</p>
+    <p>announcement_msg: {{i.announcement_msg}}</p>
+    <p>time_of_message: {{i.time_of_message}}</p>
+    <br>
+    {% endfor %}
+    <br>
+
+
+</div>
+
+
+<div style=" padding:1rem;">
+    <br>
+    <b><p>Sprint Data</p></b>
+    
+    {% for i in sprintD %}
+    <p>sprint_from: {{i.sprint_from}}</p>
+    <p>sprint_to: {{i.sprint_to}}</p>
+    <p>sprint_reviewer: {{i.sprint_reviewer}}</p>
+    <p>project: {{i.project}}</p>
+    <p>sprint_title: {{i.sprint_title}}</p>
+    <p>sprint_detail: {{i.sprint_detail}}</p>
+    <p>sp_created_time: {{i.sp_created_time}}</p>
+    <p>deadline_time: {{i.deadline_time}}</p>
+    <p>submitted_time: {{i.submitted_time}}</p>
+    <p>review: {{i.review}}</p>
+    <p>rev_sub_time: {{i.rev_sub_time}}</p>
+    <br>
+    {% endfor %}
+    <br>
+
+</div>
+
+
+<div  style="background-color:#dcf0e1; padding:1rem;border-radius:15px;">
+    <br>
+    <b><p>Bug Data</p></b>
+    
+    {% for i in bugD %}
+    <p>bug_from: {{i.bug_from}}</p>
+    <p>bug_to: {{i.bug_to}}</p>
+    <p>bug_reviewer: {{i.bug_reviewer}}</p>
+    <p>bug_reported_by: {{i.bug_reported_by}}</p>
+    <p>project: {{i.project}}</p>
+    <p>bug_title: {{i.bug_title}}</p>
+    <p>bug_detail: {{i.bug_detail}}</p>
+    <p>bu_created_time: {{i.bu_created_time}}</p>
+    <p>deadline_time: {{i.deadline_time}}</p>
+    <p>submitted_time: {{i.submitted_time}}</p>
+    <p>review: {{i.review}}</p>
+    <p>rev_sub_time: {{i.rev_sub_time}}</p>
+    <br>
+    {% endfor %}
+    <br>
+
+</div>
+
+</div>
+
+
+
+
+
+{% endblock body%}

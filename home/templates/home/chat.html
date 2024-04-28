@@ -135,7 +135,7 @@ border-radius: 100vw;
             {% endif %}
 
             {% endfor %}
-
+<span></span>
 
 
 
@@ -163,9 +163,8 @@ border-radius: 100vw;
 
         </div>
         <div class="inputField">
-            <img src="{% static 'home/img/settin.svg'%}" width="30px" alt="logo"
-                    style="margin-top:1px;cursor: pointer;"  onclick="myfunc()"/>
-            <input type="text" name="inpLLM" id="inpLLM">
+            
+            <input type="text" name="chatinput" id="chatinput">
             <!-- <input type="button" value="submit" id="subBut"> -->
             <!-- <button class="btn" id="subBut">Submit</button> -->
             <img src="{% static 'home/img/send.svg'%}" width="35px" alt="logo"
@@ -176,12 +175,93 @@ border-radius: 100vw;
 </div>
 </div>
 <script>
-
     riBox.scrollTop = 99999999;
+</script>
+<script>
+
+    var add_chat = 'http://127.0.0.1:8000/sentmsg/';
+    var check_chat = 'http://127.0.0.1:8000/chat_check/';
+    var hiti = {{highest_time}}
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    var rboxx = document.getElementById('riBox').innerHTML;
+  
+    function chat_c(){
+        fetch(check_chat, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+              'highestTime': hiti,
+              'projectId': {{iden}}
+            })
+        
+        
+        }).then(response=>response.json()
+        ).then(data=>{
+            chat_bitt = parseInt(data['chat_bit']);
+            if(chat_bitt==0){
+                console.log(chat_bitt)
+            } 
+            else if (chat_bitt == 1){
+                location.reload();
+            }
+        })
+        
+    };
+
+    var interv;
+    
+    interv = setInterval(chat_c,1000)
+    
+    function startInterv(){
+        interv = setInterval(chat_c,1000);
+    }
+
+    function stopInterv(){
+        clearInterval(interv);
+    }
+
+
+
 
     function myfunc(){
-        console.log("helloooooo");
-    }
+        stopInterv()
+        chatmsg = document.getElementById("chatinput").value;
+        document.getElementById("chatinput").value ="";
+        fetch(add_chat, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+              'chatmsg':chatmsg,
+              'projectId':{{iden}},
+            })
+        
+        
+        }).then(response=>response.json()
+        ).then(data=>console.log(data)).then(e=>location.reload())
+        {% comment %} .then(e=>startInterv()) {% endcomment %}
+    }; 
+    
 </script>
 
 {% endblock body%}
